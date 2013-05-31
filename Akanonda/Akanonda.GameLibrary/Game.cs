@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace Akanonda.GameLibrary
 {
+    [Serializable()]
     public sealed class Game
     {
         private static Game instance = new Game();

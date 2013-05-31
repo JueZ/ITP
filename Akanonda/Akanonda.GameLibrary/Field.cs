@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Akanonda.GameLibrary
 {
+    [Serializable]
     public struct Field
     {
         private int _x;

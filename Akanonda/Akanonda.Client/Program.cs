@@ -15,7 +15,7 @@ namespace Akanonda
         private static NetClient netclient;
         
         [STAThread]
-        private static void Main(string[] args)
+        private static void Main() //string[] args
         {
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
 		
@@ -30,9 +30,9 @@ namespace Akanonda
 			NetOutgoingMessage message = netclient.CreateMessage(guid.ToString());
 			netclient.Connect("127.0.0.1", 1337, message);
             
-            game = Game.Instance;
-            game.setFieldSize(500, 500);
-            game.addlocalPlayer("Martin", Color.Green);
+//            game = Game.Instance;
+//            game.setFieldSize(500, 500);
+//            game.addlocalPlayer("Martin", Color.Green);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -72,6 +72,12 @@ namespace Akanonda
 //
 						break;
 					case NetIncomingMessageType.Data:
+						int gamedatalength = im.ReadInt32();
+						
+						byte[] gamedata = im.ReadBytes(gamedatalength);
+						
+						game = (Game)SerializeHelper.ByteArrayToObject(gamedata);
+						
 //						string chat = im.ReadString();
 //						Output(chat);
 						break;

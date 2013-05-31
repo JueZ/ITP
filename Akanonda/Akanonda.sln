@@ -1,15 +1,16 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{30A3A3C0-DD3C-4836-952F-A5CA64100333}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+# SharpDevelop 4.3
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akanonda.Client", "Akanonda.Client\Akanonda.Client.csproj", "{30A3A3C0-DD3C-4836-952F-A5CA64100333}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0994FF4F-42A0-4544-B051-BF644044B2A1} = {0994FF4F-42A0-4544-B051-BF644044B2A1}
 		{49BA1C69-6104-41AC-A5D8-B54FA9F696E8} = {49BA1C69-6104-41AC-A5D8-B54FA9F696E8}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLibrary", "GameLibrary\GameLibrary.csproj", "{0994FF4F-42A0-4544-B051-BF644044B2A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akanonda.GameLibrary", "Akanonda.GameLibrary\Akanonda.GameLibrary.csproj", "{0994FF4F-42A0-4544-B051-BF644044B2A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{3B55783F-4375-4014-BA4E-179D7181307B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akanonda.Server", "Akanonda.Server\Akanonda.Server.csproj", "{3B55783F-4375-4014-BA4E-179D7181307B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0994FF4F-42A0-4544-B051-BF644044B2A1} = {0994FF4F-42A0-4544-B051-BF644044B2A1}
 	EndProjectSection

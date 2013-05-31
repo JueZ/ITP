@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Akanonda.GameLibrary
 {
+    [Serializable]
     public enum PlayerSteering
     {
         Up,

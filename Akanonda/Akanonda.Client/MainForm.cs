@@ -9,9 +9,7 @@ namespace Akanonda
     /// Description of MainForm.
     /// </summary>
     public partial class MainForm : Form
-    {
-        int offset = 10;
-        
+    {        
         public MainForm()
         {
             InitializeComponent();
@@ -29,18 +27,14 @@ namespace Akanonda
             Graphics g = e.Graphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
             
-            Program.game.gamepaint(g);
-            
+            if(Program.game != null)
+                Program.game.gamepaint(g);
 
         }
         
                 
         void DrawTimerTick(object sender, System.EventArgs e)
         {
-            this.offset++;
-            
-            Program.game.gametick();
-            
             this.Invalidate();
         }
         

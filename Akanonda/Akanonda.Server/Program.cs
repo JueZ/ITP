@@ -6,25 +6,26 @@ using Akanonda.GameLibrary;
 using System.Threading;
 using Lidgren.Network;
 using System.Timers;
+using System.Drawing;
+
+
 
 namespace Akanonda
 {
     public class Program
     {
         private static NetServer netserver;
+        private static Game game;
                     
         static void Main(string[] args)
         {
-
-
             Console.WriteLine("Akanonda Server");
             Console.WriteLine("---------------");
                         		
+            // NetServer START
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
-			
             netconfig.MaximumConnections = 10;
 			netconfig.Port = 1337;
-			
 			netserver = new NetServer(netconfig);
 
             if (SynchronizationContext.Current == null)
@@ -33,11 +34,24 @@ namespace Akanonda
 			netserver.RegisterReceivedCallback(new SendOrPostCallback(ReceiveData)); 
 		
 			netserver.Start();
-
-            System.Timers.Timer timer = new System.Timers.Timer(100);
+            // NetServer END
+			
+            // Game START
+            game = Game.Instance;
+            game.setFieldSize(250, 250);
+            game.addPlayer("Martin", Color.Blue, Guid.NewGuid());
+            
+            
+            
+            // Game END            
+            
+            // GameTimer START
+            System.Timers.Timer timer = new System.Timers.Timer(1000);
             timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             timer.Enabled = true;
-            
+            // GameTimer END
+                        
+            // ConsoleCommand START
             Console.Write("Command: ");
 
 			while (true)
@@ -62,11 +76,22 @@ namespace Akanonda
                 
                 Console.Write("Command: ");
             }
+			// ConsoleCommand END
         }
 
         static void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            throw new NotImplementedException();
+            game.gametick();
+            
+            byte[] gamebyte = SerializeHelper.ObjectToByteArray(game);
+            
+           
+            
+            NetOutgoingMessage sendMsg = netserver.CreateMessage();
+            sendMsg.Write(Convert.ToInt32(gamebyte.Length));
+            sendMsg.Write(gamebyte);
+             
+            netserver.SendToAll(sendMsg, NetDeliveryMethod.ReliableSequenced);
         }
         
         public static void ReceiveData(object peer)
@@ -122,6 +147,9 @@ namespace Akanonda
 				}
 			}        
         }
+        
+
+        
         
     }
 }

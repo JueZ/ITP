@@ -6,6 +6,7 @@ using System.Drawing;
 
 namespace Akanonda.GameLibrary
 {
+    [Serializable()]
     public class Player
     {
         private string _name;
@@ -53,9 +54,9 @@ namespace Akanonda.GameLibrary
         {
             this._playerbody = new List<int[]>();
             
-            this._playerbody.Add(new int[2] {10, 10});
-            this._playerbody.Add(new int[2] {10, 11});
-            this._playerbody.Add(new int[2] {10, 12});
+            this._playerbody.Add(new int[2] {100, 100});
+            this._playerbody.Add(new int[2] {100, 110});
+            this._playerbody.Add(new int[2] {100, 120});
 
             this._name = name;
             this._color = color;
@@ -68,9 +69,9 @@ namespace Akanonda.GameLibrary
         {
             this._playerbody = new List<int[]>();
             
-            this._playerbody.Add(new int[2] {10, 10});
-            this._playerbody.Add(new int[2] {10, 11});
-            this._playerbody.Add(new int[2] {10, 12});
+            this._playerbody.Add(new int[2] {100, 100});
+            this._playerbody.Add(new int[2] {100, 110});
+            this._playerbody.Add(new int[2] {100, 120});
             
             this._name = name;
             this._color = color;
