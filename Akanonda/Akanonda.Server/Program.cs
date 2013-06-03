@@ -39,14 +39,14 @@ namespace Akanonda
             // Game START
             game = Game.Instance;
             game.setFieldSize(250, 250);
-            game.addPlayer("Martin", Color.Blue, Guid.NewGuid());
+            //game.addPlayer("Martin", Color.Blue, Guid.NewGuid());
             
             
             
             // Game END            
             
             // GameTimer START
-            System.Timers.Timer timer = new System.Timers.Timer(1000);
+            System.Timers.Timer timer = new System.Timers.Timer(500);
             timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             timer.Enabled = true;
             // GameTimer END
@@ -85,8 +85,6 @@ namespace Akanonda
             
             byte[] gamebyte = SerializeHelper.ObjectToByteArray(game);
             
-           
-            
             NetOutgoingMessage sendMsg = netserver.CreateMessage();
             sendMsg.Write(Convert.ToInt32(gamebyte.Length));
             sendMsg.Write(gamebyte);
@@ -113,21 +111,21 @@ namespace Akanonda
                         NetConnectionStatus status = (NetConnectionStatus)im.ReadByte();
                         						
                         if(im.SenderConnection.RemoteHailMessage != null && status == NetConnectionStatus.Connected)
-                            Console.WriteLine(im.SenderConnection.RemoteHailMessage.ReadString());
-						
+                        {
+                            game.addPlayer("Martin", Color.Blue, Guid.Parse(im.SenderConnection.RemoteHailMessage.ReadString()));
+                        }
+                        
 						string reason = im.ReadString();
 						Console.WriteLine(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " " + status + ": " + reason);
-						
 
-						
-                        // Update user status
+						// Update user status
 						//UpdateConnectionsList();
 						break;
 					case NetIncomingMessageType.Data:
 //						// incoming chat message from a client
-						string chat = im.ReadString();
-						Console.WriteLine(chat);
-
+						
+						Console.WriteLine(im.ReadInt32());
+						
 //						Output("Broadcasting '" + chat + "'");
 //
 //						// broadcast this to all connections, except sender
@@ -145,11 +143,8 @@ namespace Akanonda
 						Console.WriteLine("Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes " + im.DeliveryMethod + "|" + im.SequenceChannel);
 						break;
 				}
+				netserver.Recycle(im);
 			}        
         }
-        
-
-        
-        
     }
 }
