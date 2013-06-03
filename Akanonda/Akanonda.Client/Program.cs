@@ -11,10 +11,11 @@ namespace Akanonda
     {
         public static Game game;
         public static Guid guid = Guid.NewGuid();
-        public static NetClient netclient;
+        
+        private static NetClient netclient;
         
         [STAThread]
-        private static void Main(string[] args)
+        private static void Main() //string[] args
         {
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
 		
@@ -84,7 +85,6 @@ namespace Akanonda
 //						Output("Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes");
 						break;
 				}
-				netclient.Recycle(im);
 			}
 		}
 
