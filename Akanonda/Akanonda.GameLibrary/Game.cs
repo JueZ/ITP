@@ -15,6 +15,7 @@ namespace Akanonda.GameLibrary
         private Field _field;
         private List<Player> _playerlist;
         private Guid _localplayer;
+        private Collision _collision;
 
         public static Game Instance
         {
@@ -27,27 +28,29 @@ namespace Akanonda.GameLibrary
         private Game()
         {
             _playerlist = new List<Player>();
-            
-            _field.setSize(100, 100);
+
+            _field.setSize(200, 200);
+
+            _collision = new Collision(_field.x, _field.y);
         }
 
         public void setFieldSize(int x, int y)
         {
             _field.setSize(x, y);
         }
-        
+
         public void addlocalPlayer(string name, Color color)
         {
             Player player = new Player(name, color);
-            _localplayer = player.guid; 
+            _localplayer = player.guid;
             _playerlist.Add(player);
         }
-        
+
         public void setlocalsteering(PlayerSteering playersteering)
         {
-            for(int i = 0; i < _playerlist.Count; i++)
+            for (int i = 0; i < _playerlist.Count; i++)
             {
-                if(_playerlist[i].guid.Equals(_localplayer))
+                if (_playerlist[i].guid.Equals(_localplayer))
                 {
                     _playerlist[i].playersteering = playersteering;
                 }
@@ -80,30 +83,37 @@ namespace Akanonda.GameLibrary
                 }
             }
         }
-        
+
         public void gametick()
         {
-            for(int i = 0; i < _playerlist.Count; i++)
+            for (int i = 0; i < _playerlist.Count; i++)
             {
                 _playerlist[i].playerMove();
             }
+
+            this.DetectCollision();
         }
-        
+
         public void gamepaint(Graphics g)
         {
             //Pen drawingPen = new Pen(Color.Black, 1);
-            
+
             //g.DrawRectangle(drawingPen, new Rectangle(new Point(0, 0), this.ClientSize));
-            
+
             //g.FillRectangle(Brushes.White, new Rectangle(new Point(0, 0), this.ClientSize));
-            
-            foreach(Player player in _playerlist)
+
+            foreach (Player player in _playerlist)
             {
-                foreach (int[] playerbody in player.playerbody) 
+                foreach (int[] playerbody in player.playerbody)
                 {
                     g.DrawRectangle(new Pen(player.color, (float)1), playerbody[0], playerbody[1], 1, 1);
-                }    
+                }
             }
+        }
+
+        public void DetectCollision()
+        {
+            _collision.DetectCollision(_playerlist);
         }
     }
 }
