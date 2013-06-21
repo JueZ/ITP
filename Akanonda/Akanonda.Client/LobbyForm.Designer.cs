@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.ChatBox = new System.Windows.Forms.TextBox();
             this.MessageBox = new System.Windows.Forms.TextBox();
             this.SendButton = new System.Windows.Forms.Button();
+            this.ChatBox = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -40,24 +40,16 @@
             this.button1.Location = new System.Drawing.Point(635, 425);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(112, 40);
-            this.button1.TabIndex = 0;
+            this.button1.TabIndex = 4;
             this.button1.Text = "Start Playing";
             this.button1.UseVisualStyleBackColor = true;
-            // 
-            // ChatBox
-            // 
-            this.ChatBox.Location = new System.Drawing.Point(12, 82);
-            this.ChatBox.Multiline = true;
-            this.ChatBox.Name = "ChatBox";
-            this.ChatBox.Size = new System.Drawing.Size(243, 213);
-            this.ChatBox.TabIndex = 1;
             // 
             // MessageBox
             // 
             this.MessageBox.Location = new System.Drawing.Point(12, 301);
             this.MessageBox.Name = "MessageBox";
             this.MessageBox.Size = new System.Drawing.Size(162, 20);
-            this.MessageBox.TabIndex = 2;
+            this.MessageBox.TabIndex = 1;
             // 
             // SendButton
             // 
@@ -69,14 +61,23 @@
             this.SendButton.UseVisualStyleBackColor = true;
             this.SendButton.Click += new System.EventHandler(this.SendButton_Click);
             // 
+            // ChatBox
+            // 
+            this.ChatBox.Location = new System.Drawing.Point(12, 24);
+            this.ChatBox.Name = "ChatBox";
+            this.ChatBox.ReadOnly = true;
+            this.ChatBox.Size = new System.Drawing.Size(243, 271);
+            this.ChatBox.TabIndex = 0;
+            this.ChatBox.Text = "";
+            // 
             // LobbyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(759, 477);
+            this.Controls.Add(this.ChatBox);
             this.Controls.Add(this.SendButton);
             this.Controls.Add(this.MessageBox);
-            this.Controls.Add(this.ChatBox);
             this.Controls.Add(this.button1);
             this.Name = "LobbyForm";
             this.Text = "Akanonda Lobby";
@@ -88,8 +89,8 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox ChatBox;
         private System.Windows.Forms.TextBox MessageBox;
         private System.Windows.Forms.Button SendButton;
+        private System.Windows.Forms.RichTextBox ChatBox;
     }
 }

@@ -87,7 +87,11 @@ namespace Akanonda
 
         private static void Output(string text)
         {
-            s_form.ChatBox.Text += "\r\n" + text.ToString();
+            //s_form.ChatBox.Text += "\r\n" + text.ToString();
+            s_form.ChatBox.AppendText("\r\n" + text.ToString());
+            s_form.ChatBox.SelectionStart = s_form.ChatBox.Text.Length;
+            s_form.ChatBox.ScrollToCaret();
+            
         }
 
         public static void GotMessage(object peer)
@@ -109,14 +113,17 @@ namespace Akanonda
                         NetConnectionStatus status = (NetConnectionStatus)im.ReadByte();
 
                         if (status == NetConnectionStatus.Connected)
+                        {
                             s_form.EnableInput();
+                            Output("Successfully connected to Chat");
+                        }
                         else
+                        {
                             s_form.DisableInput();
                             s_form.ReConnect();
-
-                        string reason = im.ReadString();
-                        Output(status.ToString() + ": " + reason);
-
+                            string reason = im.ReadString();
+                            Output(status.ToString() + ": " + reason);
+                        }
                         break;
                     case NetIncomingMessageType.Data:
                         string chat = im.ReadString();
