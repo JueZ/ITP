@@ -46,7 +46,7 @@ namespace Akanonda
             // Game END            
             
             // GameTimer START
-            System.Timers.Timer timer = new System.Timers.Timer(500);
+            System.Timers.Timer timer = new System.Timers.Timer(100);
             timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             timer.Enabled = true;
             // GameTimer END
@@ -123,8 +123,15 @@ namespace Akanonda
 						break;
 					case NetIncomingMessageType.Data:
 //						// incoming chat message from a client
-						
-						Console.WriteLine(im.ReadInt32());
+
+                        //Console.WriteLine(im.ReadString());
+						//Console.WriteLine(im.ReadInt32());
+
+                        Guid remoteplayer = new Guid(im.ReadString());
+                        PlayerSteering remoteplayersteering = (PlayerSteering)im.ReadInt32();
+
+                        game.setsteering(remoteplayer, remoteplayersteering);
+
 						
 //						Output("Broadcasting '" + chat + "'");
 //

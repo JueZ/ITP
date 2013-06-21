@@ -54,6 +54,17 @@ namespace Akanonda.GameLibrary
             }
         }
 
+        public void setsteering(Guid playerguid, PlayerSteering playersteering)
+        {
+            for (int i = 0; i < _playerlist.Count; i++)
+            {
+                if (_playerlist[i].guid.Equals(playerguid))
+                {
+                    _playerlist[i].playersteering = playersteering;
+                }
+            }
+        }
+
         public void addPlayer(string name, Color color, Guid guid)
         {
             _playerlist.Add(new Player(name, color, guid));

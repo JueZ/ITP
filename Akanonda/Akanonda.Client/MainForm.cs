@@ -50,7 +50,8 @@ namespace Akanonda
                     Program.game.setlocalsteering(GameLibrary.PlayerSteering.Right);
                     
                     sendMsg = Program.netclient.CreateMessage();
-                    
+
+                    sendMsg.Write(Program.guid.ToString());
                     sendMsg.Write((Int32)PlayerSteering.Right);
              
                     Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
@@ -60,7 +61,8 @@ namespace Akanonda
                     Program.game.setlocalsteering(GameLibrary.PlayerSteering.Left);
                     
                     sendMsg = Program.netclient.CreateMessage();
-                    
+
+                    sendMsg.Write(Program.guid.ToString());
                     sendMsg.Write((Int32)PlayerSteering.Left);
              
                     Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
@@ -70,7 +72,8 @@ namespace Akanonda
                     Program.game.setlocalsteering(GameLibrary.PlayerSteering.Up);
                     
                     sendMsg = Program.netclient.CreateMessage();
-                    
+
+                    sendMsg.Write(Program.guid.ToString());
                     sendMsg.Write((Int32)PlayerSteering.Up);
              
                     Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
@@ -80,7 +83,8 @@ namespace Akanonda
                     Program.game.setlocalsteering(GameLibrary.PlayerSteering.Down);
                     
                     sendMsg = Program.netclient.CreateMessage();
-                    
+
+                    sendMsg.Write(Program.guid.ToString());
                     sendMsg.Write((Int32)PlayerSteering.Down);
              
                     Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
