@@ -16,21 +16,6 @@ namespace Akanonda
         public LobbyForm()
         {
             InitializeComponent();
-             
-            readData = "Conected to Chat Server ...";
-            msg();
-            clientSocket.Connect("127.0.0.1", 1338);
-            serverStream = clientSocket.GetStream();
-
-            byte[] outStream = System.Text.Encoding.ASCII.GetBytes(textBox3.Text + "$");
-            serverStream.Write(outStream, 0, outStream.Length);
-            serverStream.Flush();
-
-            Thread ctThread = new Thread(getMessage);
-            ctThread.Start();
-        
-
-
         }
 
         System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();

@@ -90,7 +90,7 @@ namespace Akanonda.GameLibrary
             {
                 foreach (int[] playerbody in player.playerbody) 
                 {
-                    g.DrawRectangle(drawingPen, playerbody[0], playerbody[1], 1, 1);
+                    g.DrawRectangle(new Pen(player.color, 1), playerbody[0], playerbody[1], 1, 1);
                 }    
             }
         }

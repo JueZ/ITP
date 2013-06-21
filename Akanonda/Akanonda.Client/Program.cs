@@ -22,13 +22,23 @@ namespace Akanonda
 			
 			if (SynchronizationContext.Current == null)
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+
+            Color playercolor = Color.Green;
+            string playername = "Martin";
+
+            string hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb());
+
+            netclient.RegisterReceivedCallback(new SendOrPostCallback(ReceivedData));
 			
-			netclient.RegisterReceivedCallback(new SendOrPostCallback(ReceivedData));
-			
-			netclient.Start();
-			NetOutgoingMessage message = netclient.CreateMessage(guid.ToString());
+            netclient.Start();
+            NetOutgoingMessage message = netclient.CreateMessage(hailmessage);
 			netclient.Connect("127.0.0.1", 1337, message);
-            
+
+
+            //Color.Blue.ToArgb().ToString();
+
+            //Color.FromArgb
+
 //            game = Game.Instance;
 //            game.setFieldSize(500, 500);
 //            game.addlocalPlayer("Martin", Color.Green);

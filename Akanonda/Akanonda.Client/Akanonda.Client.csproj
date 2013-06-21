@@ -79,7 +79,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LobbyForm.cs" />
+    <Compile Include="LobbyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LobbyForm.Designer.cs">
       <DependentUpon>LobbyForm.cs</DependentUpon>
     </Compile>

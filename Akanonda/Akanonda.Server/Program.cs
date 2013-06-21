@@ -112,17 +112,21 @@ namespace Akanonda
                         						
                         if(im.SenderConnection.RemoteHailMessage != null && status == NetConnectionStatus.Connected)
                         {
-                            game.addPlayer("Martin", Color.Blue, Guid.Parse(im.SenderConnection.RemoteHailMessage.ReadString()));
+                            string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
+                            string[] remotehailmessagearray = remotehailmessage.Split(';');
+
+                            game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                         }
                         
 						string reason = im.ReadString();
-						Console.WriteLine(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " " + status + ": " + reason);
-
-						// Update user status
+						
+                        Console.WriteLine(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " " + status + ": " + reason);
+                        
+                    //Update user status
 						//UpdateConnectionsList();
 						break;
 					case NetIncomingMessageType.Data:
-//						// incoming chat message from a client
+						// incoming chat message from a client
 
                         //Console.WriteLine(im.ReadString());
 						//Console.WriteLine(im.ReadInt32());

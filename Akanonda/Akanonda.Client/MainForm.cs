@@ -12,8 +12,6 @@ namespace Akanonda
     /// </summary>
     public partial class MainForm : Form
     {
-        int offset = 10;
-        
         public MainForm()
         {
             InitializeComponent();
