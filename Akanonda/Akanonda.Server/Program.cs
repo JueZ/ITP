@@ -158,7 +158,8 @@ namespace Akanonda
                             if (all.Count > 0)
                             {
                                 NetOutgoingMessage om = chatServer.CreateMessage();
-                                om.Write(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " said: " + chat);
+                                //om.Write(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " said: " + chat);
+                                om.Write(game.getPlayerName(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier).ToString()) + " said: " + chat);
                                 chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
                             }
                             break;

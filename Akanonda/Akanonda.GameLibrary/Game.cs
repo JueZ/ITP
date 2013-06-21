@@ -73,6 +73,21 @@ namespace Akanonda.GameLibrary
             _playerlist.Add(new Player(name, color, guid));
         }
 
+        public string getPlayerName(string guid){
+
+            string name = "";
+            foreach (Player pl in _playerlist)
+            {
+                if (pl.guid.ToString() == guid)
+                {
+                    name = pl.name;
+                    break;
+                }
+            }
+
+            return name;
+        }
+
         public void removePlayer(Guid guid)
         {
             for (int i = 0; i < _playerlist.Count; i++)
