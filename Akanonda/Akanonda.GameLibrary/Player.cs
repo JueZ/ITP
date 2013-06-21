@@ -53,13 +53,13 @@ namespace Akanonda.GameLibrary
         public Player(string name, Color color)
         {
             this._playerbody = new List<int[]>();
-            
-            this._playerbody.Add(new int[2] {100, 100});
-            this._playerbody.Add(new int[2] {100, 110});
-            this._playerbody.Add(new int[2] {100, 120});
-            this._playerbody.Add(new int[2] { 100, 130 });
-            this._playerbody.Add(new int[2] { 100, 140 });
-            this._playerbody.Add(new int[2] { 100, 150 });
+
+            this._playerbody.Add(new int[2] { 106, 100 });
+            this._playerbody.Add(new int[2] { 105, 101 });
+            this._playerbody.Add(new int[2] { 104, 102 });
+            this._playerbody.Add(new int[2] { 103, 103 });
+            this._playerbody.Add(new int[2] { 102, 104 });
+            this._playerbody.Add(new int[2] { 101, 105 });
 
             this._name = name;
             this._color = color;
@@ -72,12 +72,12 @@ namespace Akanonda.GameLibrary
         {
             this._playerbody = new List<int[]>();
 
-            this._playerbody.Add(new int[2] { 100, 100 });
-            this._playerbody.Add(new int[2] { 100, 110 });
-            this._playerbody.Add(new int[2] { 100, 120 });
-            this._playerbody.Add(new int[2] { 100, 130 });
-            this._playerbody.Add(new int[2] { 100, 140 });
-            this._playerbody.Add(new int[2] { 100, 150 });
+            this._playerbody.Add(new int[2] { 106, 100 });
+            this._playerbody.Add(new int[2] { 105, 101 });
+            this._playerbody.Add(new int[2] { 104, 102 });
+            this._playerbody.Add(new int[2] { 103, 103 });
+            this._playerbody.Add(new int[2] { 102, 104 });
+            this._playerbody.Add(new int[2] { 101, 105 });
             
             this._name = name;
             this._color = color;

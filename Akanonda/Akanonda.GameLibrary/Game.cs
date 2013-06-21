@@ -91,7 +91,7 @@ namespace Akanonda.GameLibrary
         
         public void gamepaint(Graphics g)
         {
-            Pen drawingPen = new Pen(Color.Black, 1);
+            //Pen drawingPen = new Pen(Color.Black, 1);
             
             //g.DrawRectangle(drawingPen, new Rectangle(new Point(0, 0), this.ClientSize));
             
@@ -101,7 +101,7 @@ namespace Akanonda.GameLibrary
             {
                 foreach (int[] playerbody in player.playerbody) 
                 {
-                    g.DrawRectangle(new Pen(player.color, 1), playerbody[0], playerbody[1], 1, 1);
+                    g.DrawRectangle(new Pen(player.color, (float)1), playerbody[0], playerbody[1], 1, 1);
                 }    
             }
         }
