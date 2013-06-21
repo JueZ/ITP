@@ -47,7 +47,7 @@ namespace Akanonda
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
             
-            netclient.Disconnect(guid.ToString());
+            
         }
         
         public static void ReceivedData(object peer)

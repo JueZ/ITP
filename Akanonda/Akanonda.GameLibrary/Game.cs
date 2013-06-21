@@ -69,6 +69,17 @@ namespace Akanonda.GameLibrary
         {
             _playerlist.Add(new Player(name, color, guid));
         }
+
+        public void removePlayer(Guid guid)
+        {
+            for (int i = 0; i < _playerlist.Count; i++)
+            {
+                if (_playerlist[i].guid.Equals(guid))
+                {
+                    _playerlist.RemoveAt(i);
+                }
+            }
+        }
         
         public void gametick()
         {

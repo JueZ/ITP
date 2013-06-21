@@ -53,9 +53,11 @@ namespace Akanonda
             this.ClientSize = new System.Drawing.Size(714, 535);
             this.Name = "MainForm";
             this.Text = "Akanonda";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainFormPaint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainFormKeyDown);
             this.ResumeLayout(false);
+
         }
         private System.Windows.Forms.Timer DrawTimer;
     }

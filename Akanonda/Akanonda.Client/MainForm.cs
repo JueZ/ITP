@@ -90,5 +90,13 @@ namespace Akanonda
                     break;
             }
         }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Program.netclient.Shutdown(Program.guid.ToString());
+
+            while(Program.netclient.Status != NetPeerStatus.NotRunning)
+                System.Threading.Thread.Sleep(10);
+        }
     }
 }

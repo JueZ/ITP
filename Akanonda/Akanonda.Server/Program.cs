@@ -109,20 +109,34 @@ namespace Akanonda
 					case NetIncomingMessageType.StatusChanged:
                         
                         NetConnectionStatus status = (NetConnectionStatus)im.ReadByte();
-                        						
+
+                        string reason = im.ReadString();
+                                                                     						
                         if(im.SenderConnection.RemoteHailMessage != null && status == NetConnectionStatus.Connected)
                         {
                             string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
                             string[] remotehailmessagearray = remotehailmessage.Split(';');
 
                             game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
+
+                            Console.WriteLine("Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]));
                         }
-                        
-						string reason = im.ReadString();
+
+                        if (status == NetConnectionStatus.Disconnected)
+                        {
+                            game.removePlayer(Guid.Parse(reason));
+
+                            Console.WriteLine("Player disconnected! \t GUID: " + Guid.Parse(reason));
+                        }
+
 						
-                        Console.WriteLine(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " " + status + ": " + reason);
+						
+                        //Console.WriteLine(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " " + status + ": " + reason);
+
+
+
                         
-                    //Update user status
+                        //Update user status
 						//UpdateConnectionsList();
 						break;
 					case NetIncomingMessageType.Data:
