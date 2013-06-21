@@ -43,7 +43,7 @@ namespace Akanonda
             s_client.RegisterReceivedCallback(new SendOrPostCallback(GotMessage));
 
             int port;
-            Int32.TryParse("14242", out port);
+            Int32.TryParse("1338", out port);
             Connect("localhost", port);
 
 
@@ -112,7 +112,7 @@ namespace Akanonda
                             s_form.EnableInput();
                         else
                             s_form.DisableInput();
-
+                            s_form.ReConnect();
 
                         string reason = im.ReadString();
                         Output(status.ToString() + ": " + reason);
@@ -127,6 +127,13 @@ namespace Akanonda
                         break;
                 }
             }
+        }
+
+        public void ReConnect()
+        {
+                int port;
+                Int32.TryParse("1338", out port);
+                Connect("localhost", port);   
         }
 
         public void EnableInput()
