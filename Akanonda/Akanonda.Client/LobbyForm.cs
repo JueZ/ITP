@@ -55,7 +55,7 @@ namespace Akanonda
         public static void Connect(string host, int port)
         {
             s_client.Start();
-            NetOutgoingMessage hail = s_client.CreateMessage(Program.guid.ToString() + ";");
+            NetOutgoingMessage hail = s_client.CreateMessage(Program.guid.ToString() + ";" + "connected");
             s_client.Connect(host, port, hail);
         }
 
@@ -81,7 +81,7 @@ namespace Akanonda
         {
             NetOutgoingMessage om = s_client.CreateMessage(Program.guid.ToString() + ";" + text);
             s_client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
-            Output("Sending '" + text + "'");
+            //Output("Sending '" + text + "'");
             s_client.FlushSendQueue();
         }
 

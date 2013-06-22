@@ -161,10 +161,11 @@ namespace Akanonda
                             {
                                 string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
                                 string[] remotehailmessagearray = remotehailmessage.Split(';');
-                                string chat = im.ReadString(); // remotehailmessagearray[1];
+                                string chat = remotehailmessagearray[1];
+                                //string chat = im.ReadString();
                                 NetOutgoingMessage om = chatServer.CreateMessage();
                                 //om.Write(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " said: " + chat);
-                                om.Write(game.getPlayerName(Guid.Parse(remotehailmessagearray[0])) + " said: " + chat);
+                                om.Write(game.getPlayerName(Guid.Parse(remotehailmessagearray[0])) + ": " + chat);
                                 chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
                             }
                             break;
