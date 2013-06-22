@@ -166,7 +166,7 @@ namespace Akanonda
                                 string[] chatMessage = chat.Split(';');
                                 NetOutgoingMessage om = chatServer.CreateMessage();
                                 //om.Write(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " said: " + chat);
-                                om.Write(game.getPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
+                                om.Write(game.getLobbyPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
                                 chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
                             }
                             break;

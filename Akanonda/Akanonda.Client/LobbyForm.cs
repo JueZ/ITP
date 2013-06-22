@@ -18,10 +18,13 @@ namespace Akanonda
 
         private static NetClient s_client;
         private static LobbyForm s_form;
-
-        public LobbyForm()
+        private string name;
+        private string color;
+        public LobbyForm(string n, string c):base()
         {
             InitializeComponent();
+            name = n;
+            color = c;
             s_form = this;
             //startChat();
             MessageBox.KeyDown += new KeyEventHandler(MessageBox_KeyDown);
@@ -161,7 +164,7 @@ namespace Akanonda
 
         private void StartGame_Click(object sender, EventArgs e)
         {
-            Program.ConnectPlayerToGame("Test", "Green");
+            Program.ConnectPlayerToGame(name, color);
             MainForm Main = new MainForm();
             this.Hide();
             Main.Show();

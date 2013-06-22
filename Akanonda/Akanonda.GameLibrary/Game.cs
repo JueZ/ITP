@@ -14,7 +14,9 @@ namespace Akanonda.GameLibrary
 
         private Field _field;
         private List<Player> _playerlist;
+        private List<Player> _lobbyList;
         private Guid _localplayer;
+        private Color _localColor;
         private Collision _collision;
 
         public static Game Instance
@@ -28,6 +30,8 @@ namespace Akanonda.GameLibrary
         private Game()
         {
             _playerlist = new List<Player>();
+
+            _lobbyList = new List<Player>();
 
             _field.setSize(200, 200);
 
@@ -43,6 +47,7 @@ namespace Akanonda.GameLibrary
         {
             Player player = new Player(name, color);
             _localplayer = player.guid;
+            _localColor = color;
             _playerlist.Add(player);
         }
 
@@ -129,6 +134,38 @@ namespace Akanonda.GameLibrary
         public void DetectCollision()
         {
             _collision.DetectCollision(_playerlist);
+        }
+
+        public void AddLobbyPlayer(string name, Color color, Guid guid)
+        {
+            _lobbyList.Add(new Player(name, color, guid));
+        }
+
+        public void RemoveLobbyPlayer(Guid guid)
+        {
+            for (int i = 0; i < _lobbyList.Count; i++)
+            {
+                if (_lobbyList[i].guid.Equals(guid))
+                {
+                    _lobbyList.RemoveAt(i);
+                }
+            }
+        }
+
+        public string getLobbyPlayerName(Guid guid)
+        {
+
+            string name = "";
+            foreach (Player pl in _lobbyList)
+            {
+                if (pl.guid == guid)
+                {
+                    name = pl.name;
+                    break;
+                }
+            }
+
+            return name;
         }
     }
 }

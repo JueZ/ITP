@@ -67,7 +67,7 @@
             // 
             // colorBox
             // 
-            this.colorBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.colorBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.colorBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.colorBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.colorBox.FormattingEnabled = true;

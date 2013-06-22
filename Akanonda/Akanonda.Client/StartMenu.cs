@@ -49,7 +49,7 @@ namespace Akanonda
             
 
             //sollte zuerst lobby und dann mainform sein-> spieler wird beim anmelden aber sofort auf spielfeld gesetzt...
-            LobbyForm Lobby = new LobbyForm();
+            LobbyForm Lobby = new LobbyForm(textBoxName.Text,colorBox.Items[colorBox.SelectedIndex].ToString());
             this.Hide();
             Lobby.Show();
             //this.Show();
