@@ -155,17 +155,18 @@ namespace Akanonda
 
                             // broadcast this to all connections, except sender
                             List<NetConnection> all = chatServer.Connections; // get copy
-                            all.Remove(im.SenderConnection);
+                            //all.Remove(im.SenderConnection);
 
                             if (all.Count > 0)
                             {
-                                string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
-                                string[] remotehailmessagearray = remotehailmessage.Split(';');
-                                string chat = remotehailmessagearray[1];
-                                //string chat = im.ReadString();
+                                //string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
+                                //string[] remotehailmessagearray = remotehailmessage.Split(';');
+                                //string chat = remotehailmessagearray[1];
+                                string chat = im.ReadString();
+                                string[] chatMessage = chat.Split(';');
                                 NetOutgoingMessage om = chatServer.CreateMessage();
                                 //om.Write(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " said: " + chat);
-                                om.Write(game.getPlayerName(Guid.Parse(remotehailmessagearray[0])) + ": " + chat);
+                                om.Write(game.getPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
                                 chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
                             }
                             break;
