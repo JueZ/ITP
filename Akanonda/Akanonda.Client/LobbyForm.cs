@@ -162,6 +162,9 @@ namespace Akanonda
         private void StartGame_Click(object sender, EventArgs e)
         {
             Program.ConnectPlayerToGame("Test", "Green");
+            MainForm Main = new MainForm();
+            this.Hide();
+            Main.Show();
         }
 
 
