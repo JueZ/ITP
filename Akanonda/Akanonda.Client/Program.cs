@@ -10,14 +10,13 @@ namespace Akanonda
     internal sealed class Program
     {
         public static Game game;
+        private static NetClient s_client;
         public static Guid guid = Guid.NewGuid();
         public static NetClient netclient;
         
         [STAThread]
         private static void Main(string[] args)
         {
-            
-
 
             //Color.Blue.ToArgb().ToString();
 
@@ -35,7 +34,7 @@ namespace Akanonda
             
         }
 
-        public static void ConnectPlayer(string playername, string color)
+        public static void ConnectPlayerToGame(string playername, string color)
         {
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
 
@@ -57,6 +56,23 @@ namespace Akanonda
 
 
 
+        }
+
+        public static void ConnectPlayerToLobby(string playername, string color)
+        {
+            NetPeerConfiguration config = new NetPeerConfiguration("chat");
+            config.AutoFlushSendQueue = false;
+            s_client = new NetClient(config);
+
+            s_client.RegisterReceivedCallback(new SendOrPostCallback(ReceivedData));
+            //-----------------------------------------------------------HIER--------------
+
+            int port;
+            Int32.TryParse("1338", out port);
+            s_client.Start();
+            NetOutgoingMessage hail = s_client.CreateMessage(Program.guid.ToString() + ";" + "connected");
+            s_client.Connect("127.0.0.1", port, hail);
+            
         }
         
         public static void ReceivedData(object peer)

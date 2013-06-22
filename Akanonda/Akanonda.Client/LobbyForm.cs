@@ -23,34 +23,34 @@ namespace Akanonda
         {
             InitializeComponent();
             s_form = this;
-            startChat();
+            //startChat();
             MessageBox.KeyDown += new KeyEventHandler(MessageBox_KeyDown);
 
 
         }
 
         [STAThread]
-        static void startChat()
-        {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //s_form = ;
+        //static void startChat()
+        //{
+        //    //Application.EnableVisualStyles();
+        //    //Application.SetCompatibleTextRenderingDefault(false);
+        //    //s_form = ;
 
-            NetPeerConfiguration config = new NetPeerConfiguration("chat");
-            config.AutoFlushSendQueue = false;
-            s_client = new NetClient(config);
+        //    NetPeerConfiguration config = new NetPeerConfiguration("chat");
+        //    config.AutoFlushSendQueue = false;
+        //    s_client = new NetClient(config);
 
-            s_client.RegisterReceivedCallback(new SendOrPostCallback(GotMessage));
+        //    s_client.RegisterReceivedCallback(new SendOrPostCallback(GotMessage));
 
-            int port;
-            Int32.TryParse("1338", out port);
-            Connect("localhost", port);
+        //    int port;
+        //    Int32.TryParse("1338", out port);
+        //    Connect("localhost", port);
 
 
-            //Application.Run(s_form);
+        //    //Application.Run(s_form);
 
-            //s_client.Shutdown("Bye");
-        }
+        //    //s_client.Shutdown("Bye");
+        //}
 
         public static void Connect(string host, int port)
         {
@@ -156,6 +156,11 @@ namespace Akanonda
         {
             MessageBox.Enabled = false;
             SendButton.Enabled = false;
+        }
+
+        private void StartGame_Click(object sender, EventArgs e)
+        {
+            Program.ConnectPlayerToGame("Test", "Green");
         }
 
 

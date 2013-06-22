@@ -45,7 +45,7 @@ namespace Akanonda
             //sendMsg.Write(Program.guid.ToString() + ";" + textBoxName.Text);
             //Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
 
-            Program.ConnectPlayer(textBoxName.Text, colorBox.Text);
+            Program.ConnectPlayerToLobby(textBoxName.Text, colorBox.Text);
             
 
             //sollte zuerst lobby und dann mainform sein-> spieler wird beim anmelden aber sofort auf spielfeld gesetzt...

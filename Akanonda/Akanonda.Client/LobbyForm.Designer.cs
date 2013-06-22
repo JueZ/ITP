@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.StartGame = new System.Windows.Forms.Button();
             this.MessageBox = new System.Windows.Forms.TextBox();
             this.SendButton = new System.Windows.Forms.Button();
             this.ChatBox = new System.Windows.Forms.RichTextBox();
@@ -39,15 +39,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // button1
+            // StartGame
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.45F, System.Drawing.FontStyle.Bold);
-            this.button1.Location = new System.Drawing.Point(668, 442);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(112, 40);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Start Playing";
-            this.button1.UseVisualStyleBackColor = true;
+            this.StartGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.45F, System.Drawing.FontStyle.Bold);
+            this.StartGame.Location = new System.Drawing.Point(668, 442);
+            this.StartGame.Name = "StartGame";
+            this.StartGame.Size = new System.Drawing.Size(112, 40);
+            this.StartGame.TabIndex = 4;
+            this.StartGame.Text = "Start Playing";
+            this.StartGame.UseVisualStyleBackColor = true;
+            this.StartGame.Click += new System.EventHandler(this.StartGame_Click);
             // 
             // MessageBox
             // 
@@ -131,7 +132,7 @@
             this.Controls.Add(this.ChatBox);
             this.Controls.Add(this.SendButton);
             this.Controls.Add(this.MessageBox);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.StartGame);
             this.Name = "LobbyForm";
             this.Text = "Akanonda Lobby";
             this.ResumeLayout(false);
@@ -141,7 +142,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button StartGame;
         private System.Windows.Forms.TextBox MessageBox;
         private System.Windows.Forms.Button SendButton;
         private System.Windows.Forms.RichTextBox ChatBox;
