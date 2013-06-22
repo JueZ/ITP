@@ -33,8 +33,9 @@ namespace Akanonda.GameLibrary
 
             _lobbyList = new List<Player>();
 
-            _field.setSize(200, 200);
+            _field.setSize(120, 120);
             _field.Scale = 5;
+            _field.Offset = new int[] {20, 20, 20, 20};
 
             _collision = new Collision(_field.x, _field.y);
         }
@@ -133,15 +134,38 @@ namespace Akanonda.GameLibrary
 
         public void gamepaint(Graphics g)
         {
-            int scale = this._field.Scale;
+            int scale = _field.Scale;
 
+            int offset_north = _field.Offset[0];
+            int offset_east = _field.Offset[1];
+            int offset_south = _field.Offset[2];
+            int offset_west = _field.Offset[3];
+
+            int width = offset_west + (_field.x * _field.Scale) + offset_east;
+            int height = offset_north + (_field.y * _field.Scale) + offset_south;
+
+            // draw border
+            Rectangle[] border = 
+            { 
+                new Rectangle(0, 0, width, offset_north), // north
+                new Rectangle((offset_west + (_field.x * scale)), 0, offset_east, height), // east
+                new Rectangle(0, (offset_north + (_field.y * scale)), width, offset_south), // south
+                new Rectangle(0, 0, offset_west, height) // west
+            };
+
+            SolidBrush brush = new SolidBrush(Color.Black);
+            g.FillRectangles(brush, border);
+            g.DrawRectangles(new Pen(brush), border);
+
+            // draw players
             foreach (Player player in _playerlist)
             {
                 foreach (int[] playerbody in player.playerbody)
                 {
-                    g.DrawRectangle(new Pen(player.color, (float)1), playerbody[0]*scale, playerbody[1]*scale, scale, scale);
+                    g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
                 }
             }
+
         }
 
         public void DetectCollision()
@@ -179,6 +203,26 @@ namespace Akanonda.GameLibrary
             }
 
             return name;
+        }
+
+        public void setScale(int scale)
+        {
+            _field.Scale = scale;
+        }
+
+        // 4 values in order of north east south west
+        public void setOffset(int[] offset)
+        {
+            _field.Offset = offset;
+        }
+
+        public void adjustGameFormSize(Form gameForm)
+        {
+            gameForm.ClientSize = new Size
+                (
+                    _field.Offset[3] + (_field.x * _field.Scale) + _field.Offset[1],
+                    _field.Offset[0] + (_field.y * _field.Scale) + _field.Offset[2]
+                );
         }
     }
 }

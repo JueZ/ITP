@@ -18,6 +18,9 @@ namespace Akanonda
                      
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
             this.UpdateStyles();
+
+            Game game = Game.Instance;
+            game.adjustGameFormSize(this);
             
             DrawTimer.Start();
         }

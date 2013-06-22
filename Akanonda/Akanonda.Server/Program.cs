@@ -52,7 +52,7 @@ namespace Akanonda
 			
             // Game START
             game = Game.Instance;
-            game.setFieldSize(250, 250);
+            //game.setFieldSize(250, 250);
             //game.addPlayer("Martin", Color.Blue, Guid.NewGuid());
             
             

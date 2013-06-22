@@ -27,7 +27,7 @@ namespace Akanonda.GameLibrary
                 //Console.WriteLine("x: " + coordinates[0].ToString() + "  y: " + coordinates[1].ToString());
 
                 // collision with head to wall
-                if (headCoordinates[0] < 0 || headCoordinates[0] > _x || headCoordinates[1] < 0 || headCoordinates[1] > _y)
+                if (headCoordinates[0] < 0 || headCoordinates[0] >= _x || headCoordinates[1] < 0 || headCoordinates[1] >= _y)
                 {
                     // Collision!!
                     Console.WriteLine("Mit Kopf gegen Wand!");
