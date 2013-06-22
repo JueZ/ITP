@@ -48,7 +48,7 @@ namespace Akanonda
 
             string hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb());
 
-            netclient.RegisterReceivedCallback(new SendOrPostCallback(LobbyForm.GotMessage));
+            netclient.RegisterReceivedCallback(new SendOrPostCallback(ReceivedData));
 
             netclient.Start();
             NetOutgoingMessage message = netclient.CreateMessage(hailmessage);
@@ -64,7 +64,7 @@ namespace Akanonda
             config.AutoFlushSendQueue = false;
             s_client = new NetClient(config);
 
-            s_client.RegisterReceivedCallback(new SendOrPostCallback(ReceivedData));
+            s_client.RegisterReceivedCallback(new SendOrPostCallback(LobbyForm.GotMessage));
             //-----------------------------------------------------------HIER--------------
 
             int port;
