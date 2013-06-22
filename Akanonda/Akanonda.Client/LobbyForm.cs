@@ -20,6 +20,8 @@ namespace Akanonda
         private static LobbyForm s_form;
         private string name;
         private string color;
+        private static GameLibrary.Game game = GameLibrary.Game.Instance;
+
         public LobbyForm(string n, string c):base()
         {
             InitializeComponent();
@@ -28,8 +30,7 @@ namespace Akanonda
             s_form = this;
             //startChat();
             MessageBox.KeyDown += new KeyEventHandler(MessageBox_KeyDown);
-            
-
+            FillList();
         }
 
         [STAThread]
@@ -170,6 +171,16 @@ namespace Akanonda
             Main.Show();
         }
 
-
+        private void FillList()
+        {
+            foreach (GameLibrary.Player p in game.LobbyList)
+            {
+                PlayersInLobby.Items.Add(p.name);
+            }
+            foreach (GameLibrary.Player p in game.PLayerList)
+            {
+                PlayersInGame.Items.Add(p.name);
+            }
+        }
     }
 }

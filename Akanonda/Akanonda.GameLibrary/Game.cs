@@ -38,6 +38,22 @@ namespace Akanonda.GameLibrary
             _collision = new Collision(_field.x, _field.y);
         }
 
+        public List<Player> PLayerList
+        {
+            get
+            {
+                return _playerlist;
+            }
+        }
+
+        public List<Player> LobbyList
+        {
+            get
+            {
+                return _lobbyList;
+            }
+        }
+
         public void setFieldSize(int x, int y)
         {
             _field.setSize(x, y);
