@@ -68,9 +68,13 @@ namespace Akanonda
             //-----------------------------------------------------------HIER--------------
 
             int port;
+            Color playercolor = Color.FromName(color);
+            string hailmessage = guid.ToString() + ";connected;" + playername + ";" + Convert.ToString(playercolor.ToArgb());
+
             Int32.TryParse("1338", out port);
             s_client.Start();
-            NetOutgoingMessage hail = s_client.CreateMessage(Program.guid.ToString() + ";" + "connected");
+            //NetOutgoingMessage hail = s_client.CreateMessage(Program.guid.ToString() + ";" + "connected");
+            NetOutgoingMessage hail = s_client.CreateMessage(hailmessage);
             s_client.Connect("127.0.0.1", port, hail);
             
         }

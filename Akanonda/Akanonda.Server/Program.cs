@@ -146,7 +146,19 @@ namespace Akanonda
                             //Output(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " " + status + ": " + reason);
 
                             UpdateConnectionsList();
+
+                            if (im.SenderConnection.RemoteHailMessage != null && status == NetConnectionStatus.Connected)
+                            {
+                                string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
+                                string[] remotehailmessagearray = remotehailmessage.Split(';');
+
+                                game.AddLobbyPlayer(remotehailmessagearray[2], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[3])), Guid.Parse(remotehailmessagearray[0]));
+
+                                //Console.WriteLine("Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
+                            }
+
                             break;
+
                         case NetIncomingMessageType.Data:
                             // incoming chat message from a client
                             
@@ -231,6 +243,7 @@ namespace Akanonda
                             string[] remotehailmessagearray = remotehailmessage.Split(';');
 
                             game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
+                            //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
 
                             Console.WriteLine("Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                         }
