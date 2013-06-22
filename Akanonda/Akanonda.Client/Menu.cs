@@ -33,18 +33,22 @@ namespace Akanonda
 
         private void buttonLogIn_Click(object sender, EventArgs e)
         {
-            NetOutgoingMessage sendMsg;
+            //NetOutgoingMessage sendMsg;
 
-            sendMsg = Program.netclient.CreateMessage();
+            //sendMsg = Program.netclient.CreateMessage();
 
-            sendMsg.Write(Program.guid.ToString() + ";" + textBoxName.Text);
-            Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
+            //sendMsg.Write(Program.guid.ToString() + ";" + textBoxName.Text);
+            //Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
 
-            Form mainForm = new LobbyForm();
-            this.Hide();
-            mainForm.ShowDialog();
-            this.Show();
+            Program.ConnectPlayer(textBoxName.Text, Color.Green);
             
+
+            //sollte zuerst lobby und dann mainform sein-> spieler wird beim anmelden aber sofort auf spielfeld gesetzt...
+            MainForm Main = new MainForm();
+            this.Hide();
+            Main.Show();
+            //this.Show();
+            //this.Dispose();
         }
     }
 }

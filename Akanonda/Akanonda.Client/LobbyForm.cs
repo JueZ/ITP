@@ -32,8 +32,8 @@ namespace Akanonda
         [STAThread]
         static void startChat()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
             s_form = new LobbyForm();
 
             NetPeerConfiguration config = new NetPeerConfiguration("chat");
@@ -47,7 +47,7 @@ namespace Akanonda
             Connect("localhost", port);
 
 
-            Application.Run(s_form);
+            //Application.Run(s_form);
 
             //s_client.Shutdown("Bye");
         }

@@ -225,7 +225,7 @@ namespace Akanonda
 
                             game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
 
-                            Console.WriteLine("Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]));
+                            Console.WriteLine("Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                         }
 
                         if (status == NetConnectionStatus.Disconnected)

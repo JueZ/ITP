@@ -16,23 +16,7 @@ namespace Akanonda
         [STAThread]
         private static void Main(string[] args)
         {
-            NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
-		
-			netclient = new NetClient(netconfig);
-			
-			if (SynchronizationContext.Current == null)
-                SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-
-            Color playercolor = Color.Green;
-            string playername = "Martin";
-
-            string hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb());
-
-            netclient.RegisterReceivedCallback(new SendOrPostCallback(ReceivedData));
-			
-            netclient.Start();
-            NetOutgoingMessage message = netclient.CreateMessage(hailmessage);
-			netclient.Connect("127.0.0.1", 1337, message);
+            
 
 
             //Color.Blue.ToArgb().ToString();
@@ -45,9 +29,34 @@ namespace Akanonda
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Application.Run(new Menu());
+//            Application.Run(new MainForm());
             
             
+        }
+
+        public static void ConnectPlayer(string playername, Color playercolor)
+        {
+            NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
+
+            netclient = new NetClient(netconfig);
+
+            if (SynchronizationContext.Current == null)
+                SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+
+            //Color playercolor = Color.Green;
+            //string playername = "Martin";
+
+            string hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb());
+
+            netclient.RegisterReceivedCallback(new SendOrPostCallback(ReceivedData));
+
+            netclient.Start();
+            NetOutgoingMessage message = netclient.CreateMessage(hailmessage);
+            netclient.Connect("127.0.0.1", 1337, message);
+
+
+
         }
         
         public static void ReceivedData(object peer)
