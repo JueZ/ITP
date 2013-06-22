@@ -34,7 +34,7 @@ namespace Akanonda
         {
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
-            s_form = new LobbyForm();
+            //s_form = new LobbyForm();
 
             NetPeerConfiguration config = new NetPeerConfiguration("chat");
             config.AutoFlushSendQueue = false;

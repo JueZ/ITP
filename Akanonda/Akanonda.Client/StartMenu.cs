@@ -12,9 +12,9 @@ using System.Collections;
 
 namespace Akanonda
 {
-    public partial class Menu : Form
+    public partial class StartMenu : Form
     {
-        public Menu()
+        public StartMenu()
         {
             InitializeComponent();
         }
@@ -49,9 +49,9 @@ namespace Akanonda
             
 
             //sollte zuerst lobby und dann mainform sein-> spieler wird beim anmelden aber sofort auf spielfeld gesetzt...
-            MainForm Main = new MainForm();
+            LobbyForm Lobby = new LobbyForm();
             this.Hide();
-            Main.Show();
+            Lobby.Show();
             //this.Show();
             //this.Dispose();
         }

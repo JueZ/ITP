@@ -1,6 +1,6 @@
 ﻿namespace Akanonda
 {
-    partial class Menu
+    partial class StartMenu
     {
         /// <summary>
         /// Required designer variable.
@@ -48,11 +48,11 @@
             // 
             this.labelName.AutoSize = true;
             this.labelName.Font = new System.Drawing.Font("Eras Medium ITC", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelName.Location = new System.Drawing.Point(49, 91);
+            this.labelName.Location = new System.Drawing.Point(27, 89);
             this.labelName.Name = "labelName";
-            this.labelName.Size = new System.Drawing.Size(187, 24);
+            this.labelName.Size = new System.Drawing.Size(235, 24);
             this.labelName.TabIndex = 2;
-            this.labelName.Text = "Choose your Name";
+            this.labelName.Text = "Choose Name and Color";
             // 
             // buttonLogIn
             // 
@@ -109,7 +109,7 @@
             this.Controls.Add(this.labelName);
             this.Controls.Add(this.textBoxName);
             this.Name = "Menu";
-            this.Text = "Menu";
+            this.Text = "Start Menu";
             this.ResumeLayout(false);
             this.PerformLayout();
 
