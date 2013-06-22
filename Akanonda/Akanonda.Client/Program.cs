@@ -48,13 +48,13 @@ namespace Akanonda
 
             string hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb());
 
-            netclient.RegisterReceivedCallback(new SendOrPostCallback(ReceivedData));
+            netclient.RegisterReceivedCallback(new SendOrPostCallback(LobbyForm.GotMessage));
 
             netclient.Start();
             NetOutgoingMessage message = netclient.CreateMessage(hailmessage);
             netclient.Connect("127.0.0.1", 1337, message);
 
-
+            
 
         }
 
