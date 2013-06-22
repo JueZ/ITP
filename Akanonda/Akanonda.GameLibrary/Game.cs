@@ -73,12 +73,12 @@ namespace Akanonda.GameLibrary
             _playerlist.Add(new Player(name, color, guid));
         }
 
-        public string getPlayerName(string guid){
+        public string getPlayerName(Guid guid){
 
             string name = "";
             foreach (Player pl in _playerlist)
             {
-                if (pl.guid.ToString() == guid)
+                if (pl.guid == guid)
                 {
                     name = pl.name;
                     break;
