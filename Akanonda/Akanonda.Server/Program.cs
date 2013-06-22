@@ -123,13 +123,11 @@ namespace Akanonda
         //object sender, EventArgs e
         private static void getMessages()
         {
-            
             while (!_chatStopped)
             {
                 NetIncomingMessage im;
                 while ((im = chatServer.ReadMessage()) != null)
                 {
-                   
                     // handle incoming message
                     switch (im.MessageType)
                     {
@@ -149,7 +147,7 @@ namespace Akanonda
                             break;
                         case NetIncomingMessageType.Data:
                             // incoming chat message from a client
-                            
+                            string chat = im.ReadString();
 
                             //Output("Broadcasting '" + chat + "'");
 
@@ -159,12 +157,9 @@ namespace Akanonda
 
                             if (all.Count > 0)
                             {
-                                string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
-                                string[] remotehailmessagearray = remotehailmessage.Split(';');
-                                string chat = im.ReadString(); // remotehailmessagearray[1];
                                 NetOutgoingMessage om = chatServer.CreateMessage();
                                 //om.Write(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " said: " + chat);
-                                om.Write(game.getPlayerName(Guid.Parse(remotehailmessagearray[0])) + " said: " + chat);
+                                om.Write(game.getPlayerName(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier).ToString()) + " said: " + chat);
                                 chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
                             }
                             break;
