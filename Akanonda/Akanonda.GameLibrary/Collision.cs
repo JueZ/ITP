@@ -20,7 +20,7 @@ namespace Akanonda.GameLibrary
 
         public void DetectCollision(List<Player> playerList)
         {
-            // collision to border
+            
             foreach (Player player in playerList) // current player to check head
             {
                 int[] headCoordinates = player.playerbody[0];
@@ -39,8 +39,9 @@ namespace Akanonda.GameLibrary
                     {
                         foreach (int[] array in p.playerbody)
                         {
-                            if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with something
+                            if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with other player
                             {
+                                // Collision!
                                 Console.WriteLine("Player " + player.guid.ToString() + " collides!");
                             }
                         }
@@ -53,8 +54,9 @@ namespace Akanonda.GameLibrary
                         for (int i = 1; i < size; i++) // skip head
                         {
                             array = p.playerbody[i];
-                            if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with something
+                            if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with own tail
                             {
+                                // Collision!
                                 Console.WriteLine("Player " + player.guid.ToString() + " collides!");
                             }
                         }

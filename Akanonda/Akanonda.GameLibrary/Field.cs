@@ -10,6 +10,7 @@ namespace Akanonda.GameLibrary
     {
         private int _x;
         private int _y;
+        private int _scale;
 
         public int x
         {
@@ -30,6 +31,18 @@ namespace Akanonda.GameLibrary
 
             this._x = x;
             this._y = y;
+        }
+
+        public int Scale
+        {
+            get { return _scale; }
+            set 
+            { 
+                if (value >= 1)
+                    _scale = value;
+                else
+                    throw new ArgumentOutOfRangeException("scale", "Gamefield scale must have a value greater than 1");
+            }
         }
     }
 }
