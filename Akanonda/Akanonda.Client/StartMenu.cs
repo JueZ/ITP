@@ -71,5 +71,10 @@ namespace Akanonda
                                 rect.Width - 10, rect.Height - 10);
             }
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            colorBox.DroppedDown = true;
+        }
     }
 }
