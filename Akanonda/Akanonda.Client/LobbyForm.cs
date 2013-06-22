@@ -25,7 +25,7 @@ namespace Akanonda
             s_form = this;
             //startChat();
             MessageBox.KeyDown += new KeyEventHandler(MessageBox_KeyDown);
-
+            
 
         }
 
@@ -99,6 +99,7 @@ namespace Akanonda
 
         public static void GotMessage(object peer)
         {
+            s_client = Program.s_client;
             NetIncomingMessage im;
             while ((im = s_client.ReadMessage()) != null)
             {

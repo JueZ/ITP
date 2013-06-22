@@ -10,7 +10,7 @@ namespace Akanonda
     internal sealed class Program
     {
         public static Game game;
-        private static NetClient s_client;
+        public static NetClient s_client;
         public static Guid guid = Guid.NewGuid();
         public static NetClient netclient;
         
