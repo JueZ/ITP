@@ -35,20 +35,31 @@ namespace Akanonda.GameLibrary
 
                 foreach (Player p in playerList) // player with which current head is checked against (can be same as above)
                 {
-                    foreach (int[] array in p.playerbody)
+                    if (player.guid != p.guid) // check against other players
                     {
-                        if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with something
+                        foreach (int[] array in p.playerbody)
                         {
-                            if (player.guid == p.guid && headCoordinates[0] == p.playerbody[0][0] && headCoordinates[1] == p.playerbody[0][1]) // loop just checked its own position -> no collision
-                            {
-
-                            }
-                            else
+                            if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with something
                             {
                                 Console.WriteLine("Player " + player.guid.ToString() + " collides!");
                             }
                         }
                     }
+                    else // check against player itself
+                    {
+                        int size = p.playerbody.Count;
+                        int[] array;
+
+                        for (int i = 1; i < size; i++) // skip head
+                        {
+                            array = p.playerbody[i];
+                            if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with something
+                            {
+                                Console.WriteLine("Player " + player.guid.ToString() + " collides!");
+                            }
+                        }
+                    }
+                    
                 }
             }
 
