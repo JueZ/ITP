@@ -35,7 +35,7 @@ namespace Akanonda
             
         }
 
-        public static void ConnectPlayer(string playername, Color playercolor)
+        public static void ConnectPlayer(string playername, string color)
         {
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
 
@@ -44,7 +44,7 @@ namespace Akanonda
             if (SynchronizationContext.Current == null)
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 
-            //Color playercolor = Color.Green;
+            Color playercolor = Color.FromName(color);
             //string playername = "Martin";
 
             string hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb());

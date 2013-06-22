@@ -21,7 +21,12 @@ namespace Akanonda
 
         private void textBoxName_TextChanged(object sender, EventArgs e)
         {
-            if (textBoxName.TextLength > 0)
+            if (colorBox.SelectedIndex > -1)
+            {
+                label1.Visible = false;
+            }
+
+            if (textBoxName.TextLength > 0 && colorBox.SelectedIndex > -1)
             {
                 buttonLogIn.Enabled = true;
             }
@@ -40,7 +45,7 @@ namespace Akanonda
             //sendMsg.Write(Program.guid.ToString() + ";" + textBoxName.Text);
             //Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
 
-            Program.ConnectPlayer(textBoxName.Text, Color.Green);
+            Program.ConnectPlayer(textBoxName.Text, colorBox.Text);
             
 
             //sollte zuerst lobby und dann mainform sein-> spieler wird beim anmelden aber sofort auf spielfeld gesetzt...
