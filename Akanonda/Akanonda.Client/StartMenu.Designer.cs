@@ -67,7 +67,9 @@
             // 
             // colorBox
             // 
+            this.colorBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.colorBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.colorBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.colorBox.FormattingEnabled = true;
             this.colorBox.Items.AddRange(new object[] {
             "Green",
@@ -85,6 +87,7 @@
             this.colorBox.Name = "colorBox";
             this.colorBox.Size = new System.Drawing.Size(239, 21);
             this.colorBox.TabIndex = 4;
+            this.colorBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.colorBox_DrawItem);
             this.colorBox.SelectedIndexChanged += new System.EventHandler(this.textBoxName_TextChanged);
             // 
             // label1
@@ -97,7 +100,7 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "Choose a Color";
             // 
-            // Menu
+            // StartMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -108,7 +111,7 @@
             this.Controls.Add(this.buttonLogIn);
             this.Controls.Add(this.labelName);
             this.Controls.Add(this.textBoxName);
-            this.Name = "Menu";
+            this.Name = "StartMenu";
             this.Text = "Start Menu";
             this.ResumeLayout(false);
             this.PerformLayout();

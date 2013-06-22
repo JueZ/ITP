@@ -55,5 +55,21 @@ namespace Akanonda
             //this.Show();
             //this.Dispose();
         }
+
+        private void colorBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = e.Bounds;
+            if (e.Index >= 0)
+            {
+                string n = ((ComboBox)sender).Items[e.Index].ToString();
+                Font f = new Font("Arial", 9, FontStyle.Regular);
+                Color c = Color.FromName(n);
+                Brush b = new SolidBrush(c);
+                g.DrawString(n, f, Brushes.Black, rect.X, rect.Top);
+                g.FillRectangle(b, rect.X + 100, rect.Y + 5,
+                                rect.Width - 10, rect.Height - 10);
+            }
+        }
     }
 }
