@@ -22,7 +22,7 @@ namespace Akanonda
         public LobbyForm()
         {
             InitializeComponent();
-
+            s_form = this;
             startChat();
             MessageBox.KeyDown += new KeyEventHandler(MessageBox_KeyDown);
 
@@ -34,7 +34,7 @@ namespace Akanonda
         {
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
-            //s_form = new LobbyForm();
+            //s_form = ;
 
             NetPeerConfiguration config = new NetPeerConfiguration("chat");
             config.AutoFlushSendQueue = false;
@@ -87,11 +87,14 @@ namespace Akanonda
 
         private static void Output(string text)
         {
-            //s_form.ChatBox.Text += "\r\n" + text.ToString();
-            s_form.ChatBox.AppendText("\r\n" + text.ToString());
-            s_form.ChatBox.SelectionStart = s_form.ChatBox.Text.Length;
-            s_form.ChatBox.ScrollToCaret();
             
+            if (text != null && text != "")
+            {
+                s_form.ChatBox.AppendText("\r\n" + text.ToString());
+                //s_form.ChatBox.Text += "\r\n" + text.ToString();
+                s_form.ChatBox.SelectionStart = s_form.ChatBox.Text.Length;
+                s_form.ChatBox.ScrollToCaret();
+            }
         }
 
         public static void GotMessage(object peer)
