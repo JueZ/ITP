@@ -142,6 +142,7 @@ namespace Akanonda
                         case NetIncomingMessageType.WarningMessage:
                         case NetIncomingMessageType.VerboseDebugMessage:
                             string text = im.ReadString();
+                            Console.WriteLine(text);
                             //Output(text);
                             break;
                         case NetIncomingMessageType.StatusChanged:
