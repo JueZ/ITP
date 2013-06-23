@@ -135,6 +135,7 @@
             this.Controls.Add(this.StartGame);
             this.Name = "LobbyForm";
             this.Text = "Akanonda Lobby";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LobbyForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

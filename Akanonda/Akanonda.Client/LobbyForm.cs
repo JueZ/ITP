@@ -94,10 +94,18 @@ namespace Akanonda
             
             if (text != null && text != "")
             {
-                s_form.ChatBox.AppendText("\r\n" + text.ToString());
-                //s_form.ChatBox.Text += "\r\n" + text.ToString();
-                s_form.ChatBox.SelectionStart = s_form.ChatBox.Text.Length;
-                s_form.ChatBox.ScrollToCaret();
+                try
+                {
+                    s_form.ChatBox.AppendText("\r\n" + text.ToString());
+                    //s_form.ChatBox.Text += "\r\n" + text.ToString();
+                    s_form.ChatBox.SelectionStart = s_form.ChatBox.Text.Length;
+                    s_form.ChatBox.ScrollToCaret();
+                }
+                catch
+                {
+                    throw new Exception();
+                }
+
             }
         }
 
@@ -197,6 +205,11 @@ namespace Akanonda
             {
                 PlayersInGameList.Items.Add(PlayersInGame[i]);
             }
+        }
+
+        private void LobbyForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }
