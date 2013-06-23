@@ -16,6 +16,10 @@ namespace Akanonda.GameLibrary
         private PlayerStatus _playerstatus;
         private PlayerSteering _playersteering;
 
+        Random rndX = new Random();
+        Random rndY = new Random();
+        int startX, startY;
+
         public string name
         {
             get { return _name; }
@@ -54,12 +58,15 @@ namespace Akanonda.GameLibrary
         {
             this._playerbody = new List<int[]>();
 
-            this._playerbody.Add(new int[2] { 106, 100 });
-            this._playerbody.Add(new int[2] { 105, 101 });
-            this._playerbody.Add(new int[2] { 104, 102 });
-            this._playerbody.Add(new int[2] { 103, 103 });
-            this._playerbody.Add(new int[2] { 102, 104 });
-            this._playerbody.Add(new int[2] { 101, 105 });
+            startX = rndX.Next(20, 100);
+            startY = rndY.Next(20, 100);
+
+            this._playerbody.Add(new int[2] { startX, startY });
+            this._playerbody.Add(new int[2] { startX-1, startY+1 });
+            this._playerbody.Add(new int[2] { startX - 2, startY + 2 });
+            this._playerbody.Add(new int[2] { startX - 3, startY + 3});
+            this._playerbody.Add(new int[2] { startX - 4, startY + 4 });
+            this._playerbody.Add(new int[2] { startX - 5, startY + 5 });
 
             this._name = name;
             this._color = color;
@@ -70,14 +77,18 @@ namespace Akanonda.GameLibrary
 
         public Player(string name, Color color, Guid guid)
         {
+
             this._playerbody = new List<int[]>();
 
-            this._playerbody.Add(new int[2] { 106, 100 });
-            this._playerbody.Add(new int[2] { 105, 101 });
-            this._playerbody.Add(new int[2] { 104, 102 });
-            this._playerbody.Add(new int[2] { 103, 103 });
-            this._playerbody.Add(new int[2] { 102, 104 });
-            this._playerbody.Add(new int[2] { 101, 105 });
+            startX = rndX.Next(20, 100);
+            startY = rndY.Next(20, 100);
+
+            this._playerbody.Add(new int[2] { startX, startY });
+            this._playerbody.Add(new int[2] { startX - 1, startY + 1 });
+            this._playerbody.Add(new int[2] { startX - 2, startY + 2 });
+            this._playerbody.Add(new int[2] { startX - 3, startY + 3 });
+            this._playerbody.Add(new int[2] { startX - 4, startY + 4 });
+            this._playerbody.Add(new int[2] { startX - 5, startY + 5 });
             
             this._name = name;
             this._color = color;
