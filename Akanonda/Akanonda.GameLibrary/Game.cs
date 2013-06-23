@@ -20,6 +20,7 @@ namespace Akanonda.GameLibrary
         private Collision _collision;
         private int _ticksUntilAdd;
         private int _tickCounter;
+        private Dictionary<Guid, CollisionType> _collisionList;
 
         public static Game Instance
         {
@@ -153,9 +154,9 @@ namespace Akanonda.GameLibrary
             }
         }
 
-        public Dictionary<Guid, CollisionType> DetectCollision()
+        public void DetectCollision()
         {
-             return _collision.DetectCollision(_playerlist);
+             _collisionList = _collision.DetectCollision(_playerlist);
         }
 
         public void gamepaint(Graphics g)
@@ -244,6 +245,11 @@ namespace Akanonda.GameLibrary
                     _field.Offset[3] + (_field.x * _field.Scale) + _field.Offset[1],
                     _field.Offset[0] + (_field.y * _field.Scale) + _field.Offset[2]
                 );
+        }
+
+        public Dictionary<Guid, CollisionType> CollisionList
+        {
+            get { return _collisionList; }
         }
 
         public int TicksUntilAdd

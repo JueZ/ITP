@@ -251,7 +251,7 @@ namespace Akanonda
         static void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             game.gametick();
-            Dictionary<Guid, CollisionType> collisions = game.DetectCollision();
+            game.DetectCollision();
 
             /*  
              *  DetectCollison speichert alle fälle die gefunden werden in das dictionary.
@@ -264,7 +264,7 @@ namespace Akanonda
             NetOutgoingMessage sendMsg = netserver.CreateMessage();
             sendMsg.Write(Convert.ToInt32(gamebyte.Length));
             sendMsg.Write(gamebyte);
-             
+
             netserver.SendToAll(sendMsg, NetDeliveryMethod.ReliableSequenced);
         }
         
