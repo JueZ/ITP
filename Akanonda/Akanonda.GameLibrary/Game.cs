@@ -199,7 +199,7 @@ namespace Akanonda.GameLibrary
 
             SolidBrush brush = new SolidBrush(Color.Black);
             g.FillRectangles(brush, border);
-            g.DrawRectangles(new Pen(brush), border);
+            //g.DrawRectangles(new Pen(brush), border);
 
             // draw players
             foreach (Player player in _playerlist)
