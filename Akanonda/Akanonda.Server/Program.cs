@@ -48,7 +48,7 @@ namespace Akanonda
 			netserver.RegisterReceivedCallback(new SendOrPostCallback(ReceiveData)); 
 		
 			netserver.Start();
-            chatServer.Start();
+            //chatServer.Start();
 
             StartChat();
 
