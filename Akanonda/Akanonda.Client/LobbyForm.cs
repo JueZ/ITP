@@ -16,7 +16,7 @@ namespace Akanonda
     public partial class LobbyForm : Form
     {
 
-        private static NetClient s_client;
+        //private static NetClient s_client = Program.s_client;
         private static LobbyForm s_form;
         private string name;
         private Color color;
@@ -58,9 +58,9 @@ namespace Akanonda
 
         public static void Connect(string host, int port)
         {
-            s_client.Start();
-            NetOutgoingMessage hail = s_client.CreateMessage(Program.guid.ToString() + ";" + "connected");
-            s_client.Connect(host, port, hail);
+            Program.s_client.Start();
+            NetOutgoingMessage hail = Program.s_client.CreateMessage(Program.guid.ToString() + ";" + "connected");
+            Program.s_client.Connect(host, port, hail);
         }
 
         void MessageBox_KeyDown(object sender, KeyEventArgs e)
@@ -83,16 +83,16 @@ namespace Akanonda
 
         public static void Send(string text)
         {
-            NetOutgoingMessage om = s_client.CreateMessage(Program.guid.ToString() + ";" + text);
-            s_client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
+            NetOutgoingMessage om = Program.s_client.CreateMessage(Program.guid.ToString() + ";" + text);
+            Program.s_client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
             //Output("Sending '" + text + "'");
-            s_client.FlushSendQueue();
+            Program.s_client.FlushSendQueue();
         }
 
         private static void Output(string text)
         {
             
-            if (text != null && text != "")
+            if (text != null && text != "" && s_form != null)
             {
                 try
                 {
@@ -111,9 +111,8 @@ namespace Akanonda
 
         public static void GotMessage(object peer)
         {
-            s_client = Program.s_client;
             NetIncomingMessage im;
-            while ((im = s_client.ReadMessage()) != null)
+            while ((im = Program.s_client.ReadMessage()) != null)
             {
                 // handle incoming message
                 switch (im.MessageType)
@@ -123,7 +122,7 @@ namespace Akanonda
                     case NetIncomingMessageType.WarningMessage:
                     case NetIncomingMessageType.VerboseDebugMessage:
                         string text = im.ReadString();
-                        Output(text);
+                        //Output(text);
                         break;
                     case NetIncomingMessageType.StatusChanged:
                         NetConnectionStatus status = (NetConnectionStatus)im.ReadByte();
@@ -183,15 +182,16 @@ namespace Akanonda
 
         private void StartGame_Click(object sender, EventArgs e)
         {
+            Program.s_client.Shutdown(game.LocalPlayerGuid.ToString());
             Program.ConnectPlayerToGame(name, color);
             MainForm Main = new MainForm();
             //LobbyForm.ActiveForm.Close();
-            LobbyForm.ActiveForm.Hide();
-            Main.Show();
-            NetOutgoingMessage om = s_client.CreateMessage("UpdateLobbyLists");
-            s_client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
+            LobbyForm.ActiveForm.Dispose();
+            Main.ShowDialog();
+            NetOutgoingMessage om = Program.s_client.CreateMessage("UpdateLobbyLists");
+            Program.s_client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
             //Output("Sending '" + text + "'");
-            s_client.FlushSendQueue();
+            Program.s_client.FlushSendQueue();
         }
 
         private void FillList(string[] PlayersInLobby, string[] PlayersInGame)
