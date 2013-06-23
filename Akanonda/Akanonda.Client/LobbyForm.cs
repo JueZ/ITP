@@ -19,10 +19,10 @@ namespace Akanonda
         private static NetClient s_client;
         private static LobbyForm s_form;
         private string name;
-        private string color;
+        private Color color;
         private static GameLibrary.Game game = GameLibrary.Game.Instance;
 
-        public LobbyForm(string n, string c):base()
+        public LobbyForm(string n, Color c):base()
         {
             InitializeComponent();
             name = n;
@@ -177,7 +177,7 @@ namespace Akanonda
         {
             Program.ConnectPlayerToGame(name, color);
             MainForm Main = new MainForm();
-            this.Hide();
+            LobbyForm.ActiveForm.Close();
             Main.Show();
             NetOutgoingMessage om = s_client.CreateMessage("UpdateLobbyLists");
             s_client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);

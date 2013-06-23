@@ -4,6 +4,7 @@ using System.Drawing;
 using Akanonda.GameLibrary;
 using Lidgren.Network;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Akanonda
 {
@@ -32,7 +33,7 @@ namespace Akanonda
             //Application.Run(new MainForm());
         }
 
-        public static void ConnectPlayerToGame(string playername, string color)
+        public static void ConnectPlayerToGame(string playername, Color playercolor)
         {
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
 
@@ -41,7 +42,7 @@ namespace Akanonda
             if (SynchronizationContext.Current == null)
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 
-            Color playercolor = Color.FromName(color);
+            
             //string playername = "Martin";
 
             string hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb());
@@ -56,7 +57,7 @@ namespace Akanonda
 
         }
 
-        public static void ConnectPlayerToLobby(string playername, string color)
+        public static void ConnectPlayerToLobby(string playername, Color playercolor)
         {
             NetPeerConfiguration config = new NetPeerConfiguration("chat");
             config.AutoFlushSendQueue = false;
@@ -66,7 +67,7 @@ namespace Akanonda
             //-----------------------------------------------------------HIER--------------
 
             int port;
-            Color playercolor = Color.FromName(color);
+            //Color playercolor = Color.FromName(color);
             string hailmessage = guid.ToString() + ";connected;" + playername + ";" + Convert.ToString(playercolor.ToArgb());
 
             Int32.TryParse("1338", out port);
@@ -114,6 +115,20 @@ namespace Akanonda
 						
 						game = (Game)SerializeHelper.ByteArrayToObject(gamedata);
                         game.LocalPlayerGuid = Program.guid;
+
+                        foreach (KeyValuePair<Guid, CollisionType> key in game.CollisionList)
+                        {
+                            if (key.Key == game.LocalPlayerGuid)
+                            {
+
+                                MainForm.ActiveForm.Close();
+                                MessageBox.Show(key.Value.ToString());
+                                LobbyForm Lobby = new LobbyForm(game.getPlayerName(guid), game.getPlayerColor(guid));
+                                Program.ConnectPlayerToLobby(game.getPlayerName(guid), game.getPlayerColor(guid));
+                                Lobby.ShowDialog();
+                            }
+                        }
+
 
 //						string chat = im.ReadString();
 //						Output(chat);

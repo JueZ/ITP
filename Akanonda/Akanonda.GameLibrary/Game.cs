@@ -129,6 +129,23 @@ namespace Akanonda.GameLibrary
             return name;
         }
 
+        public Color getPlayerColor(Guid guid)
+        {
+
+            Color color = Color.FromName("Black");
+            foreach (Player pl in _playerlist)
+            {
+                if (pl.guid == guid)
+                {
+                    color = pl.color;
+                    
+                    break;
+                }
+            }
+
+            return color;
+        }
+
         public void removePlayer(Guid guid)
         {
             for (int i = 0; i < _playerlist.Count; i++)
