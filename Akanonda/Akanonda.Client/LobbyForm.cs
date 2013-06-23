@@ -30,7 +30,7 @@ namespace Akanonda
             s_form = this;
             //startChat();
             MessageBox.KeyDown += new KeyEventHandler(MessageBox_KeyDown);
-            FillList();
+            
         }
 
         [STAThread]
@@ -135,7 +135,17 @@ namespace Akanonda
                         break;
                     case NetIncomingMessageType.Data:
                         string chat = im.ReadString();
-                        Output(chat);
+                        if (chat.StartsWith("PlayersIn"))
+                        {
+                            string[] chat2 = chat.Split(':');
+                            string[] PlayersInLobby = chat2[0].Split(';');
+                            string[] PlayersInGame = chat2[1].Split(';');
+                            s_form.FillList(PlayersInLobby, PlayersInGame);
+                        }
+                        else
+                        {
+                            Output(chat);
+                        }
                         break;
                     default:
                         Output("Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes");
@@ -169,17 +179,23 @@ namespace Akanonda
             MainForm Main = new MainForm();
             this.Hide();
             Main.Show();
+            NetOutgoingMessage om = s_client.CreateMessage("UpdateLobbyLists");
+            s_client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
+            //Output("Sending '" + text + "'");
+            s_client.FlushSendQueue();
         }
 
-        private void FillList()
+        private void FillList(string[] PlayersInLobby, string[] PlayersInGame)
         {
-            foreach (GameLibrary.Player p in game.LobbyList)
+            PlayersInLobbyList.Items.Clear();
+            for (int i = 1; i < PlayersInLobby.Length; i++ )
             {
-                PlayersInLobby.Items.Add(p.name);
+                PlayersInLobbyList.Items.Add(PlayersInLobby[i]);
             }
-            foreach (GameLibrary.Player p in game.PLayerList)
+            PlayersInGameList.Items.Clear();
+            for (int i = 1; i < PlayersInGame.Length; i++)
             {
-                PlayersInGame.Items.Add(p.name);
+                PlayersInGameList.Items.Add(PlayersInGame[i]);
             }
         }
     }

@@ -155,8 +155,27 @@ namespace Akanonda
                                 game.AddLobbyPlayer(remotehailmessagearray[2], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[3])), Guid.Parse(remotehailmessagearray[0]));
 
                                 //Console.WriteLine("Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
+                                List<NetConnection> allPlayers = chatServer.Connections;
+                                if (allPlayers.Count > 0)
+                                {
+                                    string inLobby = "PlayersInLobby;";
+                                    string inGame = "PlayersInGame;";
+                                    foreach (GameLibrary.Player p in game.LobbyList)
+                                    {
+                                        inLobby += p.name + ";";
+                                    
+                                    }
+                                    foreach (GameLibrary.Player p in game.PLayerList)
+                                    {
+                                        inGame += p.name + ";";
+                                    }
+                                    inGame = inGame.Remove(inGame.Length - 1);
+                                    inLobby = inLobby.Remove(inLobby.Length - 1);
+                                    NetOutgoingMessage om = chatServer.CreateMessage();
+                                    om.Write(inLobby + ":" + inGame);
+                                    chatServer.SendMessage(om, allPlayers, NetDeliveryMethod.ReliableOrdered, 0);
+                                    }
                             }
-
                             break;
 
                         case NetIncomingMessageType.Data:
@@ -175,11 +194,36 @@ namespace Akanonda
                                 //string[] remotehailmessagearray = remotehailmessage.Split(';');
                                 //string chat = remotehailmessagearray[1];
                                 string chat = im.ReadString();
-                                string[] chatMessage = chat.Split(';');
-                                NetOutgoingMessage om = chatServer.CreateMessage();
-                                //om.Write(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " said: " + chat);
-                                om.Write(game.getLobbyPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
-                                chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
+
+                                if (chat.StartsWith("UpdateLobbyLists"))
+                                {
+                                    string inLobby = "PlayersInLobby;";
+                                    string inGame = "PlayersInGame;";
+                                    foreach (GameLibrary.Player p in game.LobbyList)
+                                    {
+                                        inLobby += p.name + ";";
+
+                                    }
+                                    foreach (GameLibrary.Player p in game.PLayerList)
+                                    {
+                                        inGame += p.name + ";";
+                                    }
+                                    inGame = inGame.Remove(inGame.Length - 1);
+                                    inLobby = inLobby.Remove(inLobby.Length - 1);
+                                    NetOutgoingMessage om = chatServer.CreateMessage();
+                                    om.Write(inLobby + ":" + inGame);
+                                    chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
+                                }
+                                else
+                                {
+
+
+                                    string[] chatMessage = chat.Split(';');
+                                    NetOutgoingMessage om = chatServer.CreateMessage();
+                                    //om.Write(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " said: " + chat);
+                                    om.Write(game.getLobbyPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
+                                    chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
+                                }
                             }
                             break;
                         default:

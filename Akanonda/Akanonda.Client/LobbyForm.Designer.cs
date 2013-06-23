@@ -33,8 +33,8 @@
             this.SendButton = new System.Windows.Forms.Button();
             this.ChatBox = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.PlayersInLobby = new System.Windows.Forms.ListBox();
-            this.PlayersInGame = new System.Windows.Forms.ListBox();
+            this.PlayersInLobbyList = new System.Windows.Forms.ListBox();
+            this.PlayersInGameList = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -85,21 +85,21 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "Chat";
             // 
-            // PlayersInLobby
+            // PlayersInLobbyList
             // 
-            this.PlayersInLobby.FormattingEnabled = true;
-            this.PlayersInLobby.Location = new System.Drawing.Point(260, 133);
-            this.PlayersInLobby.Name = "PlayersInLobby";
-            this.PlayersInLobby.Size = new System.Drawing.Size(257, 303);
-            this.PlayersInLobby.TabIndex = 6;
+            this.PlayersInLobbyList.FormattingEnabled = true;
+            this.PlayersInLobbyList.Location = new System.Drawing.Point(260, 133);
+            this.PlayersInLobbyList.Name = "PlayersInLobbyList";
+            this.PlayersInLobbyList.Size = new System.Drawing.Size(257, 303);
+            this.PlayersInLobbyList.TabIndex = 6;
             // 
-            // PlayersInGame
+            // PlayersInGameList
             // 
-            this.PlayersInGame.FormattingEnabled = true;
-            this.PlayersInGame.Location = new System.Drawing.Point(523, 133);
-            this.PlayersInGame.Name = "PlayersInGame";
-            this.PlayersInGame.Size = new System.Drawing.Size(257, 303);
-            this.PlayersInGame.TabIndex = 7;
+            this.PlayersInGameList.FormattingEnabled = true;
+            this.PlayersInGameList.Location = new System.Drawing.Point(523, 133);
+            this.PlayersInGameList.Name = "PlayersInGameList";
+            this.PlayersInGameList.Size = new System.Drawing.Size(257, 303);
+            this.PlayersInGameList.TabIndex = 7;
             // 
             // label2
             // 
@@ -126,8 +126,8 @@
             this.ClientSize = new System.Drawing.Size(792, 491);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.PlayersInGame);
-            this.Controls.Add(this.PlayersInLobby);
+            this.Controls.Add(this.PlayersInGameList);
+            this.Controls.Add(this.PlayersInLobbyList);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ChatBox);
             this.Controls.Add(this.SendButton);
@@ -147,8 +147,8 @@
         private System.Windows.Forms.Button SendButton;
         private System.Windows.Forms.RichTextBox ChatBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ListBox PlayersInLobby;
-        private System.Windows.Forms.ListBox PlayersInGame;
+        private System.Windows.Forms.ListBox PlayersInLobbyList;
+        private System.Windows.Forms.ListBox PlayersInGameList;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
     }
