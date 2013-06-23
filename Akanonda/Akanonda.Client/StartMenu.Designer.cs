@@ -51,17 +51,17 @@
             // 
             this.labelName.AutoSize = true;
             this.labelName.BackColor = System.Drawing.Color.Transparent;
-            this.labelName.Font = new System.Drawing.Font("Motorwerk", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelName.Location = new System.Drawing.Point(15, 111);
+            this.labelName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelName.Location = new System.Drawing.Point(15, 105);
             this.labelName.Name = "labelName";
-            this.labelName.Size = new System.Drawing.Size(260, 15);
+            this.labelName.Size = new System.Drawing.Size(261, 24);
             this.labelName.TabIndex = 2;
             this.labelName.Text = "Choose your Name and Color";
             // 
             // buttonLogIn
             // 
             this.buttonLogIn.Enabled = false;
-            this.buttonLogIn.Font = new System.Drawing.Font("Motorwerk", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonLogIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonLogIn.Location = new System.Drawing.Point(24, 182);
             this.buttonLogIn.Name = "buttonLogIn";
             this.buttonLogIn.Size = new System.Drawing.Size(239, 38);
