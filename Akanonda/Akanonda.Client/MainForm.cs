@@ -113,7 +113,7 @@ namespace Akanonda
             while(Program.netclient.Status != NetPeerStatus.NotRunning)
                 System.Threading.Thread.Sleep(10);
 
-            Environment.Exit(0);
+            //Environment.Exit(0);
         }
     }
 }

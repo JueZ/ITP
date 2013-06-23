@@ -152,6 +152,14 @@ namespace Akanonda
 
                             UpdateConnectionsList();
 
+
+                            if (status == NetConnectionStatus.Disconnected)
+                            {
+                                game.removePlayer(Guid.Parse(reason));
+                                game.RemoveLobbyPlayer(Guid.Parse(reason));
+                                Console.WriteLine("Player disconnected! \t GUID: " + Guid.Parse(reason));
+                            }
+
                             if (im.SenderConnection.RemoteHailMessage != null && status == NetConnectionStatus.Connected)
                             {
                                 string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();

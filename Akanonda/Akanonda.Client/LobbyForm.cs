@@ -33,7 +33,7 @@ namespace Akanonda
             
         }
 
-        [STAThread]
+        //[STAThread]
         //static void startChat()
         //{
         //    //Application.EnableVisualStyles();
@@ -135,10 +135,10 @@ namespace Akanonda
                         }
                         else
                         {
-                            s_form.DisableInput();
-                            s_form.ReConnect();
-                            string reason = im.ReadString();
-                            Output(status.ToString() + ": " + reason);
+                            //s_form.DisableInput();
+                            //s_form.ReConnect();
+                            //string reason = im.ReadString();
+                            //Output(status.ToString() + ": " + reason);
                         }
                         break;
                     case NetIncomingMessageType.Data:
@@ -162,12 +162,12 @@ namespace Akanonda
             }
         }
 
-        public void ReConnect()
-        {
-                int port;
-                Int32.TryParse("1338", out port);
-                Connect("localhost", port);   
-        }
+        //public void ReConnect()
+        //{
+        //        int port;
+        //        Int32.TryParse("1338", out port);
+        //        Connect("localhost", port);   
+        //}
 
         public void EnableInput()
         {
