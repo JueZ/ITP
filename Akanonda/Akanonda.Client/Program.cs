@@ -120,9 +120,29 @@ namespace Akanonda
                         {
                             if (key.Key == game.LocalPlayerGuid)
                             {
-
                                 MainForm.ActiveForm.Close();
-                                MessageBox.Show(key.Value.ToString());
+                                string text;
+
+                                switch (key.Value)
+                                {
+                                    case CollisionType.ToPlayer:
+                                        text = "You crashed into another player!";
+                                        break;
+
+                                    case CollisionType.ToSelf:
+                                        text = "You crashed into yourself!";
+                                        break;
+
+                                    case CollisionType.ToWall:
+                                        text = "Your face hit the wall!";
+                                        break;
+
+                                    default:
+                                        text = "You crashed!";
+                                        break;
+                                }
+
+                                MessageBox.Show(text);
                                 LobbyForm Lobby = new LobbyForm(game.getPlayerName(guid), game.getPlayerColor(guid));
                                 Program.ConnectPlayerToLobby(game.getPlayerName(guid), game.getPlayerColor(guid));
                                 Lobby.ShowDialog();
