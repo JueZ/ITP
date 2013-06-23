@@ -168,26 +168,14 @@ namespace Akanonda
                                 game.AddLobbyPlayer(remotehailmessagearray[2], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[3])), Guid.Parse(remotehailmessagearray[0]));
 
                                 //Console.WriteLine("Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
-                                List<NetConnection> allPlayers = chatServer.Connections;
-                                if (allPlayers.Count > 0)
-                                {
-                                    string inLobby = "PlayersInLobby;";
-                                    string inGame = "PlayersInGame;";
-                                    foreach (GameLibrary.Player p in game.LobbyList)
-                                    {
-                                        inLobby += p.name + ";";
-                                    
-                                    }
-                                    foreach (GameLibrary.Player p in game.PLayerList)
-                                    {
-                                        inGame += p.name + ";";
-                                    }
-                                    inGame = inGame.Remove(inGame.Length - 1);
-                                    inLobby = inLobby.Remove(inLobby.Length - 1);
-                                    NetOutgoingMessage om = chatServer.CreateMessage();
-                                    om.Write(inLobby + ":" + inGame);
-                                    chatServer.SendMessage(om, allPlayers, NetDeliveryMethod.ReliableOrdered, 0);
-                                    }
+                                UpdateLobbyLists();
+                            }
+
+                            if (status == NetConnectionStatus.Disconnected)
+                            {
+                                game.RemoveLobbyPlayer(Guid.Parse(reason));
+                                UpdateLobbyLists();
+                                
                             }
                             break;
 
@@ -207,29 +195,8 @@ namespace Akanonda
                                 //string[] remotehailmessagearray = remotehailmessage.Split(';');
                                 //string chat = remotehailmessagearray[1];
                                 string chat = im.ReadString();
-
-                                if (chat.StartsWith("UpdateLobbyLists"))
-                                {
-                                    Console.WriteLine("UpdateLobbyLists");
-                                    string inLobby = "PlayersInLobby;";
-                                    string inGame = "PlayersInGame;";
-                                    foreach (GameLibrary.Player p in game.LobbyList)
-                                    {
-                                        inLobby += p.name + ";";
-
-                                    }
-                                    foreach (GameLibrary.Player p in game.PLayerList)
-                                    {
-                                        inGame += p.name + ";";
-                                    }
-                                    inGame = inGame.Remove(inGame.Length - 1);
-                                    inLobby = inLobby.Remove(inLobby.Length - 1);
-                                    NetOutgoingMessage om = chatServer.CreateMessage();
-                                    om.Write(inLobby + ":" + inGame);
-                                    chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
-                                }
-                                else
-                                {
+                                Console.WriteLine(chat);
+                                
 
 
                                     string[] chatMessage = chat.Split(';');
@@ -237,7 +204,7 @@ namespace Akanonda
                                     //om.Write(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " said: " + chat);
                                     om.Write(game.getLobbyPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
                                     chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
-                                }
+                                
                             }
                             break;
                         default:
@@ -310,7 +277,7 @@ namespace Akanonda
                             game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                             game.RemoveLobbyPlayer(Guid.Parse(remotehailmessagearray[0]));
                             //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-
+                            UpdateLobbyLists();
                             Console.WriteLine("Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                         }
 
@@ -318,6 +285,7 @@ namespace Akanonda
                         {
                             game.removePlayer(Guid.Parse(reason));
                             game.RemoveLobbyPlayer(Guid.Parse(reason));
+                            UpdateLobbyLists();
                             Console.WriteLine("Player disconnected! \t GUID: " + Guid.Parse(reason));
                         }
 
@@ -363,5 +331,39 @@ namespace Akanonda
 				netserver.Recycle(im);
 			}        
         }
+
+
+        private static void UpdateLobbyLists()
+        {
+            List<NetConnection> all = chatServer.Connections; // get copy
+            //all.Remove(im.SenderConnection);
+
+            if (all.Count > 0)
+            {
+                //string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
+                //string[] remotehailmessagearray = remotehailmessage.Split(';');
+                //string chat = remotehailmessagearray[1];
+                
+                
+                    string inLobby = "PlayersInLobby;";
+                    string inGame = "PlayersInGame;";
+                    foreach (GameLibrary.Player p in game.LobbyList)
+                    {
+                        inLobby += p.name + ";";
+
+                    }
+                    foreach (GameLibrary.Player p in game.PLayerList)
+                    {
+                        inGame += p.name + ";";
+                    }
+                    inGame = inGame.Remove(inGame.Length - 1);
+                    inLobby = inLobby.Remove(inLobby.Length - 1);
+                    NetOutgoingMessage om = chatServer.CreateMessage();
+                    om.Write(inLobby + ":" + inGame);
+                    chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
+                
+            }
+        }
+
     }
 }

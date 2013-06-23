@@ -182,19 +182,15 @@ namespace Akanonda
 
         private void StartGame_Click(object sender, EventArgs e)
         {
-            NetOutgoingMessage om = Program.s_client.CreateMessage("UpdateLobbyLists");
-            Program.s_client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
-            //Output("Sending '" + text + "'");
-            Program.s_client.FlushSendQueue();
-
             Program.s_client.Shutdown(game.LocalPlayerGuid.ToString());
             Program.ConnectPlayerToGame(name, color);
             MainForm Main = new MainForm();
             //LobbyForm.ActiveForm.Close();
-            LobbyForm.ActiveForm.Dispose();
+            this.Dispose();
             Main.ShowDialog();
+
             
-          
+            
         }
 
         private void FillList(string[] PlayersInLobby, string[] PlayersInGame)
@@ -213,6 +209,8 @@ namespace Akanonda
 
         private void LobbyForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Program.netclient.Shutdown(Program.guid.ToString());
+            Program.s_client.Shutdown(Program.guid.ToString());
             Environment.Exit(0);
         }
     }
