@@ -207,6 +207,13 @@ namespace Akanonda
         static void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             game.gametick();
+            Dictionary<Guid, CollisionType> collisions = game.DetectCollision();
+
+            /*  
+             *  DetectCollison speichert alle fälle die gefunden werden in das dictionary.
+             *  Anhand der Guid kann der player identifiziert werden, CollisonType gibt an was passiert ist:
+             *  Collision mit Wand, sich selber oder anderem Spieler
+            */
             
             byte[] gamebyte = SerializeHelper.ObjectToByteArray(game);
             

@@ -16,7 +16,7 @@ namespace Akanonda.GameLibrary
         private List<Player> _playerlist;
         private List<Player> _lobbyList;
         private Guid _localplayer;
-        private Color _localColor;
+        //private Color _localColor; // compiler sagt wird nirgens verwendet?
         private Collision _collision;
         private int _ticksUntilAdd;
         private int _tickCounter;
@@ -66,22 +66,34 @@ namespace Akanonda.GameLibrary
             _field.setSize(x, y);
         }
 
-        public void addlocalPlayer(string name, Color color)
+        public Guid LocalPlayerGuid
         {
-            Player player = new Player(name, color);
-            _localplayer = player.guid;
-            _localColor = color;
-            _playerlist.Add(player);
+            set { _localplayer = value; }
+            get { return _localplayer; }
         }
 
-        public void setlocalsteering(PlayerSteering playersteering)
+        public PlayerSteering LocalSteering
         {
-            for (int i = 0; i < _playerlist.Count; i++)
+            set
             {
-                if (_playerlist[i].guid.Equals(_localplayer))
+                for (int i = 0; i < _playerlist.Count; i++)
                 {
-                    _playerlist[i].playersteering = playersteering;
+                    if (_playerlist[i].guid.Equals(_localplayer))
+                    {
+                        _playerlist[i].playersteering = value;
+                    }
                 }
+            }
+            get
+            {
+                for (int i = 0; i < _playerlist.Count; i++)
+                {
+                    if (_playerlist[i].guid.Equals(_localplayer))
+                    {
+                        return _playerlist[i].playersteering;
+                    }
+                }
+                throw new Exception("No localplayer found");
             }
         }
 
@@ -139,8 +151,11 @@ namespace Akanonda.GameLibrary
             {
                 _playerlist[i].playerMove(grow);
             }
+        }
 
-            this.DetectCollision();
+        public Dictionary<Guid, CollisionType> DetectCollision()
+        {
+             return _collision.DetectCollision(_playerlist);
         }
 
         public void gamepaint(Graphics g)
@@ -177,11 +192,6 @@ namespace Akanonda.GameLibrary
                 }
             }
 
-        }
-
-        public void DetectCollision()
-        {
-            _collision.DetectCollision(_playerlist);
         }
 
         public void AddLobbyPlayer(string name, Color color, Guid guid)

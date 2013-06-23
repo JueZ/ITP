@@ -6,6 +6,14 @@ using System.Text;
 namespace Akanonda.GameLibrary
 {
     [Serializable()]
+    public enum CollisionType
+    {
+        ToPlayer,
+        ToWall,
+        ToSelf
+    }
+
+    [Serializable()]
     public class Collision
     {
 
@@ -18,8 +26,10 @@ namespace Akanonda.GameLibrary
             _y = y;
         }
 
-        public void DetectCollision(List<Player> playerList)
+        public Dictionary<Guid, CollisionType> DetectCollision(List<Player> playerList)
         {
+
+            Dictionary<Guid, CollisionType> collisions = new Dictionary<Guid, CollisionType>();
             
             foreach (Player player in playerList) // current player to check head
             {
@@ -31,6 +41,9 @@ namespace Akanonda.GameLibrary
                 {
                     // Collision!!
                     Console.WriteLine("Mit Kopf gegen Wand!");
+
+                    if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
+                        collisions.Add(player.guid, CollisionType.ToWall);
                 }
 
                 foreach (Player p in playerList) // player with which current head is checked against (can be same as above)
@@ -43,6 +56,10 @@ namespace Akanonda.GameLibrary
                             {
                                 // Collision!
                                 Console.WriteLine("Player " + player.guid.ToString() + " collides with another player!");
+                                
+                                if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
+                                    collisions.Add(player.guid, CollisionType.ToPlayer);
+                                
                                 // other player would be p.guid
                             }
                         }
@@ -59,14 +76,16 @@ namespace Akanonda.GameLibrary
                             {
                                 // Collision!
                                 Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
+
+                                if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
+                                    collisions.Add(player.guid, CollisionType.ToSelf);
                             }
                         }
                     }
-                    
                 }
             }
 
+            return collisions;
         }
-
     }
 }

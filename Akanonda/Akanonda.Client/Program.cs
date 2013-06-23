@@ -22,16 +22,14 @@ namespace Akanonda
 
             //Color.FromArgb
 
-//            game = Game.Instance;
-//            game.setFieldSize(500, 500);
-//            game.addlocalPlayer("Martin", Color.Green);
+            game = Game.Instance;
+            game.LocalPlayerGuid = Program.guid;
+
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new StartMenu());
-//            Application.Run(new MainForm());
-            
-            
+            //Application.Run(new MainForm());
         }
 
         public static void ConnectPlayerToGame(string playername, string color)
@@ -115,7 +113,8 @@ namespace Akanonda
 						byte[] gamedata = im.ReadBytes(gamedatalength);
 						
 						game = (Game)SerializeHelper.ByteArrayToObject(gamedata);
-						
+                        game.LocalPlayerGuid = Program.guid;
+
 //						string chat = im.ReadString();
 //						Output(chat);
 						break;
