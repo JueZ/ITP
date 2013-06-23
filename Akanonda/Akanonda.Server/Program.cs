@@ -210,6 +210,7 @@ namespace Akanonda
 
                                 if (chat.StartsWith("UpdateLobbyLists"))
                                 {
+                                    Console.WriteLine("UpdateLobbyLists");
                                     string inLobby = "PlayersInLobby;";
                                     string inGame = "PlayersInGame;";
                                     foreach (GameLibrary.Player p in game.LobbyList)

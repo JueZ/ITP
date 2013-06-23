@@ -182,16 +182,19 @@ namespace Akanonda
 
         private void StartGame_Click(object sender, EventArgs e)
         {
+            NetOutgoingMessage om = Program.s_client.CreateMessage("UpdateLobbyLists");
+            Program.s_client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
+            //Output("Sending '" + text + "'");
+            Program.s_client.FlushSendQueue();
+
             Program.s_client.Shutdown(game.LocalPlayerGuid.ToString());
             Program.ConnectPlayerToGame(name, color);
             MainForm Main = new MainForm();
             //LobbyForm.ActiveForm.Close();
             LobbyForm.ActiveForm.Dispose();
             Main.ShowDialog();
-            NetOutgoingMessage om = Program.s_client.CreateMessage("UpdateLobbyLists");
-            Program.s_client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
-            //Output("Sending '" + text + "'");
-            Program.s_client.FlushSendQueue();
+            
+          
         }
 
         private void FillList(string[] PlayersInLobby, string[] PlayersInGame)

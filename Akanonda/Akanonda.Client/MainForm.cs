@@ -108,8 +108,11 @@ namespace Akanonda
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            MainForm.ActiveForm.Dispose();
             Program.netclient.Shutdown(Program.guid.ToString());
-
+            LobbyForm Lobby = new LobbyForm(Program.game.getPlayerName(Program.guid), Program.game.getPlayerColor(Program.guid));
+            Program.ConnectPlayerToLobby(Program.game.getPlayerName(Program.guid), Program.game.getPlayerColor(Program.guid));
+            Lobby.ShowDialog();
             while(Program.netclient.Status != NetPeerStatus.NotRunning)
                 System.Threading.Thread.Sleep(10);
 
