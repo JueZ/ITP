@@ -308,7 +308,7 @@ namespace Akanonda
                         if (status == NetConnectionStatus.Disconnected)
                         {
                             game.removePlayer(Guid.Parse(reason));
-
+                            game.RemoveLobbyPlayer(Guid.Parse(reason));
                             Console.WriteLine("Player disconnected! \t GUID: " + Guid.Parse(reason));
                         }
 

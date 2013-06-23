@@ -224,6 +224,7 @@ namespace Akanonda.GameLibrary
                 if (_lobbyList[i].guid.Equals(guid))
                 {
                     _lobbyList.RemoveAt(i);
+                    break;
                 }
             }
         }
