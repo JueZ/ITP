@@ -7,8 +7,7 @@ using System.Threading;
 using Lidgren.Network;
 using System.Timers;
 using System.Drawing;
-
-
+using Akanonda.Properties;
 
 namespace Akanonda
 {
@@ -23,12 +22,17 @@ namespace Akanonda
         {
             Console.WriteLine("Akanonda Server");
             Console.WriteLine("---------------");
-                        		
+
+            Settings settings = new Settings();
+
             // NetServer START
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
-            netconfig.MaximumConnections = 10;
-			netconfig.Port = 1337;
+            netconfig.MaximumConnections = settings.MaxConnections;
+			netconfig.Port = settings.LocalPort;
 			netserver = new NetServer(netconfig);
+
+            
+            
 
             NetPeerConfiguration config = new NetPeerConfiguration("chat");
             config.MaximumConnections = 100;

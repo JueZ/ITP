@@ -4,6 +4,7 @@ using System.Drawing;
 using Akanonda.GameLibrary;
 using Lidgren.Network;
 using System.Threading;
+using Akanonda.Properties;
 using System.Collections.Generic;
 
 namespace Akanonda
@@ -20,7 +21,6 @@ namespace Akanonda
         {
 
             //Color.Blue.ToArgb().ToString();
-
             //Color.FromArgb
 
             game = Game.Instance;
@@ -50,8 +50,11 @@ namespace Akanonda
             netclient.RegisterReceivedCallback(new SendOrPostCallback(ReceivedData));
 
             netclient.Start();
+
+            Settings settings = new Settings();
+
             NetOutgoingMessage message = netclient.CreateMessage(hailmessage);
-            netclient.Connect("127.0.0.1", 1337, message);
+            netclient.Connect(settings.RemoteServer, settings.RemotePort, message);
 
             
 
