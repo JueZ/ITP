@@ -185,7 +185,8 @@ namespace Akanonda
         {
             Program.ConnectPlayerToGame(name, color);
             MainForm Main = new MainForm();
-            LobbyForm.ActiveForm.Close();
+            //LobbyForm.ActiveForm.Close();
+            LobbyForm.ActiveForm.Hide();
             Main.Show();
             NetOutgoingMessage om = s_client.CreateMessage("UpdateLobbyLists");
             s_client.SendMessage(om, NetDeliveryMethod.ReliableOrdered);
