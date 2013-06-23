@@ -96,7 +96,7 @@ namespace Akanonda.GameLibrary
             return this._guid;
         }
         
-        public void playerMove()
+        public void playerMove(bool grow)
         {
             int x = _playerbody[_playerbody.Count-1][0];
             int y = _playerbody[_playerbody.Count-1][1];
@@ -119,7 +119,8 @@ namespace Akanonda.GameLibrary
             
             this._playerbody.Add(new int[2] {x, y});
             
-            this._playerbody.RemoveAt(0);
+            if (!grow)
+                this._playerbody.RemoveAt(0);
         }
         
 //        public void initPlayer(string name, Color color, Guid guid)

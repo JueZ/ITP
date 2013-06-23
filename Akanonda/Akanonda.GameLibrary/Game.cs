@@ -18,6 +18,8 @@ namespace Akanonda.GameLibrary
         private Guid _localplayer;
         private Color _localColor;
         private Collision _collision;
+        private int _ticksUntilAdd;
+        private int _tickCounter;
 
         public static Game Instance
         {
@@ -33,11 +35,14 @@ namespace Akanonda.GameLibrary
 
             _lobbyList = new List<Player>();
 
-            _field.setSize(120, 120);
+            _field.setSize(120, 120); // testhalber, derzeit wird neuer user auf 105x105 oder so gesetzt
             _field.Scale = 5;
-            _field.Offset = new int[] {20, 20, 20, 20};
+            _field.Offset = new int[] {20, 20, 20, 20}; // testhalber
 
             _collision = new Collision(_field.x, _field.y);
+
+            _ticksUntilAdd = 5; // testhalber
+            _tickCounter = 0;
         }
 
         public List<Player> PLayerList
@@ -124,9 +129,15 @@ namespace Akanonda.GameLibrary
 
         public void gametick()
         {
+            _tickCounter = (_tickCounter + 1) % _ticksUntilAdd;
+
+            bool grow = false;
+            if (_tickCounter == 0)
+                grow = true;
+
             for (int i = 0; i < _playerlist.Count; i++)
             {
-                _playerlist[i].playerMove();
+                _playerlist[i].playerMove(grow);
             }
 
             this.DetectCollision();
@@ -223,6 +234,18 @@ namespace Akanonda.GameLibrary
                     _field.Offset[3] + (_field.x * _field.Scale) + _field.Offset[1],
                     _field.Offset[0] + (_field.y * _field.Scale) + _field.Offset[2]
                 );
+        }
+
+        public int TicksUntilAdd
+        {
+            set
+            {
+                if (value > 0)
+                    _ticksUntilAdd = value;
+                else
+                    throw new ArgumentOutOfRangeException("TicksUntilAdd", "TicksUntilAdd must be a value greater than 0");
+            }
+            get { return _ticksUntilAdd; }
         }
     }
 }
