@@ -65,7 +65,7 @@
             this.buttonLogIn.Location = new System.Drawing.Point(24, 182);
             this.buttonLogIn.Name = "buttonLogIn";
             this.buttonLogIn.Size = new System.Drawing.Size(239, 38);
-            this.buttonLogIn.TabIndex = 3;
+            this.buttonLogIn.TabIndex = 2;
             this.buttonLogIn.Text = "Connect to GameLobby";
             this.buttonLogIn.UseVisualStyleBackColor = true;
             this.buttonLogIn.Click += new System.EventHandler(this.buttonLogIn_Click);
@@ -91,7 +91,7 @@
             this.colorBox.Location = new System.Drawing.Point(24, 155);
             this.colorBox.Name = "colorBox";
             this.colorBox.Size = new System.Drawing.Size(239, 21);
-            this.colorBox.TabIndex = 4;
+            this.colorBox.TabIndex = 1;
             this.colorBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.colorBox_DrawItem);
             this.colorBox.SelectedIndexChanged += new System.EventHandler(this.textBoxName_TextChanged);
             // 

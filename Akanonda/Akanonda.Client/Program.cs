@@ -26,7 +26,6 @@ namespace Akanonda
             game = Game.Instance;
             game.LocalPlayerGuid = Program.guid;
 
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new StartMenu());
@@ -126,7 +125,11 @@ namespace Akanonda
                             if (key.Key == game.LocalPlayerGuid)
                             {
                                 netclient.Shutdown(game.LocalPlayerGuid.ToString());
-                                MainForm.ActiveForm.Dispose();
+
+                                MainForm closeForm = (MainForm)Application.OpenForms["MainForm"];
+                                closeForm.Close();
+
+                                //MainForm.Dispose();
                                 string text;
 
                                 switch (key.Value)

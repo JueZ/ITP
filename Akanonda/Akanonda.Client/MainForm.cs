@@ -24,6 +24,11 @@ namespace Akanonda
             
             DrawTimer.Start();
         }
+
+        public void closeMainForm()
+        {
+            this.Dispose();
+        }
         
         void MainFormPaint(object sender, System.Windows.Forms.PaintEventArgs e)
         {
