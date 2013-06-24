@@ -76,8 +76,8 @@ namespace Akanonda
             s_client.Start();
             //NetOutgoingMessage hail = s_client.CreateMessage(Program.guid.ToString() + ";" + "connected");
             NetOutgoingMessage hail = s_client.CreateMessage(hailmessage);
-            s_client.Connect("127.0.0.1", port, hail);
-            //s_client.Connect("server.xios.at", port, hail);
+            //s_client.Connect("127.0.0.1", port, hail);
+            s_client.Connect("server.xios.at", port, hail);
             
             
         }
