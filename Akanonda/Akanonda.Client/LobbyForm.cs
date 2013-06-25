@@ -21,10 +21,13 @@ namespace Akanonda
         private string name;
         private Color color;
         private static GameLibrary.Game game = GameLibrary.Game.Instance;
+        public static FormConnector lobbyConnector;
 
         public LobbyForm(string n, Color c):base()
         {
             InitializeComponent();
+            lobbyConnector = new FormConnector(this);
+            MainForm.mainConnector.ConnectForm(this);
             name = n;
             color = c;
             s_form = this;
@@ -182,12 +185,13 @@ namespace Akanonda
 
         private void StartGame_Click(object sender, EventArgs e)
         {
-            Program.s_client.Shutdown(game.LocalPlayerGuid.ToString());
-            Program.ConnectPlayerToGame(name, color);
-            MainForm Main = new MainForm();
+            //Program.s_client.Shutdown(game.LocalPlayerGuid.ToString());
+            Program.ConnectPlayerToGame(name, color, true);
+            //MainForm Main = new MainForm();
             //LobbyForm.ActiveForm.Close();
-            this.Dispose();
-            Main.ShowDialog();
+            
+            //Main.Show();
+            //Main.Location = new Point(this.Left + this.Width, this.Top);
 
             
             

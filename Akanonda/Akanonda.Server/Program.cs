@@ -273,11 +273,19 @@ namespace Akanonda
                         {
                             string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
                             string[] remotehailmessagearray = remotehailmessage.Split(';');
-
-                            game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-                            game.RemoveLobbyPlayer(Guid.Parse(remotehailmessagearray[0]));
-                            //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-                            UpdateLobbyLists();
+                            if (remotehailmessagearray[3] == "playing")
+                            {
+                                game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
+                                game.RemoveLobbyPlayer(Guid.Parse(remotehailmessagearray[0]));
+                                //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
+                            }
+                            else
+                            {
+                                game.removePlayer(Guid.Parse(remotehailmessagearray[0]));
+                                //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
+                            }
+                                UpdateLobbyLists();
+                            
                             Console.WriteLine("Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                         }
 

@@ -12,10 +12,13 @@ namespace Akanonda
     /// </summary>
     public partial class MainForm : Form
     {
+        
+        public static FormConnector mainConnector;
         public MainForm()
         {
             InitializeComponent();
-                     
+            mainConnector = new FormConnector(this);
+            
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
             this.UpdateStyles();
 
@@ -110,13 +113,13 @@ namespace Akanonda
         {
             this.Dispose();
             Program.netclient.Shutdown(Program.guid.ToString());
-            LobbyForm Lobby = new LobbyForm(Program.game.getPlayerName(Program.guid), Program.game.getPlayerColor(Program.guid));
-            Program.ConnectPlayerToLobby(Program.game.getPlayerName(Program.guid), Program.game.getPlayerColor(Program.guid));
-            Lobby.ShowDialog();
+            Program.s_client.Shutdown(Program.guid.ToString());
+            
+            
             while(Program.netclient.Status != NetPeerStatus.NotRunning)
                 System.Threading.Thread.Sleep(10);
 
-            //Environment.Exit(0);
+            Environment.Exit(0);
         }
     }
 }

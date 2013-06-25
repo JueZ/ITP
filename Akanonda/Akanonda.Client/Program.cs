@@ -32,7 +32,7 @@ namespace Akanonda
             //Application.Run(new MainForm());
         }
 
-        public static void ConnectPlayerToGame(string playername, Color playercolor)
+        public static void ConnectPlayerToGame(string playername, Color playercolor, bool play)
         {
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
 
@@ -41,10 +41,14 @@ namespace Akanonda
             if (SynchronizationContext.Current == null)
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 
-            
             //string playername = "Martin";
+            string hailmessage;
 
-            string hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb());
+            if (play == true)
+                hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb()) + ";playing";
+            else
+                hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb()) + ";justWatching";
+
 
             netclient.RegisterReceivedCallback(new SendOrPostCallback(ReceivedData));
 
@@ -76,8 +80,8 @@ namespace Akanonda
             s_client.Start();
             //NetOutgoingMessage hail = s_client.CreateMessage(Program.guid.ToString() + ";" + "connected");
             NetOutgoingMessage hail = s_client.CreateMessage(hailmessage);
-            //s_client.Connect("127.0.0.1", port, hail);
-            s_client.Connect("server.xios.at", port, hail);
+            s_client.Connect("127.0.0.1", port, hail);
+            //s_client.Connect("server.xios.at", port, hail);
             
             
         }
@@ -124,10 +128,9 @@ namespace Akanonda
                         {
                             if (key.Key == game.LocalPlayerGuid)
                             {
-                                netclient.Shutdown(game.LocalPlayerGuid.ToString());
-
-                                MainForm closeForm = (MainForm)Application.OpenForms["MainForm"];
-                                closeForm.Close();
+                                ConnectPlayerToGame(game.getPlayerName(guid), game.getPlayerColor(guid), false);
+                                ConnectPlayerToLobby(game.getPlayerName(guid), game.getPlayerColor(guid));
+                               
 
                                 //MainForm.Dispose();
                                 string text;
@@ -152,9 +155,8 @@ namespace Akanonda
                                 }
 
                                 MessageBox.Show(text);
-                                LobbyForm Lobby = new LobbyForm(game.getPlayerName(guid), game.getPlayerColor(guid));
-                                Program.ConnectPlayerToLobby(game.getPlayerName(guid), game.getPlayerColor(guid));
-                                Lobby.ShowDialog();
+                                //Program.ConnectPlayerToLobby(game.getPlayerName(guid), game.getPlayerColor(guid));
+                               
                             }
                         }
 

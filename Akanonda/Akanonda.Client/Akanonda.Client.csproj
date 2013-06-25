@@ -79,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormConnector.cs" />
     <Compile Include="LobbyForm.cs">
       <SubType>Form</SubType>
     </Compile>

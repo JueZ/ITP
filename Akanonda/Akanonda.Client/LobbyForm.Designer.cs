@@ -45,7 +45,7 @@
             // StartGame
             // 
             this.StartGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.StartGame.Location = new System.Drawing.Point(668, 442);
+            this.StartGame.Location = new System.Drawing.Point(160, 588);
             this.StartGame.Name = "StartGame";
             this.StartGame.Size = new System.Drawing.Size(112, 40);
             this.StartGame.TabIndex = 4;
@@ -55,16 +55,16 @@
             // 
             // MessageBox
             // 
-            this.MessageBox.Location = new System.Drawing.Point(11, 416);
+            this.MessageBox.Location = new System.Drawing.Point(12, 226);
             this.MessageBox.Name = "MessageBox";
-            this.MessageBox.Size = new System.Drawing.Size(162, 20);
+            this.MessageBox.Size = new System.Drawing.Size(178, 20);
             this.MessageBox.TabIndex = 1;
             // 
             // SendButton
             // 
-            this.SendButton.Location = new System.Drawing.Point(179, 416);
+            this.SendButton.Location = new System.Drawing.Point(196, 225);
             this.SendButton.Name = "SendButton";
-            this.SendButton.Size = new System.Drawing.Size(75, 20);
+            this.SendButton.Size = new System.Drawing.Size(75, 21);
             this.SendButton.TabIndex = 3;
             this.SendButton.Text = "Send";
             this.SendButton.UseVisualStyleBackColor = true;
@@ -72,10 +72,10 @@
             // 
             // ChatBox
             // 
-            this.ChatBox.Location = new System.Drawing.Point(11, 133);
+            this.ChatBox.Location = new System.Drawing.Point(12, 66);
             this.ChatBox.Name = "ChatBox";
             this.ChatBox.ReadOnly = true;
-            this.ChatBox.Size = new System.Drawing.Size(243, 277);
+            this.ChatBox.Size = new System.Drawing.Size(260, 154);
             this.ChatBox.TabIndex = 0;
             this.ChatBox.Text = "";
             // 
@@ -84,7 +84,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(8, 110);
+            this.label1.Location = new System.Drawing.Point(9, 43);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(48, 24);
             this.label1.TabIndex = 5;
@@ -93,17 +93,17 @@
             // PlayersInLobbyList
             // 
             this.PlayersInLobbyList.FormattingEnabled = true;
-            this.PlayersInLobbyList.Location = new System.Drawing.Point(260, 133);
+            this.PlayersInLobbyList.Location = new System.Drawing.Point(14, 283);
             this.PlayersInLobbyList.Name = "PlayersInLobbyList";
-            this.PlayersInLobbyList.Size = new System.Drawing.Size(257, 303);
+            this.PlayersInLobbyList.Size = new System.Drawing.Size(257, 134);
             this.PlayersInLobbyList.TabIndex = 6;
             // 
             // PlayersInGameList
             // 
             this.PlayersInGameList.FormattingEnabled = true;
-            this.PlayersInGameList.Location = new System.Drawing.Point(523, 133);
+            this.PlayersInGameList.Location = new System.Drawing.Point(14, 446);
             this.PlayersInGameList.Name = "PlayersInGameList";
-            this.PlayersInGameList.Size = new System.Drawing.Size(257, 303);
+            this.PlayersInGameList.Size = new System.Drawing.Size(257, 134);
             this.PlayersInGameList.TabIndex = 7;
             // 
             // label2
@@ -111,7 +111,7 @@
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(257, 109);
+            this.label2.Location = new System.Drawing.Point(11, 259);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(153, 24);
             this.label2.TabIndex = 8;
@@ -122,7 +122,7 @@
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(520, 110);
+            this.label3.Location = new System.Drawing.Point(11, 419);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(152, 24);
             this.label3.TabIndex = 9;
@@ -132,9 +132,9 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(-6, -2);
+            this.pictureBox1.Location = new System.Drawing.Point(-9, -29);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(412, 241);
+            this.pictureBox1.Size = new System.Drawing.Size(336, 216);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
@@ -145,7 +145,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(792, 491);
+            this.ClientSize = new System.Drawing.Size(284, 640);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.PlayersInGameList);
