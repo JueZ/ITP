@@ -35,15 +35,30 @@ namespace Akanonda.GameLibrary
             {
                 int[] headCoordinates = player.playerbody[player.playerbody.Count-1];
                 //Console.WriteLine("x: " + coordinates[0].ToString() + "  y: " + coordinates[1].ToString());
-
+               
                 // collision with head to wall
                 if (headCoordinates[0] < 0 || headCoordinates[0] >= _x || headCoordinates[1] < 0 || headCoordinates[1] >= _y)
                 {
                     // Collision!!
                     Console.WriteLine("Mit Kopf gegen Wand!");
-
-                    if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
-                        collisions.Add(player.guid, CollisionType.ToWall);
+                    if (headCoordinates[0] < 0)
+                    {
+                        headCoordinates[0] = 119;
+                    }
+                    if (headCoordinates[0] >= _x)
+                    {
+                        headCoordinates[0] = 0;
+                    }
+                    if (headCoordinates[1] < 0)
+                    {
+                        headCoordinates[1] = 119;
+                    }
+                    if (headCoordinates[1] >= _y)
+                    {
+                        headCoordinates[1] = 0;
+                    }
+                    //if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
+                    //    collisions.Add(player.guid, CollisionType.ToWall);
                 }
 
                 foreach (Player p in playerList) // player with which current head is checked against (can be same as above)

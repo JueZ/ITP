@@ -276,7 +276,7 @@ namespace Akanonda
                             if (remotehailmessagearray[3] == "playing")
                             {
                                 game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-                                game.RemoveLobbyPlayer(Guid.Parse(remotehailmessagearray[0]));
+                                //game.RemoveLobbyPlayer(Guid.Parse(remotehailmessagearray[0]));
                                 //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                             }
                             else
@@ -357,6 +357,7 @@ namespace Akanonda
                     string inGame = "PlayersInGame;";
                     foreach (GameLibrary.Player p in game.LobbyList)
                     {
+                        if(game.getPlayerName(p.guid) == "")
                         inLobby += p.name + ";";
 
                     }
