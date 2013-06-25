@@ -43,7 +43,7 @@ namespace Akanonda.GameLibrary
                     Console.WriteLine("Mit Kopf gegen Wand!");
                     if (headCoordinates[0] < 0)
                     {
-                        headCoordinates[0] = 119;
+                        headCoordinates[0] = _x-1;
                     }
                     if (headCoordinates[0] >= _x)
                     {
@@ -51,7 +51,7 @@ namespace Akanonda.GameLibrary
                     }
                     if (headCoordinates[1] < 0)
                     {
-                        headCoordinates[1] = 119;
+                        headCoordinates[1] = _y-1;
                     }
                     if (headCoordinates[1] >= _y)
                     {
