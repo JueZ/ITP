@@ -74,7 +74,7 @@ namespace Akanonda
 
             int port;
             //Color playercolor = Color.FromName(color);
-            string hailmessage = guid.ToString() + ";connected;" + playername + ";" + Convert.ToString(playercolor.ToArgb());
+            string hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb());
 
             Int32.TryParse("1338", out port);
             s_client.Start();
@@ -126,12 +126,13 @@ namespace Akanonda
 
                         foreach (KeyValuePair<Guid, CollisionType> key in game.CollisionList)
                         {
+
                             if (key.Key == game.LocalPlayerGuid)
                             {
                                 ConnectPlayerToGame(game.getPlayerName(guid), game.getPlayerColor(guid), false);
-                                ConnectPlayerToLobby(game.getPlayerName(guid), game.getPlayerColor(guid));
-                               
+                                //ConnectPlayerToLobby(game.getPlayerName(guid), game.getPlayerColor(guid));
 
+                                
                                 //MainForm.Dispose();
                                 string text;
 
@@ -155,6 +156,8 @@ namespace Akanonda
                                 }
 
                                 MessageBox.Show(text);
+                                LobbyForm.L_form.StartGame_Enable();
+                                LobbyForm.L_form.Focus();
                                 //Program.ConnectPlayerToLobby(game.getPlayerName(guid), game.getPlayerColor(guid));
                                
                             }

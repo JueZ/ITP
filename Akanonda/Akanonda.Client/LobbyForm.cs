@@ -17,7 +17,7 @@ namespace Akanonda
     {
 
         //private static NetClient s_client = Program.s_client;
-        private static LobbyForm s_form;
+        public static LobbyForm L_form;
         private string name;
         private Color color;
         private static GameLibrary.Game game = GameLibrary.Game.Instance;
@@ -30,7 +30,7 @@ namespace Akanonda
             MainForm.mainConnector.ConnectForm(this);
             name = n;
             color = c;
-            s_form = this;
+            L_form = this;
             //startChat();
             MessageBox.KeyDown += new KeyEventHandler(MessageBox_KeyDown);
             
@@ -95,14 +95,14 @@ namespace Akanonda
         private static void Output(string text)
         {
             
-            if (text != null && text != "" && s_form != null)
+            if (text != null && text != "" && L_form != null)
             {
                 try
                 {
-                    s_form.ChatBox.AppendText("\r\n" + text.ToString());
+                    L_form.ChatBox.AppendText("\r\n" + text.ToString());
                     //s_form.ChatBox.Text += "\r\n" + text.ToString();
-                    s_form.ChatBox.SelectionStart = s_form.ChatBox.Text.Length;
-                    s_form.ChatBox.ScrollToCaret();
+                    L_form.ChatBox.SelectionStart = L_form.ChatBox.Text.Length;
+                    L_form.ChatBox.ScrollToCaret();
                 }
                 catch
                 {
@@ -132,7 +132,7 @@ namespace Akanonda
 
                         if (status == NetConnectionStatus.Connected)
                         {
-                            s_form.EnableInput();
+                            L_form.EnableInput();
                             Output("Successfully connected to Chat");
                         }
                         else
@@ -150,7 +150,7 @@ namespace Akanonda
                             string[] chat2 = chat.Split(':');
                             string[] PlayersInLobby = chat2[0].Split(';');
                             string[] PlayersInGame = chat2[1].Split(';');
-                            s_form.FillList(PlayersInLobby, PlayersInGame);
+                            L_form.FillList(PlayersInLobby, PlayersInGame);
                         }
                         else
                         {
@@ -183,16 +183,26 @@ namespace Akanonda
             SendButton.Enabled = false;
         }
 
+        public void StartGame_Enable()
+        {
+            StartGame.Enabled = true;
+            StartGame.Text = "Start";
+
+        }
+
         private void StartGame_Click(object sender, EventArgs e)
         {
+            StartGame.Enabled = false;
+            StartGame.Text = "In Game";
             //Program.s_client.Shutdown(game.LocalPlayerGuid.ToString());
+            MainForm.M_Form.Focus();
             Program.ConnectPlayerToGame(name, color, true);
             //MainForm Main = new MainForm();
             //LobbyForm.ActiveForm.Close();
             
             //Main.Show();
             //Main.Location = new Point(this.Left + this.Width, this.Top);
-
+            
             
             
         }
@@ -215,6 +225,10 @@ namespace Akanonda
         {
             Program.netclient.Shutdown(Program.guid.ToString());
             Program.s_client.Shutdown(Program.guid.ToString());
+
+            while (Program.netclient.Status != NetPeerStatus.NotRunning || Program.s_client.Status != NetPeerStatus.NotRunning)
+                System.Threading.Thread.Sleep(10);
+
             Environment.Exit(0);
         }
     }

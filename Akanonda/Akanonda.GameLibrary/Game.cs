@@ -15,6 +15,7 @@ namespace Akanonda.GameLibrary
         private Field _field;
         private List<Player> _playerlist;
         private List<Player> _lobbyList;
+        private List<Player> _deadList;
         private Guid _localplayer;
         //private Color _localColor; // compiler sagt wird nirgens verwendet?
         private Collision _collision;
@@ -33,7 +34,7 @@ namespace Akanonda.GameLibrary
         private Game()
         {
             _playerlist = new List<Player>();
-
+            _deadList = new List<Player>();
             _lobbyList = new List<Player>();
 
             _field.setSize(120, 120); // testhalber, derzeit wird neuer user auf 105x105 oder so gesetzt

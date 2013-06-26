@@ -10,15 +10,17 @@ namespace Akanonda
     /// <summary>
     /// Description of MainForm.
     /// </summary>
+    /// 
     public partial class MainForm : Form
     {
         
         public static FormConnector mainConnector;
+        public static MainForm M_Form;
         public MainForm()
         {
             InitializeComponent();
             mainConnector = new FormConnector(this);
-            
+            M_Form = this;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
             this.UpdateStyles();
 
@@ -111,12 +113,12 @@ namespace Akanonda
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.Dispose();
+            
             Program.netclient.Shutdown(Program.guid.ToString());
             Program.s_client.Shutdown(Program.guid.ToString());
-            
-            
-            while(Program.netclient.Status != NetPeerStatus.NotRunning)
+            this.Dispose();
+
+            while (Program.netclient.Status != NetPeerStatus.NotRunning || Program.s_client.Status != NetPeerStatus.NotRunning)
                 System.Threading.Thread.Sleep(10);
 
             Environment.Exit(0);

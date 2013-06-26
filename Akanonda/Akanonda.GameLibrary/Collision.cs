@@ -35,7 +35,7 @@ namespace Akanonda.GameLibrary
             {
                 int[] headCoordinates = player.playerbody[player.playerbody.Count-1];
                 //Console.WriteLine("x: " + coordinates[0].ToString() + "  y: " + coordinates[1].ToString());
-               
+                
                 // collision with head to wall
                 if (headCoordinates[0] < 0 || headCoordinates[0] >= _x || headCoordinates[1] < 0 || headCoordinates[1] >= _y)
                 {
@@ -57,6 +57,9 @@ namespace Akanonda.GameLibrary
                     {
                         headCoordinates[1] = 0;
                     }
+
+                    
+                    
                     //if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
                     //    collisions.Add(player.guid, CollisionType.ToWall);
                 }
@@ -89,6 +92,7 @@ namespace Akanonda.GameLibrary
                             array = p.playerbody[i];
                             if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with own tail
                             {
+                                //player.playerbody.Remove(player.playerbody[0]);
                                 // Collision!
                                 Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
 
@@ -98,6 +102,7 @@ namespace Akanonda.GameLibrary
                         }
                     }
                 }
+                
             }
 
             return collisions;

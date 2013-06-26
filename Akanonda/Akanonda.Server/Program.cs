@@ -150,30 +150,25 @@ namespace Akanonda
                             string reason = im.ReadString();
                             //Output(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " " + status + ": " + reason);
 
-                            UpdateConnectionsList();
-
-
-                            if (status == NetConnectionStatus.Disconnected)
-                            {
-                                game.removePlayer(Guid.Parse(reason));
-                                game.RemoveLobbyPlayer(Guid.Parse(reason));
-                                Console.WriteLine("Player disconnected! \t GUID: " + Guid.Parse(reason));
-                            }
+                            //UpdateConnectionsList()
 
                             if (im.SenderConnection.RemoteHailMessage != null && status == NetConnectionStatus.Connected)
                             {
                                 string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
                                 string[] remotehailmessagearray = remotehailmessage.Split(';');
 
-                                game.AddLobbyPlayer(remotehailmessagearray[2], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[3])), Guid.Parse(remotehailmessagearray[0]));
+                                game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
 
                                 //Console.WriteLine("Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                                 UpdateLobbyLists();
+                                Console.WriteLine("[Chat]Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                             }
 
                             if (status == NetConnectionStatus.Disconnected)
                             {
+                                game.removePlayer(Guid.Parse(reason));
                                 game.RemoveLobbyPlayer(Guid.Parse(reason));
+                                Console.WriteLine("[Chat]Player disconnected! \t GUID: " + Guid.Parse(reason));
                                 UpdateLobbyLists();
                                 
                             }
@@ -208,7 +203,7 @@ namespace Akanonda
                             }
                             break;
                         default:
-                            Console.WriteLine("(CHAT):Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes " + im.DeliveryMethod + "|" + im.SequenceChannel);
+                            Console.WriteLine("[Chat]:Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes " + im.DeliveryMethod + "|" + im.SequenceChannel);
                             break;
                     }
                 }
@@ -278,23 +273,29 @@ namespace Akanonda
                                 game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                                 //game.RemoveLobbyPlayer(Guid.Parse(remotehailmessagearray[0]));
                                 //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
+                                Console.WriteLine("[Game]Player connected <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
+
                             }
-                            else
+                            else if (remotehailmessagearray[3] == "justWatching")
                             {
                                 game.removePlayer(Guid.Parse(remotehailmessagearray[0]));
                                 //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
+                                Console.WriteLine("[Game]Player connected <watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
+
                             }
                                 UpdateLobbyLists();
-                            
-                            Console.WriteLine("Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
-                        }
+
+                                                        }
 
                         if (status == NetConnectionStatus.Disconnected)
                         {
-                            game.removePlayer(Guid.Parse(reason));
-                            game.RemoveLobbyPlayer(Guid.Parse(reason));
-                            UpdateLobbyLists();
-                            Console.WriteLine("Player disconnected! \t GUID: " + Guid.Parse(reason));
+                            if (Guid.Parse(reason) != null)
+                            {
+                                game.removePlayer(Guid.Parse(reason));
+                                game.RemoveLobbyPlayer(Guid.Parse(reason));
+                                UpdateLobbyLists();
+                                Console.WriteLine("[Game]Player disconnected! \t GUID: " + Guid.Parse(reason));
+                            }
                         }
 
 						
