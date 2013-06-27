@@ -44,11 +44,30 @@ namespace Akanonda
                 Point relativeChange = new Point(this.mMainForm.Location.X - this.mMainLocation.X, this.mMainForm.Location.Y - this.mMainLocation.Y);
                 foreach (Form form in this.mConnectedForms)
                 {
+                    
                     form.Location = new Point(form.Location.X + relativeChange.X, form.Location.Y + relativeChange.Y);
+                    if (!IsOnScreen(form))
+                    form.Location = new Point(form.Location.X - relativeChange.X, form.Location.Y - relativeChange.Y);
                 }
-
+                
                 this.mMainLocation = new Point(this.mMainForm.Location.X, this.mMainForm.Location.Y);
             
+            }
+
+            public bool IsOnScreen(Form form)
+            {
+                Screen[] screens = Screen.AllScreens;
+                foreach (Screen screen in screens)
+                {
+                    Rectangle formRectangle = new Rectangle(form.Left, form.Top, form.Width, form.Height);
+
+                    if (screen.WorkingArea.Contains(formRectangle))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
             }
 
     }
