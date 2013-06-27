@@ -41,27 +41,34 @@ namespace Akanonda.GameLibrary
                 {
                     // Collision!!
                     Console.WriteLine("Mit Kopf gegen Wand!");
-                    if (headCoordinates[0] < 0)
-                    {
-                        headCoordinates[0] = _x-1;
-                    }
-                    if (headCoordinates[0] >= _x)
-                    {
-                        headCoordinates[0] = 0;
-                    }
-                    if (headCoordinates[1] < 0)
-                    {
-                        headCoordinates[1] = _y-1;
-                    }
-                    if (headCoordinates[1] >= _y)
-                    {
-                        headCoordinates[1] = 0;
-                    }
 
+                    if (Game.Instance.goThroughWalls)
+                    {
+                        if (headCoordinates[0] < 0)
+                        {
+                            headCoordinates[0] = _x - 1;
+                        }
+                        if (headCoordinates[0] >= _x)
+                        {
+                            headCoordinates[0] = 0;
+                        }
+                        if (headCoordinates[1] < 0)
+                        {
+                            headCoordinates[1] = _y - 1;
+                        }
+                        if (headCoordinates[1] >= _y)
+                        {
+                            headCoordinates[1] = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
+                            collisions.Add(player.guid, CollisionType.ToWall);
+                    }
                     
                     
-                    //if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
-                    //    collisions.Add(player.guid, CollisionType.ToWall);
+                    
                 }
 
                 foreach (Player p in playerList) // player with which current head is checked against (can be same as above)

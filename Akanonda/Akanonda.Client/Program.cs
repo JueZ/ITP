@@ -32,7 +32,7 @@ namespace Akanonda
             //Application.Run(new MainForm());
         }
 
-        public static void ConnectPlayerToGame(string playername, Color playercolor, bool play)
+        public static void ConnectPlayerToGame(string playername, Color playercolor, string playOrWatch)
         {
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
 
@@ -44,10 +44,10 @@ namespace Akanonda
             //string playername = "Martin";
             string hailmessage;
 
-            if (play == true)
-                hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb()) + ";playing";
-            else
-                hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb()) + ";justWatching";
+            
+                hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb()) + ";"+playOrWatch;
+            //else
+            //    hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb()) + ";justWatching";
 
 
             netclient.RegisterReceivedCallback(new SendOrPostCallback(ReceivedData));
@@ -124,12 +124,18 @@ namespace Akanonda
 						game = (Game)SerializeHelper.ByteArrayToObject(gamedata);
                         game.LocalPlayerGuid = Program.guid;
 
+                        //if (game.CollisionList.Count > 0)
+                        //{
+                        //    MessageBox.Show("collision found");
+                        //}
+
+
                         foreach (KeyValuePair<Guid, CollisionType> key in game.CollisionList)
                         {
 
                             if (key.Key == game.LocalPlayerGuid)
                             {
-                                ConnectPlayerToGame(game.getPlayerName(guid), game.getPlayerColor(guid), false);
+                                ConnectPlayerToGame(game.getPlayerName(guid), game.getPlayerColor(guid), "dead");
                                 //ConnectPlayerToLobby(game.getPlayerName(guid), game.getPlayerColor(guid));
 
                                 

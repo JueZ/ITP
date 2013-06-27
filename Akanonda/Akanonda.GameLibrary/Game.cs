@@ -13,7 +13,7 @@ namespace Akanonda.GameLibrary
         private static Game instance = new Game();
 
         private Field _field;
-        private List<Player> _playerlist;
+        private List<Player> _playerList;
         private List<Player> _lobbyList;
         private List<Player> _deadList;
         private Guid _localplayer;
@@ -22,6 +22,7 @@ namespace Akanonda.GameLibrary
         private int _ticksUntilAdd;
         private int _tickCounter;
         private Dictionary<Guid, CollisionType> _collisionList;
+        public bool goThroughWalls = false;
 
         public static Game Instance
         {
@@ -33,7 +34,7 @@ namespace Akanonda.GameLibrary
 
         private Game()
         {
-            _playerlist = new List<Player>();
+            _playerList = new List<Player>();
             _deadList = new List<Player>();
             _lobbyList = new List<Player>();
 
@@ -42,7 +43,7 @@ namespace Akanonda.GameLibrary
             _field.Offset = new int[] {20, 20, 20, 20}; // testhalber
 
             _collision = new Collision(_field.x, _field.y);
-
+            
             _ticksUntilAdd = 5; // testhalber
             _tickCounter = 0;
         }
@@ -51,7 +52,7 @@ namespace Akanonda.GameLibrary
         {
             get
             {
-                return _playerlist;
+                return _playerList;
             }
         }
 
@@ -60,6 +61,14 @@ namespace Akanonda.GameLibrary
             get
             {
                 return _lobbyList;
+            }
+        }
+
+        public List<Player> DeadList
+        {
+            get
+            {
+                return _deadList;
             }
         }
 
@@ -78,21 +87,23 @@ namespace Akanonda.GameLibrary
         {
             set
             {
-                for (int i = 0; i < _playerlist.Count; i++)
+                for (int i = 0; i < _playerList.Count; i++)
                 {
-                    if (_playerlist[i].guid.Equals(_localplayer))
+                    if (_playerList[i].guid.Equals(_localplayer))
                     {
-                        _playerlist[i].playersteering = value;
+                        _playerList[i].playersteering = value;
+                        break;
                     }
                 }
             }
             get
             {
-                for (int i = 0; i < _playerlist.Count; i++)
+                for (int i = 0; i < _playerList.Count; i++)
                 {
-                    if (_playerlist[i].guid.Equals(_localplayer))
+                    if (_playerList[i].guid.Equals(_localplayer))
                     {
-                        return _playerlist[i].playersteering;
+                        return _playerList[i].playersteering;
+                        break;
                     }
                 }
                 throw new Exception("No localplayer found");
@@ -101,24 +112,41 @@ namespace Akanonda.GameLibrary
 
         public void setsteering(Guid playerguid, PlayerSteering playersteering)
         {
-            for (int i = 0; i < _playerlist.Count; i++)
+            for (int i = 0; i < _playerList.Count; i++)
             {
-                if (_playerlist[i].guid.Equals(playerguid))
+                if (_playerList[i].guid.Equals(playerguid))
                 {
-                    _playerlist[i].playersteering = playersteering;
+                    _playerList[i].playersteering = playersteering;
+                    break;
                 }
             }
         }
 
         public void addPlayer(string name, Color color, Guid guid)
         {
-            _playerlist.Add(new Player(name, color, guid));
+            _playerList.Add(new Player(name, color, guid));
         }
 
+        public void addDeadRemoveLivingPlayer(Guid guid)
+        {
+
+            for (int i = 0; i < _playerList.Count; i++)
+            {
+                if (_playerList[i].guid.Equals(guid))
+                {
+                    _deadList.Add(_playerList[i]);
+                    _playerList.RemoveAt(i);
+                    break;
+                }
+            }
+
+
+
+        }
         public string getPlayerName(Guid guid){
 
             string name = "";
-            foreach (Player pl in _playerlist)
+            foreach (Player pl in _playerList)
             {
                 if (pl.guid == guid)
                 {
@@ -134,12 +162,11 @@ namespace Akanonda.GameLibrary
         {
 
             Color color = Color.FromName("Black");
-            foreach (Player pl in _playerlist)
+            foreach (Player pl in _playerList)
             {
                 if (pl.guid == guid)
                 {
                     color = pl.color;
-                    
                     break;
                 }
             }
@@ -149,11 +176,24 @@ namespace Akanonda.GameLibrary
 
         public void removePlayer(Guid guid)
         {
-            for (int i = 0; i < _playerlist.Count; i++)
+            for (int i = 0; i < _playerList.Count; i++)
             {
-                if (_playerlist[i].guid.Equals(guid))
+                if (_playerList[i].guid.Equals(guid))
                 {
-                    _playerlist.RemoveAt(i);
+                    _playerList.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+        public void removeDeadPlayer(Guid guid)
+        {
+            for (int i = 0; i < _deadList.Count; i++)
+            {
+                if (_deadList[i].guid.Equals(guid))
+                {
+                    _deadList.RemoveAt(i);
+                    break;
                 }
             }
         }
@@ -166,15 +206,16 @@ namespace Akanonda.GameLibrary
             if (_tickCounter == 0)
                 grow = true;
 
-            for (int i = 0; i < _playerlist.Count; i++)
+            for (int i = 0; i < _playerList.Count; i++)
             {
-                _playerlist[i].playerMove(grow);
+                _playerList[i].playerMove(grow);
             }
         }
 
         public void DetectCollision()
         {
-             _collisionList = _collision.DetectCollision(_playerlist);
+             _collisionList = _collision.DetectCollision(_playerList);
+             
         }
 
         public void gamepaint(Graphics g)
@@ -203,7 +244,16 @@ namespace Akanonda.GameLibrary
             //g.DrawRectangles(new Pen(brush), border);
 
             // draw players
-            foreach (Player player in _playerlist)
+            foreach (Player player in _playerList)
+            {
+                foreach (int[] playerbody in player.playerbody)
+                {
+                    g.FillRectangle(new SolidBrush(player.color), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
+                    //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
+                }
+            }
+
+            foreach (Player player in _deadList)
             {
                 foreach (int[] playerbody in player.playerbody)
                 {

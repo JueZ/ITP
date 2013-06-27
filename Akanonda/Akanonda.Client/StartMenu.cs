@@ -46,14 +46,15 @@ namespace Akanonda
             //Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
 
             Program.ConnectPlayerToLobby(textBoxName.Text, Color.FromName(colorBox.Text));
-            Program.ConnectPlayerToGame(textBoxName.Text, Color.FromName(colorBox.Text), false);
+            Program.ConnectPlayerToGame(textBoxName.Text, Color.FromName(colorBox.Text), "justWatching");
             //sollte zuerst lobby und dann mainform sein-> spieler wird beim anmelden aber sofort auf spielfeld gesetzt...
             MainForm Main = new MainForm();
             LobbyForm Lobby = new LobbyForm(textBoxName.Text,Color.FromName(colorBox.Items[colorBox.SelectedIndex].ToString()));
             
             this.Hide();
-            Lobby.Show();
             Main.Show();
+            Lobby.Show();
+            
            //Lobby.SetDesktopLocation(Main.Location.X + Main.Size.Width, Main.Location.Y);
             Lobby.Location = new Point(Main.Left + Main.Width, Main.Top);
             //this.Show();

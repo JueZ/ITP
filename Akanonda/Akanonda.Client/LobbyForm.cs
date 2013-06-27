@@ -196,7 +196,7 @@ namespace Akanonda
             StartGame.Text = "In Game";
             //Program.s_client.Shutdown(game.LocalPlayerGuid.ToString());
             MainForm.M_Form.Focus();
-            Program.ConnectPlayerToGame(name, color, true);
+            Program.ConnectPlayerToGame(name, color, "playing");
             //MainForm Main = new MainForm();
             //LobbyForm.ActiveForm.Close();
             

@@ -229,6 +229,21 @@ namespace Akanonda
             game.gametick();
             game.DetectCollision();
 
+            foreach (KeyValuePair<Guid, CollisionType> key in game.CollisionList)
+            {
+                Game.Instance.addDeadRemoveLivingPlayer(key.Key);
+            }
+
+            
+                foreach (Player player in game.DeadList)
+                {
+                    if (player.playerbody.Count > 0)
+                        player.playerbody.Remove(player.playerbody[0]);
+                    else
+                        game.removeDeadPlayer(player.guid);
+                }
+            
+
             /*  
              *  DetectCollison speichert alle fälle die gefunden werden in das dictionary.
              *  Anhand der Guid kann der player identifiziert werden, CollisonType gibt an was passiert ist:
@@ -273,7 +288,7 @@ namespace Akanonda
                                 game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                                 //game.RemoveLobbyPlayer(Guid.Parse(remotehailmessagearray[0]));
                                 //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-                                Console.WriteLine("[Game]Player connected <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
+                                Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
                             }
                             else if (remotehailmessagearray[3] == "justWatching")
@@ -281,6 +296,14 @@ namespace Akanonda
                                 game.removePlayer(Guid.Parse(remotehailmessagearray[0]));
                                 //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                                 Console.WriteLine("[Game]Player connected <watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
+
+                            }
+                            else if (remotehailmessagearray[3] == "dead")
+                            {
+                               // game.removePlayer(Guid.Parse(remotehailmessagearray[0]));
+                                game.addDeadRemoveLivingPlayer(Guid.Parse(remotehailmessagearray[0]));
+                                //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
+                                Console.WriteLine("[Game]Player died <now watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
                             }
                                 UpdateLobbyLists();
