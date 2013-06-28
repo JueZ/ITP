@@ -7,6 +7,8 @@ using System.Threading;
 using Akanonda.Properties;
 using System.Collections.Generic;
 
+
+
 namespace Akanonda
 {
     internal sealed class Program
@@ -15,6 +17,9 @@ namespace Akanonda
         public static NetClient s_client;
         public static Guid guid = Guid.NewGuid();
         public static NetClient netclient;
+        public static System.Windows.Forms.Timer SurvivalTimer;
+        public static int SurvivalSecond = 0;
+        public static int SurvivalMinute = 0;
         
         [STAThread]
         private static void Main(string[] args)
@@ -25,12 +30,18 @@ namespace Akanonda
 
             game = Game.Instance;
             game.LocalPlayerGuid = Program.guid;
+            SurvivalTimer = new System.Windows.Forms.Timer();
+            SurvivalTimer.Interval = 1000;
+            SurvivalTimer.Tick += SurvivalTimer_Tick;
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new StartMenu());
+            
             //Application.Run(new MainForm());
         }
+
+
 
         public static void ConnectPlayerToGame(string playername, Color playercolor, string playOrWatch)
         {
@@ -85,7 +96,18 @@ namespace Akanonda
             
             
         }
-        
+
+        public static void SurvivalTimer_Tick(object sender, EventArgs e)
+        {
+            SurvivalSecond++;
+
+            if (SurvivalSecond == 60)
+            {
+                SurvivalMinute++;
+                SurvivalSecond = 0;
+            }
+        }
+
         public static void ReceivedData(object peer)
 		{
 			NetIncomingMessage im;
@@ -165,7 +187,7 @@ namespace Akanonda
                                 //Overlay.FormBorderStyle = FormBorderStyle.None;
                                 //Overlay.Show();
 
-                                MainForm.M_Form.showOverlay();
+                                MainForm.M_Form.showOverlay(SurvivalMinute, SurvivalSecond);
 
                                 //MessageBox.Show(text);
                                 LobbyForm.L_form.StartGame_Enable();

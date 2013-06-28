@@ -19,6 +19,7 @@ namespace Akanonda
         public MainForm()
         {
             InitializeComponent();
+            
             mainConnector = new FormConnector(this);
             M_Form = this;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
@@ -26,7 +27,7 @@ namespace Akanonda
 
             Game game = Game.Instance;
             game.adjustGameFormSize(this);
-            
+            //panel1.Size = this.Size;
             DrawTimer.Start();
         }
         
@@ -43,7 +44,7 @@ namespace Akanonda
                 
         void DrawTimerTick(object sender, System.EventArgs e)
         {
-            this.Invalidate();
+            gamePanel.Invalidate();
         }
         
         void MainFormKeyDown(object sender, KeyEventArgs e)
@@ -112,14 +113,38 @@ namespace Akanonda
         }
 
 
-        public void showOverlay()
+        public void showOverlay(int minutes, int seconds)
         {
 
             //overlay.Size = this.Size;
-            overlay.Visible = true;
-            overlay.BringToFront();
-            
-            
+            //overlay.Visible = true;
+            //overlay.BringToFront();
+            if (minutes == 0)
+            {
+                SurvivalTimeBox.Text = seconds > 1 ? "          GAME OVER!\nYou survived " + seconds + " seconds!\nCongratulations " + LobbyForm.L_form.name + "!!" : "         GAME OVER!\nYou survived one second!\nCongratulations " + LobbyForm.L_form.name + "!!";
+            }
+            else
+            {
+                SurvivalTimeBox.Text = minutes > 1 ? "      GAME OVER!\nYou survived " + minutes + " minutes and " + seconds + " seconds!\nCongratulations " + LobbyForm.L_form.name + "!!" : "GAME OVER!\nYou survived " + minutes + " minute and " + seconds + " seconds !\nCongratulations " + LobbyForm.L_form.name + "!!";
+            }
+
+
+            gamePanel.BackColor = Color.Gray;
+            SurvivalTimeBox.SelectAll();
+            SurvivalTimeBox.SelectionAlignment = HorizontalAlignment.Center;
+            SurvivalTimeBox.Visible = true;
+            //overlay.SendToBack();
+            //overlay.Visible = false;
+
+        }
+
+        public void closeOverlay()
+        {
+
+            //overlay.Size = this.Size;
+            gamePanel.BackColor = Color.White;
+            SurvivalTimeBox.Visible = false;
+
             //overlay.SendToBack();
             //overlay.Visible = false;
 

@@ -18,7 +18,7 @@ namespace Akanonda
 
         //private static NetClient s_client = Program.s_client;
         public static LobbyForm L_form;
-        private string name;
+        public string name;
         private Color color;
         private static GameLibrary.Game game = GameLibrary.Game.Instance;
         public static FormConnector lobbyConnector;
@@ -192,6 +192,10 @@ namespace Akanonda
 
         private void StartGame_Click(object sender, EventArgs e)
         {
+            MainForm.M_Form.closeOverlay();
+            Program.SurvivalSecond = 0;
+            Program.SurvivalMinute = 0;
+            Program.SurvivalTimer.Start();
             StartGame.Enabled = false;
             StartGame.Text = "In Game";
             //Program.s_client.Shutdown(game.LocalPlayerGuid.ToString());
