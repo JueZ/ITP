@@ -39,6 +39,7 @@ namespace Akanonda
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.DrawTimer = new System.Windows.Forms.Timer(this.components);
+            this.overlay = new Akanonda.ShadowPanel();
             this.SuspendLayout();
             // 
             // DrawTimer
@@ -46,12 +47,21 @@ namespace Akanonda
             this.DrawTimer.Interval = 5;
             this.DrawTimer.Tick += new System.EventHandler(this.DrawTimerTick);
             // 
+            // overlay
+            // 
+            this.overlay.Location = new System.Drawing.Point(475, 316);
+            this.overlay.Name = "overlay";
+            this.overlay.Size = new System.Drawing.Size(227, 180);
+            this.overlay.TabIndex = 0;
+            this.overlay.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(714, 535);
+            this.Controls.Add(this.overlay);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Akanonda Game";
@@ -62,5 +72,6 @@ namespace Akanonda
 
         }
         private System.Windows.Forms.Timer DrawTimer;
+        private ShadowPanel overlay;
     }
 }

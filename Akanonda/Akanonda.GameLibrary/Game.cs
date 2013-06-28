@@ -103,7 +103,7 @@ namespace Akanonda.GameLibrary
                     if (_playerList[i].guid.Equals(_localplayer))
                     {
                         return _playerList[i].playersteering;
-                        break;
+                        //break;
                     }
                 }
                 throw new Exception("No localplayer found");

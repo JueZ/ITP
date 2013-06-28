@@ -111,6 +111,20 @@ namespace Akanonda
             }
         }
 
+
+        public void showOverlay()
+        {
+
+            //overlay.Size = this.Size;
+            overlay.Visible = true;
+            overlay.BringToFront();
+            
+            
+            //overlay.SendToBack();
+            //overlay.Visible = false;
+
+        }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             
@@ -124,4 +138,35 @@ namespace Akanonda
             Environment.Exit(0);
         }
     }
+    class ShadowPanel : Panel
+    {
+        public ShadowPanel()
+        {
+        }
+        protected enum ViewState
+        {
+            Visible, Hidden
+        }
+        protected int m_CurrentState = 0;
+
+        override protected CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x20;
+                return cp;
+            }
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(59, Color.Black)), this.ClientRectangle);
+            Application.DoEvents();
+        }
+    } 
+
+
+
+    
 }

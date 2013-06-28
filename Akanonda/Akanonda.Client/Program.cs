@@ -136,9 +136,7 @@ namespace Akanonda
                             if (key.Key == game.LocalPlayerGuid)
                             {
                                 ConnectPlayerToGame(game.getPlayerName(guid), game.getPlayerColor(guid), "dead");
-                                //ConnectPlayerToLobby(game.getPlayerName(guid), game.getPlayerColor(guid));
-
-                                
+    
                                 //MainForm.Dispose();
                                 string text;
 
@@ -161,7 +159,15 @@ namespace Akanonda
                                         break;
                                 }
 
-                                MessageBox.Show(text);
+                                //overlayForm Overlay = new overlayForm();
+                                //Overlay.Location = MainForm.M_Form.Location;
+                                //Overlay.Size = MainForm.M_Form.Size;
+                                //Overlay.FormBorderStyle = FormBorderStyle.None;
+                                //Overlay.Show();
+
+                                MainForm.M_Form.showOverlay();
+
+                                //MessageBox.Show(text);
                                 LobbyForm.L_form.StartGame_Enable();
                                 LobbyForm.L_form.Focus();
                                 //Program.ConnectPlayerToLobby(game.getPlayerName(guid), game.getPlayerColor(guid));

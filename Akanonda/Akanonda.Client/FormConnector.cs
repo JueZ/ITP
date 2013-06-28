@@ -45,29 +45,37 @@ namespace Akanonda
                 foreach (Form form in this.mConnectedForms)
                 {
                     
-                    form.Location = new Point(form.Location.X + relativeChange.X, form.Location.Y + relativeChange.Y);
-                    if (!IsOnScreen(form))
-                    form.Location = new Point(form.Location.X - relativeChange.X, form.Location.Y - relativeChange.Y);
+                   
+                    if (IsOnScreen(form, relativeChange))
+                        form.Location = new Point(form.Location.X + relativeChange.X, form.Location.Y + relativeChange.Y);
+                    //form.Location = new Point(form.Location.X - relativeChange.X, form.Location.Y - relativeChange.Y);
                 }
                 
                 this.mMainLocation = new Point(this.mMainForm.Location.X, this.mMainForm.Location.Y);
             
             }
 
-            public bool IsOnScreen(Form form)
+            public bool IsOnScreen(Form form, Point relativeChange)
             {
                 Screen[] screens = Screen.AllScreens;
-                foreach (Screen screen in screens)
+                Rectangle workingArea = screens[0].WorkingArea;
+                if (screens.Length > 1)
                 {
-                    Rectangle formRectangle = new Rectangle(form.Left, form.Top, form.Width, form.Height);
+                    workingArea = Rectangle.Union(screens[0].WorkingArea, screens[1].WorkingArea);
+                }
 
-                    if (screen.WorkingArea.Contains(formRectangle))
+
+                    Rectangle formRectangle = new Rectangle(form.Left + relativeChange.X, form.Top + relativeChange.Y, form.Width, form.Height);
+                    Rectangle mainFormRectangle = new Rectangle(mMainForm.Left, mMainForm.Top, mMainForm.Width, mMainForm.Height);
+                    if (workingArea.Contains(formRectangle) && !mainFormRectangle.IntersectsWith(formRectangle))
                     {
                         return true;
                     }
-                }
-
-                return false;
+                    else
+                    {
+                        return false;
+                    }
+               
             }
 
     }
