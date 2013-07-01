@@ -17,13 +17,13 @@ namespace Akanonda
         private static Game game;
         private static NetServer chatServer;
         private static volatile bool _chatStopped = false;
-
+        private static Settings settings = new Settings();
         static void Main(string[] args)
         {
             Console.WriteLine("Akanonda Server");
             Console.WriteLine("---------------");
 
-            Settings settings = new Settings();
+            
 
             // NetServer START
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
@@ -65,7 +65,7 @@ namespace Akanonda
             
 
             // GameTimer START                                  set gameSpeed here
-            System.Timers.Timer timer = new System.Timers.Timer(50);
+            System.Timers.Timer timer = new System.Timers.Timer(settings.GameSpeed);
             timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             timer.Enabled = true;
             // GameTimer END

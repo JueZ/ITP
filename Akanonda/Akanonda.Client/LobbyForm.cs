@@ -99,7 +99,14 @@ namespace Akanonda
             {
                 try
                 {
-                    L_form.ChatBox.AppendText("\r\n" + text.ToString());
+                    if (L_form.ChatBox.TextLength == 0)
+                    {
+                        L_form.ChatBox.AppendText(text.ToString());
+                    }
+                    else
+                    {
+                        L_form.ChatBox.AppendText("\n" + text.ToString());
+                    }
                     //s_form.ChatBox.Text += "\r\n" + text.ToString();
                     L_form.ChatBox.SelectionStart = L_form.ChatBox.Text.Length;
                     L_form.ChatBox.ScrollToCaret();

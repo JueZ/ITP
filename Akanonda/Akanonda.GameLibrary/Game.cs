@@ -11,7 +11,6 @@ namespace Akanonda.GameLibrary
     public sealed class Game
     {
         private static Game instance = new Game();
-
         private Field _field;
         private List<Player> _playerList;
         private List<Player> _lobbyList;
@@ -23,6 +22,7 @@ namespace Akanonda.GameLibrary
         private int _tickCounter;
         private Dictionary<Guid, CollisionType> _collisionList;
         public bool goThroughWalls = true;
+
 
         public static Game Instance
         {
@@ -43,8 +43,7 @@ namespace Akanonda.GameLibrary
             _field.Offset = new int[] {20, 20, 20, 20}; // testhalber
 
             _collision = new Collision(_field.x, _field.y);
-            
-            _ticksUntilAdd = 10; // testhalber
+            _ticksUntilAdd = 10; // set how fast player grows
             _tickCounter = 0;
         }
 

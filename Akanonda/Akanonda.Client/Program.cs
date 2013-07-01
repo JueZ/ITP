@@ -20,7 +20,7 @@ namespace Akanonda
         public static System.Windows.Forms.Timer SurvivalTimer;
         public static int SurvivalSecond = 0;
         public static int SurvivalMinute = 0;
-        
+        private static Settings settings = new Settings();
         [STAThread]
         private static void Main(string[] args)
         {
@@ -65,10 +65,10 @@ namespace Akanonda
 
             netclient.Start();
 
-            Settings settings = new Settings();
+            
 
             NetOutgoingMessage message = netclient.CreateMessage(hailmessage);
-            netclient.Connect(settings.RemoteServer, settings.RemotePort, message);
+            netclient.Connect(settings.GameServer, settings.GamePort, message);
 
             
 
@@ -91,7 +91,7 @@ namespace Akanonda
             s_client.Start();
             //NetOutgoingMessage hail = s_client.CreateMessage(Program.guid.ToString() + ";" + "connected");
             NetOutgoingMessage hail = s_client.CreateMessage(hailmessage);
-            s_client.Connect("127.0.0.1", port, hail);
+            s_client.Connect(settings.ChatServer, settings.ChatPort, hail);
             //s_client.Connect("server.xios.at", port, hail);
             
             
@@ -187,7 +187,7 @@ namespace Akanonda
                                 //Overlay.FormBorderStyle = FormBorderStyle.None;
                                 //Overlay.Show();
 
-                                MainForm.M_Form.showOverlay(SurvivalMinute, SurvivalSecond);
+                                MainForm.M_Form.showOverlay(SurvivalMinute, SurvivalSecond, text);
 
                                 //MessageBox.Show(text);
                                 LobbyForm.L_form.StartGame_Enable();

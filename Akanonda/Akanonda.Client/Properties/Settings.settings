@@ -2,11 +2,17 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Akanonda.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="RemoteServer" Type="System.String" Scope="Application">
+    <Setting Name="GameServer" Type="System.String" Scope="Application">
       <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
-    <Setting Name="RemotePort" Type="System.Int32" Scope="Application">
+    <Setting Name="GamePort" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">1337</Value>
+    </Setting>
+    <Setting Name="ChatServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
+    <Setting Name="ChatPort" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">1338</Value>
     </Setting>
   </Settings>
 </SettingsFile>

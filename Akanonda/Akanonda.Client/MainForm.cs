@@ -13,7 +13,7 @@ namespace Akanonda
     /// 
     public partial class MainForm : Form
     {
-        private static Game game;
+        //private static Game game;
         public static FormConnector mainConnector;
         public static MainForm M_Form;
         public MainForm()
@@ -113,22 +113,22 @@ namespace Akanonda
         }
 
 
-        public void showOverlay(int minutes, int seconds)
+        public void showOverlay(int minutes, int seconds, string deadMessage)
         {
             //overlay.Size = this.Size;
             //overlay.Visible = true;
             //overlay.BringToFront();
             if (minutes == 0)
             {
-                SurvivalTimeBox.Text = seconds > 1 ? "\nGAME OVER!\nYou survived " + seconds + " seconds!\nCongratulations " + LobbyForm.L_form.name + "!!" : "\nGAME OVER!\nYou survived one second!\nCongratulations " + LobbyForm.L_form.name + "!!";
+                SurvivalTimeBox.Text = seconds > 1 ? "\nGAME OVER!\n" + deadMessage + "\nYou survived " + seconds + " seconds!\nCongratulations " + LobbyForm.L_form.name + "!!" : "\nGAME OVER!\n" + deadMessage + "\nYou survived one second!\nCongratulations " + LobbyForm.L_form.name + "!!";
             }
             else
             {
-                SurvivalTimeBox.Text = minutes > 1 ? "\nGAME OVER!\nYou survived " + minutes + " minutes and " + seconds + " seconds!\nCongratulations " + LobbyForm.L_form.name + "!!" : "\nGAME OVER!\nYou survived " + minutes + " minute and " + seconds + " seconds !\nCongratulations " + LobbyForm.L_form.name + "!!";
+                SurvivalTimeBox.Text = minutes > 1 ? "\nGAME OVER!\n" + deadMessage + "\nYou survived " + minutes + " minutes and " + seconds + " seconds!\nCongratulations " + LobbyForm.L_form.name + "!!" : "\nGAME OVER!\n" + deadMessage + "\nYou survived " + minutes + " minute and " + seconds + " seconds !\nCongratulations " + LobbyForm.L_form.name + "!!";
             }
 
-            overlayGroupBox.Left = (this.ClientSize.Width - SurvivalTimeBox.Width) / 2;
-            overlayGroupBox.Top = (this.ClientSize.Height - SurvivalTimeBox.Height) / 2;
+            overlayGroupBox.Left = (this.ClientSize.Width - overlayGroupBox.Width) / 2;
+            overlayGroupBox.Top = (this.ClientSize.Height - overlayGroupBox.Height) / 2;
             M_Form.BackColor = Color.Gray;
             SurvivalTimeBox.SelectAll();
             SurvivalTimeBox.SelectionAlignment = HorizontalAlignment.Center;
