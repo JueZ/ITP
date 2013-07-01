@@ -44,22 +44,7 @@ namespace Akanonda.GameLibrary
 
                     if (Game.Instance.goThroughWalls)
                     {
-                        if (headCoordinates[0] < 0)
-                        {
-                            headCoordinates[0] = _x - 1;
-                        }
-                        if (headCoordinates[0] >= _x)
-                        {
-                            headCoordinates[0] = 0;
-                        }
-                        if (headCoordinates[1] < 0)
-                        {
-                            headCoordinates[1] = _y - 1;
-                        }
-                        if (headCoordinates[1] >= _y)
-                        {
-                            headCoordinates[1] = 0;
-                        }
+                        PowerUps.openTheWalls(headCoordinates, _x, _y);
                     }
                     else
                     {

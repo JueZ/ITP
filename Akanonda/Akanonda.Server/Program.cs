@@ -64,8 +64,8 @@ namespace Akanonda
             // Game END            
             
 
-            // GameTimer START
-            System.Timers.Timer timer = new System.Timers.Timer(100);
+            // GameTimer START                                  set gameSpeed here
+            System.Timers.Timer timer = new System.Timers.Timer(50);
             timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             timer.Enabled = true;
             // GameTimer END

@@ -22,7 +22,7 @@ namespace Akanonda.GameLibrary
         private int _ticksUntilAdd;
         private int _tickCounter;
         private Dictionary<Guid, CollisionType> _collisionList;
-        public bool goThroughWalls = false;
+        public bool goThroughWalls = true;
 
         public static Game Instance
         {
@@ -44,7 +44,7 @@ namespace Akanonda.GameLibrary
 
             _collision = new Collision(_field.x, _field.y);
             
-            _ticksUntilAdd = 5; // testhalber
+            _ticksUntilAdd = 10; // testhalber
             _tickCounter = 0;
         }
 

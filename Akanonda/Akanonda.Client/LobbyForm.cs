@@ -190,7 +190,7 @@ namespace Akanonda
 
         }
 
-        private void StartGame_Click(object sender, EventArgs e)
+        public void StartGame_Click(object sender, EventArgs e)
         {
             MainForm.M_Form.closeOverlay();
             Program.SurvivalSecond = 0;
