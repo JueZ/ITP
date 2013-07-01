@@ -13,6 +13,7 @@ namespace Akanonda.GameLibrary
         private static Game instance = new Game();
         private Field _field;
         private List<Player> _playerList;
+        private List<PowerUp> _powerupList;
         private List<Player> _lobbyList;
         private List<Player> _deadList;
         private Guid _localplayer;
@@ -21,7 +22,7 @@ namespace Akanonda.GameLibrary
         private int _ticksUntilAdd;
         private int _tickCounter;
         private Dictionary<Guid, CollisionType> _collisionList;
-        public bool goThroughWalls = true;
+        public bool goThroughWalls = false;
 
 
         public static Game Instance
@@ -37,6 +38,7 @@ namespace Akanonda.GameLibrary
             _playerList = new List<Player>();
             _deadList = new List<Player>();
             _lobbyList = new List<Player>();
+            _powerupList = new List<PowerUp>();
 
             _field.setSize(120, 120); // testhalber, derzeit wird neuer user auf 105x105 oder so gesetzt
             _field.Scale = 5;
@@ -68,6 +70,14 @@ namespace Akanonda.GameLibrary
             get
             {
                 return _deadList;
+            }
+        }
+
+        public List<PowerUp> PowerUpList
+        {
+            get
+            {
+                return _powerupList;
             }
         }
 
@@ -238,9 +248,43 @@ namespace Akanonda.GameLibrary
                 new Rectangle(0, 0, offset_west, height) // west
             };
 
-            SolidBrush brush = new SolidBrush(Color.Black);
+            SolidBrush brush;
+            if (goThroughWalls == true)
+            {
+                if(_tickCounter % 10 == 0)
+                    brush = new SolidBrush(Color.Black);
+                else
+                    brush = new SolidBrush(Color.Gray);
+                
+            }
+            else
+            {
+                brush = new SolidBrush(Color.Black);
+            }
+
             g.FillRectangles(brush, border);
             //g.DrawRectangles(new Pen(brush), border);
+
+            foreach (PowerUp power in _powerupList)
+            {
+                foreach (int[] powerUpLocation in power.PowerUpLocation)
+                {
+                    Random randonGen = new Random();
+                    Color randomColor = Color.FromArgb(randonGen.Next(255), randonGen.Next(255), randonGen.Next(255));
+                    g.FillRectangle(new SolidBrush(randomColor), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                    //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
+                }
+            }
+
+            //draw dead players
+            foreach (Player player in _deadList)
+            {
+                foreach (int[] playerbody in player.playerbody)
+                {
+                    g.FillRectangle(new SolidBrush(player.color), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
+                    //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
+                }
+            }
 
             // draw players
             foreach (Player player in _playerList)
@@ -252,16 +296,13 @@ namespace Akanonda.GameLibrary
                 }
             }
 
-            foreach (Player player in _deadList)
-            {
-                foreach (int[] playerbody in player.playerbody)
-                {
-                    g.FillRectangle(new SolidBrush(player.color), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
-                    //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
-                }
-            }
-
         }
+
+        public void AddPowerUp()
+        {
+            _powerupList.Add(new PowerUp());
+        }
+
 
         public void AddLobbyPlayer(string name, Color color, Guid guid)
         {

@@ -35,7 +35,23 @@ namespace Akanonda.GameLibrary
             {
                 int[] headCoordinates = player.playerbody[player.playerbody.Count-1];
                 //Console.WriteLine("x: " + coordinates[0].ToString() + "  y: " + coordinates[1].ToString());
-                
+
+                //check for PowerUps
+                foreach (PowerUp power in Game.Instance.PowerUpList)
+                {
+                    foreach (int[] array in power.PowerUpLocation)
+                    {
+                        if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with PowerUp
+                        {
+
+                            Game.Instance.goThroughWalls = true;
+                        }
+                    }
+                }
+
+
+
+
                 // collision with head to wall
                 if (headCoordinates[0] < 0 || headCoordinates[0] >= _x || headCoordinates[1] < 0 || headCoordinates[1] >= _y)
                 {
@@ -44,7 +60,7 @@ namespace Akanonda.GameLibrary
 
                     if (Game.Instance.goThroughWalls)
                     {
-                        PowerUps.openTheWalls(headCoordinates, _x, _y);
+                        PowerUp.openTheWalls(headCoordinates, _x, _y);
                     }
                     else
                     {
@@ -55,6 +71,7 @@ namespace Akanonda.GameLibrary
                     
                     
                 }
+
 
                 foreach (Player p in playerList) // player with which current head is checked against (can be same as above)
                 {
