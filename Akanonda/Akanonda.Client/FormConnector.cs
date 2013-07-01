@@ -58,10 +58,10 @@ namespace Akanonda
             public bool IsOnScreen(Form form, Point relativeChange)
             {
                 Screen[] screens = Screen.AllScreens;
-                Rectangle workingArea = screens[0].WorkingArea;
+                Rectangle workingArea = screens[0].Bounds;
                 if (screens.Length > 1)
                 {
-                    workingArea = Rectangle.Union(screens[0].WorkingArea, screens[1].WorkingArea);
+                    workingArea = Rectangle.Union(screens[0].Bounds, screens[1].Bounds);
                 }
 
 

@@ -235,5 +235,10 @@ namespace Akanonda
 
             Environment.Exit(0);
         }
+
+        private void LobbyForm_Activated(object sender, EventArgs e)
+        {
+            StartGame.Focus();
+        }
     }
 }

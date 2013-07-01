@@ -312,7 +312,7 @@ namespace Akanonda
 
                         if (status == NetConnectionStatus.Disconnected)
                         {
-                            if (Guid.Parse(reason) != null)
+                            if (reason != "Connection timed out" && Guid.Parse(reason) != null)
                             {
                                 game.removePlayer(Guid.Parse(reason));
                                 game.RemoveLobbyPlayer(Guid.Parse(reason));

@@ -44,7 +44,7 @@ namespace Akanonda
                 
         void DrawTimerTick(object sender, System.EventArgs e)
         {
-            gamePanel.Invalidate();
+            M_Form.Invalidate();
         }
         
         void MainFormKeyDown(object sender, KeyEventArgs e)
@@ -128,8 +128,9 @@ namespace Akanonda
                 SurvivalTimeBox.Text = minutes > 1 ? "\nGAME OVER!\nYou survived " + minutes + " minutes and " + seconds + " seconds!\nCongratulations " + LobbyForm.L_form.name + "!!" : "\nGAME OVER!\nYou survived " + minutes + " minute and " + seconds + " seconds !\nCongratulations " + LobbyForm.L_form.name + "!!";
             }
 
-
-            gamePanel.BackColor = Color.Gray;
+            SurvivalTimeBox.Left = (this.ClientSize.Width - SurvivalTimeBox.Width) / 2;
+            SurvivalTimeBox.Top = (this.ClientSize.Height - SurvivalTimeBox.Height) / 2;
+            M_Form.BackColor = Color.Gray;
             SurvivalTimeBox.SelectAll();
             SurvivalTimeBox.SelectionAlignment = HorizontalAlignment.Center;
             SurvivalTimeBox.Visible = true;
@@ -142,7 +143,7 @@ namespace Akanonda
         {
 
             //overlay.Size = this.Size;
-            gamePanel.BackColor = Color.White;
+            M_Form.BackColor = Color.White;
             SurvivalTimeBox.Visible = false;
 
             //overlay.SendToBack();
@@ -155,43 +156,14 @@ namespace Akanonda
             
             Program.netclient.Shutdown(Program.guid.ToString());
             Program.s_client.Shutdown(Program.guid.ToString());
-            this.Dispose();
+            
 
             while (Program.netclient.Status != NetPeerStatus.NotRunning || Program.s_client.Status != NetPeerStatus.NotRunning)
                 System.Threading.Thread.Sleep(10);
-
+            this.Dispose();
             Environment.Exit(0);
         }
-    }
-    class ShadowPanel : Panel
-    {
-        public ShadowPanel()
-        {
-        }
-        protected enum ViewState
-        {
-            Visible, Hidden
-        }
-        protected int m_CurrentState = 0;
-
-        override protected CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x20;
-                return cp;
-            }
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(59, Color.Black)), this.ClientRectangle);
-            Application.DoEvents();
-        }
-    } 
 
 
-
-    
+  }
 }

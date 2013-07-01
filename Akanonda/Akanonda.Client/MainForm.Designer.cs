@@ -39,9 +39,7 @@ namespace Akanonda
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.DrawTimer = new System.Windows.Forms.Timer(this.components);
-            this.gamePanel = new System.Windows.Forms.Panel();
             this.SurvivalTimeBox = new System.Windows.Forms.RichTextBox();
-            this.gamePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // DrawTimer
@@ -49,23 +47,12 @@ namespace Akanonda
             this.DrawTimer.Interval = 5;
             this.DrawTimer.Tick += new System.EventHandler(this.DrawTimerTick);
             // 
-            // gamePanel
-            // 
-            this.gamePanel.Controls.Add(this.SurvivalTimeBox);
-            this.gamePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gamePanel.Location = new System.Drawing.Point(0, 0);
-            this.gamePanel.Name = "gamePanel";
-            this.gamePanel.Size = new System.Drawing.Size(467, 284);
-            this.gamePanel.TabIndex = 2;
-            this.gamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.MainFormPaint);
-            // 
             // SurvivalTimeBox
             // 
             this.SurvivalTimeBox.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.SurvivalTimeBox.BackColor = System.Drawing.SystemColors.Control;
             this.SurvivalTimeBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.SurvivalTimeBox.Cursor = System.Windows.Forms.Cursors.No;
-            this.SurvivalTimeBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.SurvivalTimeBox.Enabled = false;
             this.SurvivalTimeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SurvivalTimeBox.ImeMode = System.Windows.Forms.ImeMode.Off;
@@ -83,18 +70,17 @@ namespace Akanonda
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(467, 284);
-            this.Controls.Add(this.gamePanel);
+            this.Controls.Add(this.SurvivalTimeBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Akanonda Game";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainFormPaint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainFormKeyDown);
-            this.gamePanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
         private System.Windows.Forms.Timer DrawTimer;
-        private System.Windows.Forms.Panel gamePanel;
         private System.Windows.Forms.RichTextBox SurvivalTimeBox;
     }
 }
