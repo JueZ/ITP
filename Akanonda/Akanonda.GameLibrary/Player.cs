@@ -54,7 +54,7 @@ namespace Akanonda.GameLibrary
             get { return _playerbody; }
         }
 
-        public Player(string name, Color color)
+        public Player(string name, Color color, Guid guid = new Guid())
         {
             this._playerbody = new List<int[]>();
 
@@ -63,66 +63,13 @@ namespace Akanonda.GameLibrary
 
             this._name = name;
             this._color = color;
-            this._guid = Guid.NewGuid();
-            this._playerstatus = PlayerStatus.None;
 
-            Random rnd = new Random();
-            int direction = rnd.Next(4);
-            switch (direction)
-            {
-                case 0:
-                    this._playerbody.Add(new int[2] { startX, startY });
-                    this._playerbody.Add(new int[2] { startX, startY + 1 });
-                    this._playerbody.Add(new int[2] { startX, startY + 2 });
-                    this._playerbody.Add(new int[2] { startX, startY + 3 });
-                    this._playerbody.Add(new int[2] { startX, startY + 4 });
-                    this._playerbody.Add(new int[2] { startX, startY + 5 });
-                    this._playersteering = PlayerSteering.Up;
-                    break;
-                case 1:
-                    this._playerbody.Add(new int[2] { startX, startY });
-                    this._playerbody.Add(new int[2] { startX + 1, startY });
-                    this._playerbody.Add(new int[2] { startX + 2, startY });
-                    this._playerbody.Add(new int[2] { startX + 3, startY });
-                    this._playerbody.Add(new int[2] { startX + 4, startY });
-                    this._playerbody.Add(new int[2] { startX + 5, startY });
-                    this._playersteering = PlayerSteering.Right;
-                    break;
-                case 2:
-                    this._playerbody.Add(new int[2] { startX, startY });
-                    this._playerbody.Add(new int[2] { startX, startY - 1 });
-                    this._playerbody.Add(new int[2] { startX, startY - 2 });
-                    this._playerbody.Add(new int[2] { startX, startY - 3 });
-                    this._playerbody.Add(new int[2] { startX, startY - 4 });
-                    this._playerbody.Add(new int[2] { startX, startY - 5 });
-                    this._playersteering = PlayerSteering.Down;
-                    break;
-                case 3:
-                    this._playerbody.Add(new int[2] { startX, startY });
-                    this._playerbody.Add(new int[2] { startX - 1, startY });
-                    this._playerbody.Add(new int[2] { startX - 2, startY });
-                    this._playerbody.Add(new int[2] { startX - 3, startY });
-                    this._playerbody.Add(new int[2] { startX - 4, startY });
-                    this._playerbody.Add(new int[2] { startX - 5, startY });
-                    this._playersteering = PlayerSteering.Left;
-                    break;
-            }
+            var guidIsEmpty = guid == Guid.Empty;
+            if (guidIsEmpty)
+                this._guid = Guid.NewGuid();
+            else
+                this._guid = guid;
 
-
-            
-        }
-
-        public Player(string name, Color color, Guid guid)
-        {
-
-            this._playerbody = new List<int[]>();
-
-            startX = rndX.Next(20, 100);
-            startY = rndY.Next(20, 100);
-            
-            this._name = name;
-            this._color = color;
-            this._guid = guid;
             this._playerstatus = PlayerStatus.None;
 
             Random rnd = new Random();
@@ -167,7 +114,66 @@ namespace Akanonda.GameLibrary
                     break;
             }
 
+
+            
         }
+
+        //public Player(string name, Color color, Guid guid)
+        //{
+
+        //    this._playerbody = new List<int[]>();
+
+        //    startX = rndX.Next(20, 100);
+        //    startY = rndY.Next(20, 100);
+            
+        //    this._name = name;
+        //    this._color = color;
+        //    this._guid = guid;
+        //    this._playerstatus = PlayerStatus.None;
+
+        //    Random rnd = new Random();
+        //    int direction = rnd.Next(4);
+        //    switch (direction)
+        //    {
+        //        case 0:
+        //            this._playerbody.Add(new int[2] { startX, startY });
+        //            this._playerbody.Add(new int[2] { startX, startY - 1 });
+        //            this._playerbody.Add(new int[2] { startX, startY - 2 });
+        //            this._playerbody.Add(new int[2] { startX, startY - 3 });
+        //            this._playerbody.Add(new int[2] { startX, startY - 4 });
+        //            this._playerbody.Add(new int[2] { startX, startY - 5 });
+        //            this._playersteering = PlayerSteering.Up;
+        //            break;
+        //        case 1:
+        //            this._playerbody.Add(new int[2] { startX, startY });
+        //            this._playerbody.Add(new int[2] { startX + 1, startY });
+        //            this._playerbody.Add(new int[2] { startX + 2, startY });
+        //            this._playerbody.Add(new int[2] { startX + 3, startY });
+        //            this._playerbody.Add(new int[2] { startX + 4, startY });
+        //            this._playerbody.Add(new int[2] { startX + 5, startY });
+        //            this._playersteering = PlayerSteering.Right;
+        //            break;
+        //        case 2:
+        //            this._playerbody.Add(new int[2] { startX, startY });
+        //            this._playerbody.Add(new int[2] { startX, startY + 1 });
+        //            this._playerbody.Add(new int[2] { startX, startY + 2 });
+        //            this._playerbody.Add(new int[2] { startX, startY + 3 });
+        //            this._playerbody.Add(new int[2] { startX, startY + 4 });
+        //            this._playerbody.Add(new int[2] { startX, startY + 5 });
+        //            this._playersteering = PlayerSteering.Down;
+        //            break;
+        //        case 3:
+        //            this._playerbody.Add(new int[2] { startX, startY });
+        //            this._playerbody.Add(new int[2] { startX - 1, startY });
+        //            this._playerbody.Add(new int[2] { startX - 2, startY });
+        //            this._playerbody.Add(new int[2] { startX - 3, startY });
+        //            this._playerbody.Add(new int[2] { startX - 4, startY });
+        //            this._playerbody.Add(new int[2] { startX - 5, startY });
+        //            this._playersteering = PlayerSteering.Left;
+        //            break;
+        //    }
+
+        //}
 
         public Guid initPlayer(string name, Color color)
         {

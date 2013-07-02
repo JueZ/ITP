@@ -45,6 +45,7 @@ namespace Akanonda.GameLibrary
                         {
 
                             Game.Instance.goThroughWalls = true;
+                            Game.Instance.RemovePowerUp(power.guid);
                         }
                     }
                 }

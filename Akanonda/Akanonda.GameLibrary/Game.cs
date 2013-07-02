@@ -23,7 +23,7 @@ namespace Akanonda.GameLibrary
         private int _tickCounter;
         private Dictionary<Guid, CollisionType> _collisionList;
         public bool goThroughWalls = false;
-
+        private int goThroughWallCounter = 0;
 
         public static Game Instance
         {
@@ -209,7 +209,17 @@ namespace Akanonda.GameLibrary
 
         public void gametick()
         {
+            
             _tickCounter = (_tickCounter + 1) % _ticksUntilAdd;
+            if (goThroughWalls == true)
+            {
+                goThroughWallCounter++;
+                if (goThroughWallCounter > 150)
+                {
+                    goThroughWalls = false;
+                    goThroughWallCounter = 0;
+                }
+            }
 
             bool grow = false;
             if (_tickCounter == 0)
@@ -251,10 +261,10 @@ namespace Akanonda.GameLibrary
             SolidBrush brush;
             if (goThroughWalls == true)
             {
-                if(_tickCounter % 10 == 0)
-                    brush = new SolidBrush(Color.Black);
-                else
+                //if(_tickCounter % 10 == 0)
                     brush = new SolidBrush(Color.Gray);
+                //else
+                //    brush = new SolidBrush(Color.Gray);
                 
             }
             else
@@ -267,11 +277,26 @@ namespace Akanonda.GameLibrary
 
             foreach (PowerUp power in _powerupList)
             {
+                int idx = 0;
                 foreach (int[] powerUpLocation in power.PowerUpLocation)
                 {
-                    Random randonGen = new Random();
-                    Color randomColor = Color.FromArgb(randonGen.Next(255), randonGen.Next(255), randonGen.Next(255));
-                    g.FillRectangle(new SolidBrush(randomColor), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                    
+                    //Random randonGen = new Random();
+                    //Color randomColor = Color.FromArgb(randonGen.Next(255), randonGen.Next(255), randonGen.Next(255));
+                    if (idx > 15)
+                    {
+                        g.FillRectangle(new SolidBrush(Color.White), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                    }
+                    else
+                    {
+                        if(idx % 2 != 0)
+                            g.FillRectangle(new SolidBrush(Color.Gray), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                        else
+                            g.FillRectangle(new SolidBrush(Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+
+                    }
+
+                    idx++;
                     //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
                 }
             }
@@ -316,6 +341,19 @@ namespace Akanonda.GameLibrary
                 if (_lobbyList[i].guid.Equals(guid))
                 {
                     _lobbyList.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+
+        public void RemovePowerUp(Guid guid)
+        {
+            for (int i = 0; i < _powerupList.Count; i++)
+            {
+                if (_powerupList[i].guid.Equals(guid))
+                {
+                    _powerupList.RemoveAt(i);
                     break;
                 }
             }
