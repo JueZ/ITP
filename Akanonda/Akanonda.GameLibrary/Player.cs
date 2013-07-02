@@ -15,9 +15,6 @@ namespace Akanonda.GameLibrary
         private List<int[]> _playerbody;
         private PlayerStatus _playerstatus;
         private PlayerSteering _playersteering;
-
-        Random rndX = new Random();
-        Random rndY = new Random();
         int startX, startY;
 
         public string name
@@ -58,8 +55,8 @@ namespace Akanonda.GameLibrary
         {
             this._playerbody = new List<int[]>();
 
-            startX = rndX.Next(20, 100);
-            startY = rndY.Next(20, 100);
+            startX = Game.getRandomNumber(20, 100);
+            startY = Game.getRandomNumber(20, 100);
 
             this._name = name;
             this._color = color;
@@ -72,8 +69,8 @@ namespace Akanonda.GameLibrary
 
             this._playerstatus = PlayerStatus.None;
 
-            Random rnd = new Random();
-            int direction = rnd.Next(4);
+
+            int direction = Game.getRandomNumber(0,4);
             switch (direction)
             {
                 case 0:
@@ -194,15 +191,23 @@ namespace Akanonda.GameLibrary
             {
                 case PlayerSteering.Up:
                     y--;
+                    if (Game.Instance.goFast)
+                        y--;
                     break;
                 case PlayerSteering.Down:
                     y++;
+                    if (Game.Instance.goFast)
+                        y++;
                     break;
                 case PlayerSteering.Left:
                     x--;
+                    if (Game.Instance.goFast)
+                        x--;
                     break;
                 case PlayerSteering.Right:
                     x++;
+                    if (Game.Instance.goFast)
+                        x++;
                     break;
             }
             

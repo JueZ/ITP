@@ -24,6 +24,8 @@ namespace Akanonda.GameLibrary
         private Dictionary<Guid, CollisionType> _collisionList;
         public bool goThroughWalls = false;
         private int goThroughWallCounter = 0;
+        public bool goFast = false;
+        private int goFastCounter = 0;
 
         public static Game Instance
         {
@@ -220,6 +222,15 @@ namespace Akanonda.GameLibrary
                     goThroughWallCounter = 0;
                 }
             }
+            if (goFast == true)
+            {
+                goFastCounter++;
+                if (goFastCounter > 150)
+                {
+                    goFast = false;
+                    goFastCounter = 0;
+                }
+            }
 
             bool grow = false;
             if (_tickCounter == 0)
@@ -261,11 +272,7 @@ namespace Akanonda.GameLibrary
             SolidBrush brush;
             if (goThroughWalls == true)
             {
-                //if(_tickCounter % 10 == 0)
                     brush = new SolidBrush(Color.Gray);
-                //else
-                //    brush = new SolidBrush(Color.Gray);
-                
             }
             else
             {
@@ -278,26 +285,66 @@ namespace Akanonda.GameLibrary
             foreach (PowerUp power in _powerupList)
             {
                 int idx = 0;
-                foreach (int[] powerUpLocation in power.PowerUpLocation)
+                switch(power.kind)
                 {
+                    case PowerUp.PowerUpKind.openWalls:
+                            foreach (int[] powerUpLocation in power.PowerUpLocation)
+                            {
                     
-                    //Random randonGen = new Random();
-                    //Color randomColor = Color.FromArgb(randonGen.Next(255), randonGen.Next(255), randonGen.Next(255));
-                    if (idx > 15)
-                    {
-                        g.FillRectangle(new SolidBrush(Color.White), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
-                    }
-                    else
-                    {
-                        if(idx % 2 != 0)
-                            g.FillRectangle(new SolidBrush(Color.Gray), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
-                        else
-                            g.FillRectangle(new SolidBrush(Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                //Random randonGen = new Random();
+                                //Color randomColor = Color.FromArgb(randonGen.Next(255), randonGen.Next(255), randonGen.Next(255));
+                                if (idx > 15)
+                                {
+                                    g.FillRectangle(new SolidBrush(Color.White), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                }
+                                else
+                                {
+                                    if (_tickCounter % 10 > 5)
+                                    {
+                                        if (idx % 2 != 0)
+                                            g.FillRectangle(new SolidBrush(Color.Gray), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                        else
+                                            g.FillRectangle(new SolidBrush(Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                    }
+                                    else
+                                    {
+                                        if (idx % 2 == 0)
+                                            g.FillRectangle(new SolidBrush(Color.Gray), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                        else
+                                            g.FillRectangle(new SolidBrush(Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
 
-                    }
+                                    }
+                                }
 
-                    idx++;
-                    //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
+                                idx++;
+                                //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
+                            }
+                            break;
+                    case PowerUp.PowerUpKind.goFast:
+                            idx = 0;
+                            foreach (int[] powerUpLocation in power.PowerUpLocation)
+                            {
+                                switch (idx)
+                                {
+                                    case 2:
+                                    case 6:
+                                    case 10:
+                                    case 14:
+                                    case 16:
+                                    case 19:
+                                    case 20:
+                                    case 21:
+                                    case 22:
+                                        g.FillRectangle(new SolidBrush(Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                        break;
+                                    default:
+                                        g.FillRectangle(new SolidBrush(Color.Gray), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                        break;
+                                }
+                                idx++;
+                            }
+                            
+                        break;
                 }
             }
 
@@ -323,9 +370,9 @@ namespace Akanonda.GameLibrary
 
         }
 
-        public void AddPowerUp()
+        public void AddPowerUp(PowerUp.PowerUpKind kind)
         {
-            _powerupList.Add(new PowerUp());
+            _powerupList.Add(new PowerUp(kind));
         }
 
 
@@ -411,5 +458,16 @@ namespace Akanonda.GameLibrary
             }
             get { return _ticksUntilAdd; }
         }
+
+        private static readonly Random random = new Random();
+        private static readonly object syncLock = new object();
+        public static int getRandomNumber(int min, int max)
+        {
+            lock (syncLock)
+            { // synchronize
+                return random.Next(min, max);
+            }
+        }
+
     }
 }

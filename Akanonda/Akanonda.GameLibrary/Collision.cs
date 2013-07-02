@@ -43,9 +43,16 @@ namespace Akanonda.GameLibrary
                     {
                         if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with PowerUp
                         {
-
-                            Game.Instance.goThroughWalls = true;
-                            Game.Instance.RemovePowerUp(power.guid);
+                            switch(power.kind){
+                                case PowerUp.PowerUpKind.openWalls:
+                                    Game.Instance.goThroughWalls = true;
+                                    Game.Instance.RemovePowerUp(power.guid);
+                                    break;
+                                case PowerUp.PowerUpKind.goFast:
+                                    Game.Instance.goFast = true;
+                                    Game.Instance.RemovePowerUp(power.guid);
+                                    break;
+                            }
                         }
                     }
                 }

@@ -10,38 +10,36 @@ namespace Akanonda.GameLibrary
     {
         private List<int[]> _PowerUpLocation;
         private Guid _guid;
+        private PowerUpKind _kind;
+        int startX, startY;
+        
+        public enum PowerUpKind
+        {
+            openWalls,
+            goFast
+        }
 
-        public PowerUp(Guid guid = new Guid())
+        public PowerUp(PowerUpKind kind, Guid guid = new Guid())
         {
 
             this._PowerUpLocation = new List<int[]>();
+            _kind = kind;
 
             var guidIsEmpty = guid == Guid.Empty;
             if (guidIsEmpty)
                 this._guid = Guid.NewGuid();
             else
                 this._guid = guid;
-
-
-            Random rndX = new Random();
-            Random rndY = new Random();
-            int startX, startY;
-            startX = rndX.Next(1, 119);
-            startY = rndY.Next(1, 119);
-
+           
+            startX = Game.getRandomNumber(1, 119);
+            startY = Game.getRandomNumber(1, 119);
+            // frame of PowerUps
             this._PowerUpLocation.Add(new int[2] { startX, startY });
             this._PowerUpLocation.Add(new int[2] { startX, startY + 1 });
             this._PowerUpLocation.Add(new int[2] { startX, startY + 2 });
             this._PowerUpLocation.Add(new int[2] { startX, startY + 3 });
             this._PowerUpLocation.Add(new int[2] { startX, startY + 4 });
-            //this._PowerUpLocation.Add(new int[2] { startX, startY + 5 });
-
-            //this._PowerUpLocation.Add(new int[2] { startX - 5, startY });
-            //this._PowerUpLocation.Add(new int[2] { startX - 5, startY + 1 });
-            //this._PowerUpLocation.Add(new int[2] { startX - 5, startY + 2 });
-            //this._PowerUpLocation.Add(new int[2] { startX - 5, startY + 3 });
-            //this._PowerUpLocation.Add(new int[2] { startX - 5, startY + 4 });
-            //this._PowerUpLocation.Add(new int[2] { startX - 5, startY + 5 });
+            
             this._PowerUpLocation.Add(new int[2] { startX - 1, startY + 4 });
             this._PowerUpLocation.Add(new int[2] { startX - 2, startY + 4 });
             this._PowerUpLocation.Add(new int[2] { startX - 3, startY + 4 });
@@ -51,46 +49,21 @@ namespace Akanonda.GameLibrary
             this._PowerUpLocation.Add(new int[2] { startX - 4, startY + 2 });
             this._PowerUpLocation.Add(new int[2] { startX - 4, startY + 3 });
             this._PowerUpLocation.Add(new int[2] { startX - 4, startY + 4 });
-            //this._PowerUpLocation.Add(new int[2] { startX - 1, startY + 5 });
-            //this._PowerUpLocation.Add(new int[2] { startX - 4, startY + 5 });
-            //this._PowerUpLocation.Add(new int[2] { startX - 3, startY + 5 });
-            //this._PowerUpLocation.Add(new int[2] { startX - 2, startY + 5 });
             
-            
-
             this._PowerUpLocation.Add(new int[2] { startX - 1, startY });
             this._PowerUpLocation.Add(new int[2] { startX - 2, startY });
             this._PowerUpLocation.Add(new int[2] { startX - 3, startY });
-            
-            
-            
 
-           
-
-            
-            
-
+            // inside of PowerUps
             this._PowerUpLocation.Add(new int[2] { startX - 1, startY + 1 });
-            this._PowerUpLocation.Add(new int[2] { startX - 1, startY + 2 });
-            this._PowerUpLocation.Add(new int[2] { startX - 1, startY + 3 });
-            
-
-
-
             this._PowerUpLocation.Add(new int[2] { startX - 2, startY + 1 });
-            this._PowerUpLocation.Add(new int[2] { startX - 2, startY + 2 });
-            this._PowerUpLocation.Add(new int[2] { startX - 2, startY + 3 });
-            
-
             this._PowerUpLocation.Add(new int[2] { startX - 3, startY + 1 });
+            this._PowerUpLocation.Add(new int[2] { startX - 1, startY + 2 });
+            this._PowerUpLocation.Add(new int[2] { startX - 2, startY + 2 });
             this._PowerUpLocation.Add(new int[2] { startX - 3, startY + 2 });
+            this._PowerUpLocation.Add(new int[2] { startX - 1, startY + 3 });
+            this._PowerUpLocation.Add(new int[2] { startX - 2, startY + 3 });
             this._PowerUpLocation.Add(new int[2] { startX - 3, startY + 3 });
-            
-
-           
-           
-
-
 
         }
 
@@ -103,8 +76,11 @@ namespace Akanonda.GameLibrary
         {
             get { return _guid; }
         }
-        
-        
+
+        public PowerUpKind kind
+        {
+            get { return _kind; }
+        }
         
         
         
