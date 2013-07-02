@@ -211,7 +211,6 @@ namespace Akanonda.GameLibrary
 
         public void gametick()
         {
-            
             _tickCounter = (_tickCounter + 1) % _ticksUntilAdd;
             if (goThroughWalls == true)
             {
@@ -240,6 +239,16 @@ namespace Akanonda.GameLibrary
             {
                 _playerList[i].playerMove(grow);
             }
+            if (getRandomNumber(0,9999) % 79 == 0)
+            {
+                if (getRandomNumber(0, 9999) % 5 == 0)
+                    AddPowerUp(PowerUp.PowerUpKind.goFast);
+                else
+                    AddPowerUp(PowerUp.PowerUpKind.openWalls);
+               //if (getRandomNumber(0, 9999) % 10 == 0)
+                    
+            }
+
         }
 
         public void DetectCollision()
@@ -420,6 +429,16 @@ namespace Akanonda.GameLibrary
             }
 
             return name;
+        }
+
+        public int getFieldx()
+        {
+            return _field.x;
+        }
+
+        public int getFieldy()
+        {
+            return _field.y;
         }
 
         public void setScale(int scale)

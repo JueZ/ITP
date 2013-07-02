@@ -31,8 +31,8 @@ namespace Akanonda.GameLibrary
             else
                 this._guid = guid;
            
-            startX = Game.getRandomNumber(1, 119);
-            startY = Game.getRandomNumber(1, 119);
+            startX = Game.getRandomNumber(5, Game.Instance.getFieldx() - 5);
+            startY = Game.getRandomNumber(5, Game.Instance.getFieldy() - 5);
             // frame of PowerUps
             this._PowerUpLocation.Add(new int[2] { startX, startY });
             this._PowerUpLocation.Add(new int[2] { startX, startY + 1 });
@@ -89,21 +89,21 @@ namespace Akanonda.GameLibrary
         
         
         
-        public static void openTheWalls(int[] headCoordinates, int _x, int _y)
+        public static void openTheWalls(int[] headCoordinates)
         {
             if (headCoordinates[0] < 0)
             {
-                headCoordinates[0] = _x - 1;
+                headCoordinates[0] = Game.Instance.getFieldx() - 1;
             }
-            if (headCoordinates[0] >= _x)
+            if (headCoordinates[0] >= Game.Instance.getFieldx())
             {
                 headCoordinates[0] = 0;
             }
             if (headCoordinates[1] < 0)
             {
-                headCoordinates[1] = _y - 1;
+                headCoordinates[1] = Game.Instance.getFieldy() - 1;
             }
-            if (headCoordinates[1] >= _y)
+            if (headCoordinates[1] >= Game.Instance.getFieldy())
             {
                 headCoordinates[1] = 0;
             }

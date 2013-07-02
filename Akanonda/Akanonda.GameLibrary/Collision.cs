@@ -68,7 +68,7 @@ namespace Akanonda.GameLibrary
 
                     if (Game.Instance.goThroughWalls)
                     {
-                        PowerUp.openTheWalls(headCoordinates, _x, _y);
+                        PowerUp.openTheWalls(headCoordinates);
                     }
                     else
                     {
