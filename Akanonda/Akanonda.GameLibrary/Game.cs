@@ -29,6 +29,8 @@ namespace Akanonda.GameLibrary
         private bool _goFast = false;
         private int _goFastCounter = 0;
         private Dictionary<Guid, int> _goldenAppleDict = new Dictionary<Guid, int>();
+        private bool _movePowerUps = false;
+        private int _movePowerUpsCounter = 0;
 
         public static Game Instance
         {
@@ -118,7 +120,16 @@ namespace Akanonda.GameLibrary
             get { return _goldenAppleDict; }
             set { _goldenAppleDict = value; }
         }
-
+        public bool movePowerUps
+        {
+            get { return _movePowerUps; }
+            set { _movePowerUps = value; }
+        }
+        public int MovePowerUpsCounter
+        {
+            get { return _movePowerUpsCounter; }
+            set { _movePowerUpsCounter = value; }
+        }
         //PowerUp get set --------------------END
 
 
@@ -246,7 +257,7 @@ namespace Akanonda.GameLibrary
         public void gametick()
         {
             _tickCounter = (_tickCounter + 1) % _ticksUntilAdd;
-            if (goThroughWalls == true)
+            if (goThroughWalls)
             {
                 goThroughWallCounter--;
                 if (goThroughWallCounter < 0)
@@ -254,12 +265,24 @@ namespace Akanonda.GameLibrary
                     goThroughWalls = false;
                 }
             }
-            if (goFast == true)
+            if (goFast)
             {
                 goFastCounter--;
                 if (goFastCounter < 0)
                 {
                     goFast = false;
+                }
+            }
+            if (movePowerUps)
+            {
+                if (_tickCounter % 2 == 0)
+                    PowerUp.moveAllPowerUps();
+
+                MovePowerUpsCounter--;
+                if (MovePowerUpsCounter < 0)
+                {                           // reset Direction of moving powerups
+                    PowerUp.moveAllPowerUps(true);
+                    movePowerUps = false;
                 }
             }
 
@@ -271,17 +294,23 @@ namespace Akanonda.GameLibrary
             {
                 _playerList[i].playerMove(grow);
             }
-            if (getRandomNumber(0,9999) % 79 == 0)
+            
+            if (PowerUpList.Count < getFieldx() / 10 && PLayerList.Count > 0) //powerups according to fieldsize
             {
-                if (getRandomNumber(0, 9999) % 10 == 0)
-                    AddPowerUp(PowerUp.PowerUpKind.goFast);
-                if (getRandomNumber(0, 9999) % 10 == 0)
-                    AddPowerUp(PowerUp.PowerUpKind.openWalls);
-                if (getRandomNumber(0, 9999) % 19 == 0)
-                    AddPowerUp(PowerUp.PowerUpKind.goldenApple);
-               //if (getRandomNumber(0, 9999) % 10 == 0)
-                    
+                if (getRandomNumber(0, 9999) % 79 == 0)
+                {
+                    if (getRandomNumber(0, 9999) % 10 == 0)
+                        AddPowerUp(PowerUp.PowerUpKind.goFast);
+                    if (getRandomNumber(0, 9999) % 10 == 0)
+                        AddPowerUp(PowerUp.PowerUpKind.openWalls);
+                    if (getRandomNumber(0, 9999) % 15 == 0)
+                        AddPowerUp(PowerUp.PowerUpKind.goldenApple);
+                    //if (getRandomNumber(0, 9999) % 10 == 0)
+
+                }
             }
+
+            
 
         }
 
@@ -392,6 +421,12 @@ namespace Akanonda.GameLibrary
                         foreach (int[] powerUpLocation in power.PowerUpLocation)
                         {
                             g.FillRectangle(new SolidBrush(Color.Yellow), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                        }
+                        break;
+                    case PowerUp.PowerUpKind.movePowerUps:
+                        foreach (int[] powerUpLocation in power.PowerUpLocation)
+                        {
+                            g.FillRectangle(new SolidBrush(Color.Red), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
                         }
                         break;
                 }

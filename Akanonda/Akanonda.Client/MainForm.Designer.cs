@@ -42,6 +42,7 @@ namespace Akanonda
             this.SurvivalTimeBox = new System.Windows.Forms.RichTextBox();
             this.replay = new System.Windows.Forms.Button();
             this.overlayGroupBox = new System.Windows.Forms.Panel();
+            this.closeOverlayButton = new System.Windows.Forms.Button();
             this.overlayGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,6 +81,7 @@ namespace Akanonda
             // overlayGroupBox
             // 
             this.overlayGroupBox.BackColor = System.Drawing.SystemColors.Control;
+            this.overlayGroupBox.Controls.Add(this.closeOverlayButton);
             this.overlayGroupBox.Controls.Add(this.SurvivalTimeBox);
             this.overlayGroupBox.Controls.Add(this.replay);
             this.overlayGroupBox.Location = new System.Drawing.Point(3, 25);
@@ -87,6 +89,18 @@ namespace Akanonda
             this.overlayGroupBox.Size = new System.Drawing.Size(290, 150);
             this.overlayGroupBox.TabIndex = 6;
             this.overlayGroupBox.Visible = false;
+            // 
+            // closeOverlayButton
+            // 
+            this.closeOverlayButton.FlatAppearance.BorderSize = 0;
+            this.closeOverlayButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.closeOverlayButton.Location = new System.Drawing.Point(264, 4);
+            this.closeOverlayButton.Name = "closeOverlayButton";
+            this.closeOverlayButton.Size = new System.Drawing.Size(23, 21);
+            this.closeOverlayButton.TabIndex = 6;
+            this.closeOverlayButton.Text = "X";
+            this.closeOverlayButton.UseVisualStyleBackColor = true;
+            this.closeOverlayButton.Click += new System.EventHandler(this.closeOverlayButton_Click);
             // 
             // MainForm
             // 
@@ -110,5 +124,6 @@ namespace Akanonda
         private System.Windows.Forms.RichTextBox SurvivalTimeBox;
         private System.Windows.Forms.Button replay;
         private System.Windows.Forms.Panel overlayGroupBox;
+        private System.Windows.Forms.Button closeOverlayButton;
     }
 }

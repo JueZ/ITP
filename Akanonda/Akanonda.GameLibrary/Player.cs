@@ -191,44 +191,64 @@ namespace Akanonda.GameLibrary
             {
                 case PlayerSteering.Up:
                     y--;
-                    if (Game.Instance.goFast)
-                        // oder if (!grow)
-                        //this._playerbody.RemoveAt(0);
-                        //y--;
-                        //this._playerbody.RemoveAt(0);
-                        //finds aber eig cool so
+                    //if (Game.getRandomNumber(0, 20) % 12 == 0){
+                    //    y--;
+                    //}
+                    if (Game.Instance.goFast){
+                       
+                        // oder nur y--; is auch lustig, schlange wird länger und löchig
+                        this._playerbody.Add(new int[2] { x, y });
                         y--;
+                        this._playerbody.RemoveAt(0);
+                        }
                     break;
                 case PlayerSteering.Down:
                     y++;
+                    //if (Game.getRandomNumber(0, 20) % 12 == 0)
+                    //{
+                    //    y++;
+                    //}
                     if (Game.Instance.goFast)
+                    {
+                        this._playerbody.Add(new int[2] { x, y });
                         y++;
+                        this._playerbody.RemoveAt(0);
+                    }
                     break;
                 case PlayerSteering.Left:
                     x--;
-                    if (Game.Instance.goFast)
+                    //if (Game.getRandomNumber(0, 20) % 12 == 0){
+                    //    x--;
+                    //}
+                    if (Game.Instance.goFast){
+                        this._playerbody.Add(new int[2] { x, y });
                         x--;
+                        this._playerbody.RemoveAt(0);
+                    }
                     break;
                 case PlayerSteering.Right:
                     x++;
+                    //if (Game.getRandomNumber(0, 20) % 12 == 0){
+                    //    x++;
+                    //}
                     if (Game.Instance.goFast)
+                    {
+                        this._playerbody.Add(new int[2] { x, y });
                         x++;
+                        this._playerbody.RemoveAt(0);
+                    }
                     break;
             }
-            
+
+            if (Game.getRandomNumber(0, 20) % 20 == 0)
+            {
+                _playerbody[_playerbody.Count - 1][0] = -10;
+                _playerbody[_playerbody.Count - 1][1] = -10;
+            }
             this._playerbody.Add(new int[2] {x, y});
 
-            foreach (KeyValuePair<Guid,int> item in Game.Instance.goldenAppleDict)
-            {
-                if (item.Key.Equals(this.guid))
-                {
-                    grow = true;
-                    Game.Instance.goldenAppleDict.Remove(item.Key);
-                    if(item.Value - 1 > 0)
-                    Game.Instance.goldenAppleDict.Add(item.Key, item.Value - 1);
-                    break;
-                }
-            }
+            if (PowerUp.playerAteGoldenApple(this._guid, grow))
+                grow = true;
 
             if (!grow)
                 this._playerbody.RemoveAt(0);

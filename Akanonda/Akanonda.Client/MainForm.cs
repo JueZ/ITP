@@ -168,6 +168,11 @@ namespace Akanonda
             LobbyForm.L_form.StartGame_Click(sender, e);
         }
 
+        private void closeOverlayButton_Click(object sender, EventArgs e)
+        {
+            M_Form.closeOverlay();
+        }
+
 
   }
 }

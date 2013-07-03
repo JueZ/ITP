@@ -13,13 +13,14 @@ namespace Akanonda.GameLibrary
         private Guid _playerGuid;
         private PowerUpKind _kind;
         int startX, startY;
-
+        private bool _movePowerUpX, _movePowerUpY;
        
         public enum PowerUpKind
         {
             openWalls,
             goFast,
-            goldenApple
+            goldenApple,
+            movePowerUps
         }
 
         public PowerUp(PowerUpKind kind, Guid guid = new Guid(), Guid playerGuid = new Guid())
@@ -37,6 +38,16 @@ namespace Akanonda.GameLibrary
             guidIsEmpty = playerGuid == Guid.Empty;
             if (!guidIsEmpty)
                 this._playerGuid = playerGuid;
+
+            if(Game.getRandomNumber(1,2) % 2 == 0)
+                _movePowerUpX = true;
+            else
+                _movePowerUpX = false;
+
+            if (Game.getRandomNumber(1, 2) % 2 == 0)
+                _movePowerUpY = true;
+            else
+                _movePowerUpY = false;
 
             startX = Game.getRandomNumber(5, Game.Instance.getFieldx() - 5);
             startY = Game.getRandomNumber(5, Game.Instance.getFieldy() - 5);
@@ -96,8 +107,16 @@ namespace Akanonda.GameLibrary
         {
             get { return _kind; }
         }
-
-        
+        public bool movePowerUpX
+        {
+            get { return _movePowerUpX; }
+            set { _movePowerUpX = value; }
+        }
+        public bool movePowerUpY
+        {
+            get { return _movePowerUpY; }
+            set { _movePowerUpY = value; }
+        }
 
 
         
@@ -123,10 +142,101 @@ namespace Akanonda.GameLibrary
             }
         }
 
-        public static void playerAteGoldenApple(Guid guid)
+        public static bool playerAteGoldenApple(Guid guid, bool grow)
         {
+            foreach (KeyValuePair<Guid, int> item in Game.Instance.goldenAppleDict)
+            {
+                if (item.Key.Equals(guid))
+                {
+                    Game.Instance.goldenAppleDict.Remove(item.Key);
+                    if (item.Value - 1 > 0)
+                        Game.Instance.goldenAppleDict.Add(item.Key, item.Value - 1);
 
+                    return true;
+                }
+            }
+            return false;
         }
+
+        public static void moveAllPowerUps(bool reset = false)
+        {
+            if (reset)
+            {
+                foreach (PowerUp power in Game.Instance.PowerUpList)
+                {
+                    if (Game.getRandomNumber(0, 10) % 2 == 0)
+                        power._movePowerUpX = false;
+                    else
+                        power._movePowerUpX = true;
+
+                    if (Game.getRandomNumber(0, 10) % 2 == 0)
+                        power._movePowerUpY = false;
+                    else
+                        power._movePowerUpY = true;
+
+                }
+
+            }
+            else
+            {
+                foreach (PowerUp power in Game.Instance.PowerUpList)
+                {
+                    int xPlusCounter = 0;
+                    int xMinusCounter = 0;
+                    int yPlusCounter = 0;
+                    int yMinusCounter = 0;
+                    foreach (int[] location in power.PowerUpLocation)
+                    {
+                        if (location[0] + 1 > Game.Instance.getFieldx() - 1)
+                        {
+                            xPlusCounter++;
+
+                        }
+                        if (location[0] - 1 < 0)
+                        {
+                            xMinusCounter++;
+
+                        }
+                        if (location[1] + 1 > Game.Instance.getFieldy() - 1)
+                        {
+                            yPlusCounter++;
+
+                        }
+                        if (location[1] - 1 < 0)
+                        {
+                            yMinusCounter++;
+
+                        }
+                    }
+                    foreach (int[] location in power.PowerUpLocation)
+                    {
+                        if (xPlusCounter > 0)
+                            power.movePowerUpX = false;
+
+                        if (xMinusCounter > 0)
+                            power.movePowerUpX = true;
+
+                        if (yPlusCounter > 0)
+                            power.movePowerUpY = false;
+
+                        if (yMinusCounter > 0)
+                            power.movePowerUpY = true;
+
+                        if (power.movePowerUpX)
+                            location[0]++;
+                        else
+                            location[0]--;
+
+                        if (power.movePowerUpY)
+                            location[1]++;
+                        else
+                            location[1]--;
+
+                    }
+                }
+            }
+        }
+
 
     }
 }

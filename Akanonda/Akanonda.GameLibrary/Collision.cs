@@ -58,6 +58,11 @@ namespace Akanonda.GameLibrary
                                     Game.Instance.goldenAppleDict.Add(player.guid, 10);
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
+                                case PowerUp.PowerUpKind.movePowerUps:
+                                    Game.Instance.MovePowerUpsCounter += 100;
+                                    Game.Instance.movePowerUps = true;
+                                    Game.Instance.RemovePowerUp(power.guid);
+                                    break;
                             }
                         }
                     }
