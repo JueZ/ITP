@@ -325,7 +325,7 @@ namespace Akanonda.GameLibrary
 
                 if (Game.Instance.othersGoSlow)
                 {
-                    if (!PowerUp.othersGoSlowButMe(_playerList[i].guid))
+                    if(Game.Instance.othersGoSlowList.Contains(_playerList[i].guid))
                     {
                         if (Game.Instance.tickCounter % 3 == 0)
                             _playerList[i].playerMove(grow);

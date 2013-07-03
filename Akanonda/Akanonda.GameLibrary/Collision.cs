@@ -64,9 +64,21 @@ namespace Akanonda.GameLibrary
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.othersGoSlow:
-                                    Game.Instance.othersGoSlowList.Add(player.guid);
-                                    Game.Instance.othersGoSlowCounter += 100;
-                                    Game.Instance.othersGoSlow = true;
+                                    if (Game.Instance.PLayerList.Count > 1)
+                                    {
+                                        for (int i = 0; i < Game.Instance.PLayerList.Count; i++)
+                                        {
+                                            if (!Game.Instance.PLayerList[i].guid.Equals(player.guid))
+                                            {
+                                                if (!Game.Instance.othersGoSlowList.Contains(Game.Instance.PLayerList[i].guid))
+                                                    Game.Instance.othersGoSlowList.Add(Game.Instance.PLayerList[i].guid);
+                                            }
+                                        }
+
+                                        //Game.Instance.othersGoSlowList.Add(player.guid);
+                                        Game.Instance.othersGoSlowCounter += 100;
+                                        Game.Instance.othersGoSlow = true;
+                                    }
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                             }

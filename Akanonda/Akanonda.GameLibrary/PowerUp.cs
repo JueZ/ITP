@@ -10,7 +10,6 @@ namespace Akanonda.GameLibrary
     {
         private List<int[]> _PowerUpLocation;
         private Guid _guid;
-        private Guid _playerGuid;
         private PowerUpKind _kind;
         int startX, startY;
         private bool _movePowerUpX, _movePowerUpY;
@@ -24,7 +23,7 @@ namespace Akanonda.GameLibrary
             othersGoSlow
         }
 
-        public PowerUp(PowerUpKind kind, Guid guid = new Guid(), Guid playerGuid = new Guid())
+        public PowerUp(PowerUpKind kind, Guid guid = new Guid())
         {
 
             this._PowerUpLocation = new List<int[]>();
@@ -36,16 +35,14 @@ namespace Akanonda.GameLibrary
             else
                 this._guid = guid;
 
-            guidIsEmpty = playerGuid == Guid.Empty;
-            if (!guidIsEmpty)
-                this._playerGuid = playerGuid;
+            
 
-            if(Game.getRandomNumber(1,2) % 2 == 0)
+            if(Game.getRandomNumber(1,3) % 2 == 0)
                 _movePowerUpX = true;
             else
                 _movePowerUpX = false;
 
-            if (Game.getRandomNumber(1, 2) % 2 == 0)
+            if (Game.getRandomNumber(1, 3) % 2 == 0)
                 _movePowerUpY = true;
             else
                 _movePowerUpY = false;
@@ -159,18 +156,6 @@ namespace Akanonda.GameLibrary
             return false;
         }
 
-
-        public static bool othersGoSlowButMe(Guid guid)
-        {
-            foreach (var item in Game.Instance.othersGoSlowList)
-            {
-                if (item.Equals(guid))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
 
         public static void moveAllPowerUps(bool reset = false)
         {
