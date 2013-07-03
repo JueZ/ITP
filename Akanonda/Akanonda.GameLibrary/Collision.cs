@@ -45,11 +45,17 @@ namespace Akanonda.GameLibrary
                         {
                             switch(power.kind){
                                 case PowerUp.PowerUpKind.openWalls:
+                                    Game.Instance.goThroughWallCounter += 100;
                                     Game.Instance.goThroughWalls = true;
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.goFast:
+                                    Game.Instance.goFastCounter += 100;
                                     Game.Instance.goFast = true;
+                                    Game.Instance.RemovePowerUp(power.guid);
+                                    break;
+                                case PowerUp.PowerUpKind.goldenApple:
+                                    Game.Instance.goldenAppleDict.Add(player.guid, 10);
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                             }

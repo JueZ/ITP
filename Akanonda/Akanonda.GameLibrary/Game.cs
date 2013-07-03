@@ -22,10 +22,13 @@ namespace Akanonda.GameLibrary
         private int _ticksUntilAdd;
         private int _tickCounter;
         private Dictionary<Guid, CollisionType> _collisionList;
-        public bool goThroughWalls = false;
-        private int goThroughWallCounter = 0;
-        public bool goFast = false;
-        private int goFastCounter = 0;
+
+        //Powerup thingies
+        private bool _goThroughWalls = false;
+        private int _goThroughWallCounter = 0;
+        private bool _goFast = false;
+        private int _goFastCounter = 0;
+        private Dictionary<Guid, int> _goldenAppleDict = new Dictionary<Guid, int>();
 
         public static Game Instance
         {
@@ -87,6 +90,37 @@ namespace Akanonda.GameLibrary
         {
             _field.setSize(x, y);
         }
+        //PowerUp get set --------------------
+        public bool goThroughWalls
+        {
+            get { return _goThroughWalls; }
+            set { _goThroughWalls = value; }
+        }
+
+        public bool goFast
+        {
+            get { return _goFast; }
+            set { _goFast = value; }
+        }
+        public int goFastCounter
+        {
+            get { return _goFastCounter; }
+            set { _goFastCounter = value; }
+        }
+        public int goThroughWallCounter
+        {
+            get { return _goThroughWallCounter; }
+            set { _goThroughWallCounter = value; }
+        }
+
+        public Dictionary<Guid, int> goldenAppleDict
+        {
+            get { return _goldenAppleDict; }
+            set { _goldenAppleDict = value; }
+        }
+
+        //PowerUp get set --------------------END
+
 
         public Guid LocalPlayerGuid
         {
@@ -214,20 +248,18 @@ namespace Akanonda.GameLibrary
             _tickCounter = (_tickCounter + 1) % _ticksUntilAdd;
             if (goThroughWalls == true)
             {
-                goThroughWallCounter++;
-                if (goThroughWallCounter > 150)
+                goThroughWallCounter--;
+                if (goThroughWallCounter < 0)
                 {
                     goThroughWalls = false;
-                    goThroughWallCounter = 0;
                 }
             }
             if (goFast == true)
             {
-                goFastCounter++;
-                if (goFastCounter > 150)
+                goFastCounter--;
+                if (goFastCounter < 0)
                 {
                     goFast = false;
-                    goFastCounter = 0;
                 }
             }
 
@@ -241,10 +273,12 @@ namespace Akanonda.GameLibrary
             }
             if (getRandomNumber(0,9999) % 79 == 0)
             {
-                if (getRandomNumber(0, 9999) % 5 == 0)
+                if (getRandomNumber(0, 9999) % 10 == 0)
                     AddPowerUp(PowerUp.PowerUpKind.goFast);
-                else
+                if (getRandomNumber(0, 9999) % 10 == 0)
                     AddPowerUp(PowerUp.PowerUpKind.openWalls);
+                if (getRandomNumber(0, 9999) % 19 == 0)
+                    AddPowerUp(PowerUp.PowerUpKind.goldenApple);
                //if (getRandomNumber(0, 9999) % 10 == 0)
                     
             }
@@ -353,6 +387,12 @@ namespace Akanonda.GameLibrary
                                 idx++;
                             }
                             
+                        break;
+                    case PowerUp.PowerUpKind.goldenApple:
+                        foreach (int[] powerUpLocation in power.PowerUpLocation)
+                        {
+                            g.FillRectangle(new SolidBrush(Color.Yellow), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                        }
                         break;
                 }
             }

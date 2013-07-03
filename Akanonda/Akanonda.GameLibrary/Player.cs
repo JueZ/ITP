@@ -192,6 +192,11 @@ namespace Akanonda.GameLibrary
                 case PlayerSteering.Up:
                     y--;
                     if (Game.Instance.goFast)
+                        // oder if (!grow)
+                        //this._playerbody.RemoveAt(0);
+                        //y--;
+                        //this._playerbody.RemoveAt(0);
+                        //finds aber eig cool so
                         y--;
                     break;
                 case PlayerSteering.Down:
@@ -212,7 +217,19 @@ namespace Akanonda.GameLibrary
             }
             
             this._playerbody.Add(new int[2] {x, y});
-            
+
+            foreach (KeyValuePair<Guid,int> item in Game.Instance.goldenAppleDict)
+            {
+                if (item.Key.Equals(this.guid))
+                {
+                    grow = true;
+                    Game.Instance.goldenAppleDict.Remove(item.Key);
+                    if(item.Value - 1 > 0)
+                    Game.Instance.goldenAppleDict.Add(item.Key, item.Value - 1);
+                    break;
+                }
+            }
+
             if (!grow)
                 this._playerbody.RemoveAt(0);
         }
