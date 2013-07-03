@@ -26,14 +26,22 @@ namespace Akanonda.GameLibrary
         //Powerup thingies
         private bool _goThroughWalls = false;
         private int _goThroughWallCounter = 0;
-        private bool _goFast = false;
-        private int _goFastCounter = 0;
+        private bool _othersGoFast = false;
+        private int _othersGoFastCounter = 0;
         private Dictionary<Guid, int> _goldenAppleDict = new Dictionary<Guid, int>();
         private List<Guid> _othersGoSlowList = new List<Guid>();
+        private List<Guid> _othersGoFastList = new List<Guid>();
         private int _othersGoSlowCounter = 0;
         private bool _othersGoSlow = false;
         private bool _movePowerUps = false;
         private int _movePowerUpsCounter = 0;
+        private bool _iGoFast = false;
+        private int _iGoFastCounter = 0;
+        private List<Guid> _iGoFastList = new List<Guid>();
+        private bool _iGoSlow = false;
+        private int _iGoSlowCounter = 0;
+        private List<Guid> _iGoSlowList = new List<Guid>();
+
 
         public static Game Instance
         {
@@ -108,15 +116,15 @@ namespace Akanonda.GameLibrary
             set { _goThroughWalls = value; }
         }
 
-        public bool goFast
+        public bool othersGoFast
         {
-            get { return _goFast; }
-            set { _goFast = value; }
+            get { return _othersGoFast; }
+            set { _othersGoFast = value; }
         }
-        public int goFastCounter
+        public int othersGoFastCounter
         {
-            get { return _goFastCounter; }
-            set { _goFastCounter = value; }
+            get { return _othersGoFastCounter; }
+            set { _othersGoFastCounter = value; }
         }
         public int goThroughWallCounter
         {
@@ -152,6 +160,41 @@ namespace Akanonda.GameLibrary
             get { return _movePowerUpsCounter; }
             set { _movePowerUpsCounter = value; }
         }
+        public List<Guid> othersGoFastList
+        {
+            get { return _othersGoFastList; }
+        }
+
+        public int iGoFastCounter
+        {
+            get { return _iGoFastCounter; }
+            set { _iGoFastCounter = value; }
+        }
+        public List<Guid> iGoFastList
+        {
+            get { return _iGoFastList; }
+        }
+        public bool iGoFast
+        {
+            get { return _iGoFast; }
+            set { _iGoFast = value; }
+        }
+
+        public int iGoSlowCounter
+        {
+            get { return _iGoSlowCounter; }
+            set { _iGoSlowCounter = value; }
+        }
+        public List<Guid> iGoSlowList
+        {
+            get { return _iGoSlowList; }
+        }
+        public bool iGoSlow
+        {
+            get { return _iGoSlow; }
+            set { _iGoSlow = value; }
+        }
+
         //PowerUp get set --------------------END
 
 
@@ -287,12 +330,31 @@ namespace Akanonda.GameLibrary
                     goThroughWalls = false;
                 }
             }
-            if (goFast)
+            if (othersGoFast)
             {
-                goFastCounter--;
-                if (goFastCounter < 0)
+                othersGoFastCounter--;
+                if (othersGoFastCounter < 0)
                 {
-                    goFast = false;
+                    othersGoFastList.Clear();
+                    othersGoFast = false;
+                }
+            }
+            if (iGoFast)
+            {
+                iGoFastCounter--;
+                if (iGoFastCounter < 0)
+                {
+                    iGoFastList.Clear();
+                    iGoFast = false;
+                }
+            }
+            if (iGoSlow)
+            {
+                iGoSlowCounter--;
+                if (iGoSlowCounter < 0)
+                {
+                    iGoSlowList.Clear();
+                    iGoSlow = false;
                 }
             }
             if (movePowerUps)
@@ -323,9 +385,9 @@ namespace Akanonda.GameLibrary
             for (int i = 0; i < _playerList.Count; i++)
             {
 
-                if (Game.Instance.othersGoSlow)
+                if (Game.Instance.othersGoSlow || Game.Instance.iGoSlow)
                 {
-                    if(Game.Instance.othersGoSlowList.Contains(_playerList[i].guid))
+                    if(Game.Instance.othersGoSlowList.Contains(_playerList[i].guid) || Game.Instance.iGoSlowList.Contains(_playerList[i].guid))
                     {
                         if (Game.Instance.tickCounter % 3 == 0)
                             _playerList[i].playerMove(grow);
@@ -348,13 +410,19 @@ namespace Akanonda.GameLibrary
                 if (getRandomNumber(0, 9999) % 79 == 0)
                 {
                     if (getRandomNumber(0, 9999) % 10 == 0)
-                        AddPowerUp(PowerUp.PowerUpKind.goFast);
+                        AddPowerUp(PowerUp.PowerUpKind.othersGoFast);
+                    if (getRandomNumber(0, 9999) % 10 == 0)
+                        AddPowerUp(PowerUp.PowerUpKind.iGoFast);
                     if (getRandomNumber(0, 9999) % 10 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.openWalls);
                     if (getRandomNumber(0, 9999) % 10 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.movePowerUps);
                     if (getRandomNumber(0, 9999) % 15 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.goldenApple);
+                    if (getRandomNumber(0, 9999) % 10 == 0)
+                        AddPowerUp(PowerUp.PowerUpKind.othersGoSlow);
+                    if (getRandomNumber(0, 9999) % 10 == 0)
+                        AddPowerUp(PowerUp.PowerUpKind.iGoSlow);
                     //if (getRandomNumber(0, 9999) % 10 == 0)
 
                 }
@@ -442,7 +510,8 @@ namespace Akanonda.GameLibrary
                                 //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
                             }
                             break;
-                    case PowerUp.PowerUpKind.goFast:
+                    case PowerUp.PowerUpKind.iGoFast:
+                    case PowerUp.PowerUpKind.othersGoFast:
                             idx = 0;
                             foreach (int[] powerUpLocation in power.PowerUpLocation)
                             {
@@ -460,7 +529,7 @@ namespace Akanonda.GameLibrary
                                         g.FillRectangle(new SolidBrush(Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
                                         break;
                                     default:
-                                        g.FillRectangle(new SolidBrush(Color.Gray), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                        g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.iGoFast ? Color.Green : Color.Red), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
                                         break;
                                 }
                                 idx++;
@@ -476,13 +545,20 @@ namespace Akanonda.GameLibrary
                     case PowerUp.PowerUpKind.movePowerUps:
                         foreach (int[] powerUpLocation in power.PowerUpLocation)
                         {
-                            g.FillRectangle(new SolidBrush(Color.Gray), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+
+                            g.FillRectangle(new SolidBrush(powerUpLocation[0] % 2 != 0 || powerUpLocation[1] % 2 == 0 ? Color.Gray : Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                        }
+                        break;
+                    case PowerUp.PowerUpKind.iGoSlow:
+                        foreach (int[] powerUpLocation in power.PowerUpLocation)
+                        {
+                            g.FillRectangle(new SolidBrush(powerUpLocation[0] % 2 == 0 || powerUpLocation[1] % 2 != 0 ? Color.Green : Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
                         }
                         break;
                     case PowerUp.PowerUpKind.othersGoSlow:
                         foreach (int[] powerUpLocation in power.PowerUpLocation)
                         {
-                            g.FillRectangle(new SolidBrush(Color.Red), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                            g.FillRectangle(new SolidBrush(powerUpLocation[0] % 2 == 0 || powerUpLocation[1] % 2 != 0 ? Color.Red : Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
                         }
                         break;
                 }

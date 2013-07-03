@@ -17,10 +17,12 @@ namespace Akanonda.GameLibrary
         public enum PowerUpKind
         {
             openWalls,
-            goFast,
+            othersGoFast,
             goldenApple,
             movePowerUps,
-            othersGoSlow
+            othersGoSlow,
+            iGoSlow,
+            iGoFast
         }
 
         public PowerUp(PowerUpKind kind, Guid guid = new Guid())

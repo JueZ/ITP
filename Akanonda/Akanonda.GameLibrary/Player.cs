@@ -191,51 +191,50 @@ namespace Akanonda.GameLibrary
             {
                 case PlayerSteering.Up:
                     y--;
-                    //if (Game.getRandomNumber(0, 20) % 12 == 0){
-                    //    y--;
-                    //}
-                    if (Game.Instance.goFast){
-                       
-                        // oder nur y--; is auch lustig, schlange wird länger und löchig
-                        this._playerbody.Add(new int[2] { x, y });
-                        y--;
-                        this._playerbody.RemoveAt(0);
+                    if (Game.Instance.othersGoFast || Game.Instance.iGoFast)
+                    {
+                        if (Game.Instance.othersGoFastList.Contains(this._guid) || Game.Instance.iGoFastList.Contains(this._guid))
+                        {
+                            this._playerbody.Add(new int[2] { x, y });
+                            y--;
+                            this._playerbody.RemoveAt(0);
                         }
+                    }
                     break;
                 case PlayerSteering.Down:
                     y++;
-                    //if (Game.getRandomNumber(0, 20) % 12 == 0)
-                    //{
-                    //    y++;
-                    //}
-                    if (Game.Instance.goFast)
+                    if (Game.Instance.othersGoFast || Game.Instance.iGoFast)
                     {
-                        this._playerbody.Add(new int[2] { x, y });
-                        y++;
-                        this._playerbody.RemoveAt(0);
+                        if (Game.Instance.othersGoFastList.Contains(this._guid) || Game.Instance.iGoFastList.Contains(this._guid))
+                        {
+                            this._playerbody.Add(new int[2] { x, y });
+                            y++;
+                            this._playerbody.RemoveAt(0);
+                        }
                     }
                     break;
                 case PlayerSteering.Left:
                     x--;
-                    //if (Game.getRandomNumber(0, 20) % 12 == 0){
-                    //    x--;
-                    //}
-                    if (Game.Instance.goFast){
-                        this._playerbody.Add(new int[2] { x, y });
-                        x--;
-                        this._playerbody.RemoveAt(0);
+                    if (Game.Instance.othersGoFast || Game.Instance.iGoFast)
+                    {
+                        if (Game.Instance.othersGoFastList.Contains(this._guid) || Game.Instance.iGoFastList.Contains(this._guid))
+                        {
+                            this._playerbody.Add(new int[2] { x, y });
+                            x--;
+                            this._playerbody.RemoveAt(0);
+                        }
                     }
                     break;
                 case PlayerSteering.Right:
                     x++;
-                    //if (Game.getRandomNumber(0, 20) % 12 == 0){
-                    //    x++;
-                    //}
-                    if (Game.Instance.goFast)
+                    if (Game.Instance.othersGoFast || Game.Instance.iGoFast)
                     {
-                        this._playerbody.Add(new int[2] { x, y });
-                        x++;
-                        this._playerbody.RemoveAt(0);
+                        if (Game.Instance.othersGoFastList.Contains(this._guid) || Game.Instance.iGoFastList.Contains(this._guid))
+                        {
+                            this._playerbody.Add(new int[2] { x, y });
+                            x++;
+                            this._playerbody.RemoveAt(0);
+                        }
                     }
                     break;
             }

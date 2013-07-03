@@ -49,9 +49,34 @@ namespace Akanonda.GameLibrary
                                     Game.Instance.goThroughWalls = true;
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
-                                case PowerUp.PowerUpKind.goFast:
-                                    Game.Instance.goFastCounter += 100;
-                                    Game.Instance.goFast = true;
+                                case PowerUp.PowerUpKind.othersGoFast:
+                                    if (Game.Instance.PLayerList.Count > 1)
+                                    {
+                                        for (int i = 0; i < Game.Instance.PLayerList.Count; i++)
+                                        {
+                                            if (!Game.Instance.PLayerList[i].guid.Equals(player.guid))
+                                            {
+                                                if (!Game.Instance.othersGoFastList.Contains(Game.Instance.PLayerList[i].guid))
+                                                    Game.Instance.othersGoFastList.Add(Game.Instance.PLayerList[i].guid);
+                                            }
+                                        }
+
+                                        //Game.Instance.othersGoSlowList.Add(player.guid);
+                                        Game.Instance.othersGoFastCounter += 100;
+                                        Game.Instance.othersGoFast = true;
+                                    }
+                                    Game.Instance.RemovePowerUp(power.guid);
+                                    break;
+                                case PowerUp.PowerUpKind.iGoFast:
+                                    Game.Instance.iGoFastList.Add(player.guid);
+                                    Game.Instance.iGoFastCounter += 100;
+                                    Game.Instance.iGoFast = true;
+                                    Game.Instance.RemovePowerUp(power.guid);
+                                    break;
+                                case PowerUp.PowerUpKind.iGoSlow:
+                                    Game.Instance.iGoSlowList.Add(player.guid);
+                                    Game.Instance.iGoSlowCounter += 100;
+                                    Game.Instance.iGoSlow = true;
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.goldenApple:
