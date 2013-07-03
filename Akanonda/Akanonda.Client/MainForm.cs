@@ -113,11 +113,12 @@ namespace Akanonda
         }
 
 
-        public void showOverlay(int minutes, int seconds, string deadMessage)
+        public void showOverlay(int minutes, int seconds, string deadMessage, int length)
         {
             //overlay.Size = this.Size;
             //overlay.Visible = true;
             //overlay.BringToFront();
+            
             if (minutes == 0)
             {
                 SurvivalTimeBox.Text = seconds > 1 ? "\nGAME OVER!\n" + deadMessage + "\nYou survived " + seconds + " seconds!\nCongratulations " + LobbyForm.L_form.name + "!!" : "\nGAME OVER!\n" + deadMessage + "\nYou survived one second!\nCongratulations " + LobbyForm.L_form.name + "!!";

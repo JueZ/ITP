@@ -21,6 +21,7 @@ namespace Akanonda
         public static int SurvivalSecond = 0;
         public static int SurvivalMinute = 0;
         private static Settings settings = new Settings();
+        private static int length = 0;
         [STAThread]
         private static void Main(string[] args)
         {
@@ -146,6 +147,8 @@ namespace Akanonda
 						game = (Game)SerializeHelper.ByteArrayToObject(gamedata);
                         game.LocalPlayerGuid = Program.guid;
 
+                        if (game.getPlayerLength(game.LocalPlayerGuid) > 0)
+                            length = game.getPlayerLength(game.LocalPlayerGuid);
                         //if (game.CollisionList.Count > 0)
                         //{
                         //    MessageBox.Show("collision found");
@@ -157,6 +160,7 @@ namespace Akanonda
 
                             if (key.Key == game.LocalPlayerGuid)
                             {
+                                
                                 ConnectPlayerToGame(game.getPlayerName(guid), game.getPlayerColor(guid), "dead");
     
                                 //MainForm.Dispose();
@@ -187,7 +191,7 @@ namespace Akanonda
                                 //Overlay.FormBorderStyle = FormBorderStyle.None;
                                 //Overlay.Show();
 
-                                MainForm.M_Form.showOverlay(SurvivalMinute, SurvivalSecond, text);
+                                MainForm.M_Form.showOverlay(SurvivalMinute, SurvivalSecond, text, length);
 
                                 //MessageBox.Show(text);
                                 LobbyForm.L_form.StartGame_Enable();

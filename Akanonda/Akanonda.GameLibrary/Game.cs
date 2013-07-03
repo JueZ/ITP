@@ -409,21 +409,27 @@ namespace Akanonda.GameLibrary
             {
                 if (getRandomNumber(0, 9999) % 79 == 0)
                 {
-                    if (getRandomNumber(0, 9999) % 10 == 0)
+                    if (getRandomNumber(0, 9999) % 11 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.othersGoFast);
-                    if (getRandomNumber(0, 9999) % 10 == 0)
+
+                    if (getRandomNumber(0, 9999) % 11 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.iGoFast);
-                    if (getRandomNumber(0, 9999) % 10 == 0)
+
+                    if (getRandomNumber(0, 9999) % 11 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.openWalls);
-                    if (getRandomNumber(0, 9999) % 10 == 0)
+
+                    if (getRandomNumber(0, 9999) % 11 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.movePowerUps);
+
                     if (getRandomNumber(0, 9999) % 15 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.goldenApple);
-                    if (getRandomNumber(0, 9999) % 10 == 0)
+
+                    if (getRandomNumber(0, 9999) % 11 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.othersGoSlow);
-                    if (getRandomNumber(0, 9999) % 10 == 0)
+
+                    if (getRandomNumber(0, 9999) % 11 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.iGoSlow);
-                    //if (getRandomNumber(0, 9999) % 10 == 0)
+                    
 
                 }
             }
@@ -485,21 +491,21 @@ namespace Akanonda.GameLibrary
                                 //Color randomColor = Color.FromArgb(randonGen.Next(255), randonGen.Next(255), randonGen.Next(255));
                                 if (idx > 15)
                                 {
-                                    g.FillRectangle(new SolidBrush(Color.White), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                    g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
                                 }
                                 else
                                 {
                                     if (_tickCounter % 10 > 5)
                                     {
                                         if (idx % 2 != 0)
-                                            g.FillRectangle(new SolidBrush(Color.Gray), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                            g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
                                         else
                                             g.FillRectangle(new SolidBrush(Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
                                     }
                                     else
                                     {
                                         if (idx % 2 == 0)
-                                            g.FillRectangle(new SolidBrush(Color.Gray), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                            g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
                                         else
                                             g.FillRectangle(new SolidBrush(Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
 
@@ -543,23 +549,52 @@ namespace Akanonda.GameLibrary
                         }
                         break;
                     case PowerUp.PowerUpKind.movePowerUps:
-                        foreach (int[] powerUpLocation in power.PowerUpLocation)
-                        {
-
-                            g.FillRectangle(new SolidBrush(powerUpLocation[0] % 2 != 0 || powerUpLocation[1] % 2 == 0 ? Color.Gray : Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
-                        }
+                        idx = 0;
+                            foreach (int[] powerUpLocation in power.PowerUpLocation)
+                            {
+                                switch (idx)
+                                {
+                                    case 2:
+                                    case 6:
+                                    case 10:
+                                    case 14:
+                                    case 16:
+                                    case 18:
+                                    case 22:
+                                    case 24:
+                                        g.FillRectangle(new SolidBrush(Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                        break;
+                                    default:
+                                        g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                        break;
+                                }
+                                idx++;
+                            }
                         break;
                     case PowerUp.PowerUpKind.iGoSlow:
-                        foreach (int[] powerUpLocation in power.PowerUpLocation)
-                        {
-                            g.FillRectangle(new SolidBrush(powerUpLocation[0] % 2 == 0 || powerUpLocation[1] % 2 != 0 ? Color.Green : Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
-                        }
-                        break;
                     case PowerUp.PowerUpKind.othersGoSlow:
-                        foreach (int[] powerUpLocation in power.PowerUpLocation)
-                        {
-                            g.FillRectangle(new SolidBrush(powerUpLocation[0] % 2 == 0 || powerUpLocation[1] % 2 != 0 ? Color.Red : Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
-                        }
+                        idx = 0;
+                            foreach (int[] powerUpLocation in power.PowerUpLocation)
+                            {
+                                switch (idx)
+                                {
+                                    case 2:
+                                    case 6:
+                                    case 10:
+                                    case 14:
+                                    case 18:
+                                    case 19:
+                                    case 20:
+                                    case 21:
+                                    case 24:
+                                        g.FillRectangle(new SolidBrush(Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                        break;
+                                    default:
+                                        g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.iGoSlow ? Color.Green : Color.Red), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                        break;
+                                }
+                                idx++;
+                            }
                         break;
                 }
             }
@@ -609,6 +644,17 @@ namespace Akanonda.GameLibrary
             }
         }
 
+        public int getPlayerLength(Guid guid)
+        {
+            foreach(Player p in _playerList)
+            {
+                if (p.guid.Equals(guid))
+                {
+                    return p.playerbody.Count;
+                }
+            }
+            return 0;
+        }
 
         public void RemovePowerUp(Guid guid)
         {

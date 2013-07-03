@@ -80,11 +80,11 @@ namespace Akanonda.GameLibrary
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.goldenApple:
-                                    Game.Instance.goldenAppleDict.Add(player.guid, 10);
+                                    Game.Instance.goldenAppleDict.Add(player.guid, 20); //sets how much a player will grow when he eats the golden apple
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.movePowerUps:
-                                    Game.Instance.movePowerUpsCounter += 100;
+                                    Game.Instance.movePowerUpsCounter += 150;
                                     Game.Instance.movePowerUps = true;
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
