@@ -20,7 +20,8 @@ namespace Akanonda.GameLibrary
             openWalls,
             goFast,
             goldenApple,
-            movePowerUps
+            movePowerUps,
+            othersGoSlow
         }
 
         public PowerUp(PowerUpKind kind, Guid guid = new Guid(), Guid playerGuid = new Guid())
@@ -142,7 +143,7 @@ namespace Akanonda.GameLibrary
             }
         }
 
-        public static bool playerAteGoldenApple(Guid guid, bool grow)
+        public static bool playerAteGoldenApple(Guid guid)
         {
             foreach (KeyValuePair<Guid, int> item in Game.Instance.goldenAppleDict)
             {
@@ -152,6 +153,19 @@ namespace Akanonda.GameLibrary
                     if (item.Value - 1 > 0)
                         Game.Instance.goldenAppleDict.Add(item.Key, item.Value - 1);
 
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        public static bool othersGoSlowButMe(Guid guid)
+        {
+            foreach (var item in Game.Instance.othersGoSlowList)
+            {
+                if (item.Equals(guid))
+                {
                     return true;
                 }
             }

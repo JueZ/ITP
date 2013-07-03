@@ -29,6 +29,9 @@ namespace Akanonda.GameLibrary
         private bool _goFast = false;
         private int _goFastCounter = 0;
         private Dictionary<Guid, int> _goldenAppleDict = new Dictionary<Guid, int>();
+        private List<Guid> _othersGoSlowList = new List<Guid>();
+        private int _othersGoSlowCounter = 0;
+        private bool _othersGoSlow = false;
         private bool _movePowerUps = false;
         private int _movePowerUpsCounter = 0;
 
@@ -92,6 +95,12 @@ namespace Akanonda.GameLibrary
         {
             _field.setSize(x, y);
         }
+
+        public int tickCounter
+        {
+            get { return _tickCounter; }
+        }
+
         //PowerUp get set --------------------
         public bool goThroughWalls
         {
@@ -114,7 +123,20 @@ namespace Akanonda.GameLibrary
             get { return _goThroughWallCounter; }
             set { _goThroughWallCounter = value; }
         }
-
+        public int othersGoSlowCounter
+        {
+            get { return _othersGoSlowCounter; }
+            set { _othersGoSlowCounter = value; }
+        }
+        public List<Guid> othersGoSlowList
+        {
+            get { return _othersGoSlowList; }
+        }
+        public bool othersGoSlow
+        {
+            get { return _othersGoSlow; }
+            set { _othersGoSlow = value; }
+        }
         public Dictionary<Guid, int> goldenAppleDict
         {
             get { return _goldenAppleDict; }
@@ -125,7 +147,7 @@ namespace Akanonda.GameLibrary
             get { return _movePowerUps; }
             set { _movePowerUps = value; }
         }
-        public int MovePowerUpsCounter
+        public int movePowerUpsCounter
         {
             get { return _movePowerUpsCounter; }
             set { _movePowerUpsCounter = value; }
@@ -278,21 +300,47 @@ namespace Akanonda.GameLibrary
                 if (_tickCounter % 2 == 0)
                     PowerUp.moveAllPowerUps();
 
-                MovePowerUpsCounter--;
-                if (MovePowerUpsCounter < 0)
+                movePowerUpsCounter--;
+                if (movePowerUpsCounter < 0)
                 {                           // reset Direction of moving powerups
                     PowerUp.moveAllPowerUps(true);
                     movePowerUps = false;
                 }
             }
-
+            if (othersGoSlow)
+            {
+                othersGoSlowCounter--;
+                if (othersGoSlowCounter < 0)
+                {
+                    othersGoSlowList.Clear();
+                    othersGoSlow = false;
+                }
+            }
             bool grow = false;
             if (_tickCounter == 0)
                 grow = true;
 
             for (int i = 0; i < _playerList.Count; i++)
             {
-                _playerList[i].playerMove(grow);
+
+                if (Game.Instance.othersGoSlow)
+                {
+                    if (!PowerUp.othersGoSlowButMe(_playerList[i].guid))
+                    {
+                        if (Game.Instance.tickCounter % 3 == 0)
+                            _playerList[i].playerMove(grow);
+                    }
+                    else
+                    {
+                        _playerList[i].playerMove(grow);
+                    }
+                }
+                else
+                {
+                    _playerList[i].playerMove(grow);
+                }
+
+                //_playerList[i].playerMove(grow);
             }
             
             if (PowerUpList.Count < getFieldx() / 10 && PLayerList.Count > 0) //powerups according to fieldsize
@@ -303,6 +351,8 @@ namespace Akanonda.GameLibrary
                         AddPowerUp(PowerUp.PowerUpKind.goFast);
                     if (getRandomNumber(0, 9999) % 10 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.openWalls);
+                    if (getRandomNumber(0, 9999) % 10 == 0)
+                        AddPowerUp(PowerUp.PowerUpKind.movePowerUps);
                     if (getRandomNumber(0, 9999) % 15 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.goldenApple);
                     //if (getRandomNumber(0, 9999) % 10 == 0)
@@ -424,6 +474,12 @@ namespace Akanonda.GameLibrary
                         }
                         break;
                     case PowerUp.PowerUpKind.movePowerUps:
+                        foreach (int[] powerUpLocation in power.PowerUpLocation)
+                        {
+                            g.FillRectangle(new SolidBrush(Color.Gray), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                        }
+                        break;
+                    case PowerUp.PowerUpKind.othersGoSlow:
                         foreach (int[] powerUpLocation in power.PowerUpLocation)
                         {
                             g.FillRectangle(new SolidBrush(Color.Red), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);

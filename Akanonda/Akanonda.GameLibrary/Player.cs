@@ -186,7 +186,7 @@ namespace Akanonda.GameLibrary
         {
             int x = _playerbody[_playerbody.Count-1][0];
             int y = _playerbody[_playerbody.Count-1][1];
-            
+
             switch (this._playersteering) 
             {
                 case PlayerSteering.Up:
@@ -245,9 +245,16 @@ namespace Akanonda.GameLibrary
                 _playerbody[_playerbody.Count - 1][0] = -10;
                 _playerbody[_playerbody.Count - 1][1] = -10;
             }
-            this._playerbody.Add(new int[2] {x, y});
 
-            if (PowerUp.playerAteGoldenApple(this._guid, grow))
+                this._playerbody.Add(new int[2] { x, y });
+            
+
+
+
+            //this._playerbody.Add(new int[2] {x, y});
+
+
+            if (PowerUp.playerAteGoldenApple(this._guid))
                 grow = true;
 
             if (!grow)

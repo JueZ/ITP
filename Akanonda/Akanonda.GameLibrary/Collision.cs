@@ -59,8 +59,14 @@ namespace Akanonda.GameLibrary
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.movePowerUps:
-                                    Game.Instance.MovePowerUpsCounter += 100;
+                                    Game.Instance.movePowerUpsCounter += 100;
                                     Game.Instance.movePowerUps = true;
+                                    Game.Instance.RemovePowerUp(power.guid);
+                                    break;
+                                case PowerUp.PowerUpKind.othersGoSlow:
+                                    Game.Instance.othersGoSlowList.Add(player.guid);
+                                    Game.Instance.othersGoSlowCounter += 100;
+                                    Game.Instance.othersGoSlow = true;
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                             }
