@@ -126,6 +126,10 @@ namespace Akanonda.GameLibrary
                                     Game.Instance.closingWallsCounter += 40;
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
+                                case PowerUp.PowerUpKind.biggerWalls:
+                                    Game.Instance.biggerWallsCounter += 40;
+                                    Game.Instance.RemovePowerUp(power.guid);
+                                    break;
                             }
                         }
                     }

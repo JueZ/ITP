@@ -44,6 +44,7 @@ namespace Akanonda.GameLibrary
         private int _iGoSlowCounter = 0;
         private List<Guid> _iGoSlowList = new List<Guid>();
         private int _closingWallsCounter = 0;
+        private int _biggerWallsCounter = 0;
 
         public static Game Instance
         {
@@ -182,6 +183,12 @@ namespace Akanonda.GameLibrary
         {
             get { return _closingWallsCounter; }
             set { _closingWallsCounter = value; }
+        }
+
+        public int biggerWallsCounter
+        {
+            get { return _biggerWallsCounter; }
+            set { _biggerWallsCounter = value; }
         }
         //PowerUp get set --------------------END
 
@@ -359,6 +366,20 @@ namespace Akanonda.GameLibrary
                     //movePowerUpsCounter += 15;
             }
 
+            if (biggerWallsCounter > 0)
+            {
+                biggerWallsCounter--;
+                if (tickCounter % 2 == 0) //closingWall speed
+                {
+                    // hindert powerups am 
+                    setFieldSize(Game.Instance.getFieldx() + 1, Game.Instance.getFieldy() + 1);
+                    _collision.setCollision(Game.Instance.getFieldx() + 1, Game.Instance.getFieldy() + 1);
+                    //PowerUp.moveAllTouchingPowerUps();
+                }
+                // if (closingWallsCounter <= 0)
+                //movePowerUpsCounter += 15;
+            }
+
             bool grow = false;
             if (_tickCounter == 0)
                 grow = true;
@@ -419,7 +440,9 @@ namespace Akanonda.GameLibrary
 
                     if (getRandomNumber(0, 9999) % 11 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.closingWalls);
-                    
+
+                    if (getRandomNumber(0, 9999) % 11 == 0)
+                        AddPowerUp(PowerUp.PowerUpKind.biggerWalls);
 
                 }
             }
@@ -571,7 +594,7 @@ namespace Akanonda.GameLibrary
                                 idx++;
                             }
                         break;
-                    case PowerUp.PowerUpKind.closingWalls:
+                    case PowerUp.PowerUpKind.biggerWalls:
                         foreach (int[] powerUpLocation in power.PowerUpLocation)
                         {
 
@@ -584,6 +607,28 @@ namespace Akanonda.GameLibrary
                             else
                             {
                                 g.FillRectangle(new SolidBrush(Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                            }
+
+                            idx++;
+                            //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
+                        }
+                        break;
+                    case PowerUp.PowerUpKind.closingWalls:
+                        foreach (int[] powerUpLocation in power.PowerUpLocation)
+                        {
+
+                            //Random randonGen = new Random();
+                            //Color randomColor = Color.FromArgb(randonGen.Next(255), randonGen.Next(255), randonGen.Next(255));
+                            if (idx < 15)
+                            {
+                                g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                            }
+                            else
+                            {
+                                if (idx == 20 || idx == 15)
+                                    g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                else
+                                    g.FillRectangle(new SolidBrush(Color.Black), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
                             }
 
                             idx++;

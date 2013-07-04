@@ -25,7 +25,8 @@ namespace Akanonda.GameLibrary
             iGoSlow,
             iGoFast,
             rabies,
-            closingWalls
+            closingWalls,
+            biggerWalls
         }
 
         public PowerUp(PowerUpKind kind, Guid guid = new Guid())
