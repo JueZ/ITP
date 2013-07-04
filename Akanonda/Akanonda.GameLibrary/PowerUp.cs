@@ -24,7 +24,8 @@ namespace Akanonda.GameLibrary
             othersGoSlow,
             iGoSlow,
             iGoFast,
-            rabies
+            rabies,
+            closingWalls
         }
 
         public PowerUp(PowerUpKind kind, Guid guid = new Guid())
@@ -268,6 +269,65 @@ namespace Akanonda.GameLibrary
 
                     }
                 }
+            }
+        }
+
+
+        public static void moveAllTouchingPowerUps()
+        {
+
+            foreach (PowerUp power in Game.Instance.PowerUpList)
+            {
+                //int xPlusCounter = 0;
+                //int xMinusCounter = 0;
+                //int yPlusCounter = 0;
+                //int yMinusCounter = 0;
+                foreach (int[] location in power.PowerUpLocation)
+                {
+                    if (location[0] - 3 > Game.Instance.getFieldx())
+                    {
+                        Game.Instance.RemovePowerUp(power.guid);
+                       //xPlusCounter++;
+
+                    }
+                    if (location[0] + 3 < 0)
+                    {
+                        Game.Instance.RemovePowerUp(power.guid);
+                        //xMinusCounter++;
+
+                    }
+                    if (location[1] - 3> Game.Instance.getFieldy())
+                    {
+                        Game.Instance.RemovePowerUp(power.guid);
+                        //yPlusCounter++;
+
+                    }
+                    if (location[1] + 3 < 0)
+                    {
+                        Game.Instance.RemovePowerUp(power.guid);
+                        //yMinusCounter++;
+
+                    }
+                }
+                //foreach (int[] location in power.PowerUpLocation)
+                //{
+                //    if (xPlusCounter > 0)
+                //        Game.Instance.RemovePowerUp(power.guid);
+                //        //location[0]--;
+
+                //    if (xMinusCounter > 0)
+                //        Game.Instance.RemovePowerUp(power.guid);
+                //        //location[0]++;
+
+                //    if (yPlusCounter > 0)
+                //        Game.Instance.RemovePowerUp(power.guid);
+                //        //location[1]--;
+
+                //    if (yMinusCounter > 0)
+                //        Game.Instance.RemovePowerUp(power.guid);
+                //        //location[1]++;
+
+                //}
             }
         }
 

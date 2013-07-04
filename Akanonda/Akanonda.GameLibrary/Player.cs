@@ -55,8 +55,8 @@ namespace Akanonda.GameLibrary
         {
             this._playerbody = new List<int[]>();
 
-            startX = Game.getRandomNumber(20, 100);
-            startY = Game.getRandomNumber(20, 100);
+            startX = Game.getRandomNumber(20, Game.Instance.getFieldx() - 20);
+            startY = Game.getRandomNumber(20, Game.Instance.getFieldy() - 20);
 
             this._name = name;
             this._color = color;
