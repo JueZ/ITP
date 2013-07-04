@@ -30,6 +30,7 @@ namespace Akanonda.GameLibrary
         private int _othersGoFastCounter = 0;
         private Dictionary<Guid, int> _goldenAppleDict = new Dictionary<Guid, int>();
         private Dictionary<Guid, int> _redAppleDict = new Dictionary<Guid, int>();
+        private Dictionary<Guid, int> _rabiesDict = new Dictionary<Guid, int>();
         private List<Guid> _othersGoSlowList = new List<Guid>();
         private List<Guid> _othersGoFastList = new List<Guid>();
         private int _othersGoSlowCounter = 0;
@@ -155,6 +156,11 @@ namespace Akanonda.GameLibrary
         {
             get { return _redAppleDict; }
             set { _redAppleDict = value; }
+        }
+        public Dictionary<Guid, int> rabiesDict
+        {
+            get { return _rabiesDict; }
+            set { _rabiesDict = value; }
         }
         //public bool movePowerUps
         //{
@@ -430,6 +436,12 @@ namespace Akanonda.GameLibrary
                     if (getRandomNumber(0, 9999) % 15 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.goldenApple);
 
+                    if (getRandomNumber(0, 9999) % 15 == 0)
+                        AddPowerUp(PowerUp.PowerUpKind.redApple);
+
+                    if (getRandomNumber(0, 9999) % 17 == 0)
+                        AddPowerUp(PowerUp.PowerUpKind.rabies);
+
                     if (getRandomNumber(0, 9999) % 11 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.othersGoSlow);
 
@@ -550,9 +562,10 @@ namespace Akanonda.GameLibrary
                         break;
                     case PowerUp.PowerUpKind.redApple:
                     case PowerUp.PowerUpKind.goldenApple:
+                    case PowerUp.PowerUpKind.rabies:
                         foreach (int[] powerUpLocation in power.PowerUpLocation)
                         {
-                            g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.goldenApple ? Color.Yellow : Color.Red), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                            g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.goldenApple ? Color.Yellow : power.kind == PowerUp.PowerUpKind.rabies ? Color.Black : Color.Red), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
                         }
                         break;
                     case PowerUp.PowerUpKind.movePowerUps:

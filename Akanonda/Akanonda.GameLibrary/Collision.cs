@@ -101,6 +101,10 @@ namespace Akanonda.GameLibrary
                                     
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
+                                case PowerUp.PowerUpKind.rabies:
+                                    Game.Instance.rabiesDict.Add(player.guid, 5); //sets how many times a player can bite
+                                    Game.Instance.RemovePowerUp(power.guid);
+                                    break;
                                 case PowerUp.PowerUpKind.movePowerUps:
                                     Game.Instance.movePowerUpsCounter += 150;
                                     //Game.Instance.movePowerUps = true;
@@ -157,18 +161,32 @@ namespace Akanonda.GameLibrary
                 {
                     if (player.guid != p.guid) // check against other players
                     {
+                        int x = 0;
                         foreach (int[] array in p.playerbody)
                         {
                             if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with other player
                             {
                                 // Collision!
                                 Console.WriteLine("Player " + player.guid.ToString() + " collides with another player!");
-                                
-                                if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
-                                    collisions.Add(player.guid, CollisionType.ToPlayer);
-                                
+
+                                if (!PowerUp.playerHasRabies(player.guid))
+                                {
+                                    if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
+                                        collisions.Add(player.guid, CollisionType.ToPlayer);
+                                }
+                                else
+                                {
+                                    for (int i = 0; i < p.playerbody.Count; i++)
+                                    {
+                                            p.playerbody.RemoveAt(0);
+                                    }
+
+
+
+                                }
                                 // other player would be p.guid
                             }
+                            x++;
                         }
                     }
                     else // check against player itself
@@ -184,9 +202,19 @@ namespace Akanonda.GameLibrary
                                 //player.playerbody.Remove(player.playerbody[0]);
                                 // Collision!
                                 Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
+                                if (!PowerUp.playerHasRabies(player.guid))
+                                {
 
-                                if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
-                                    collisions.Add(player.guid, CollisionType.ToSelf);
+                                    if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
+                                        collisions.Add(player.guid, CollisionType.ToSelf);
+                                }
+                                else
+                                {
+                                    for (int x = 0; x < p.playerbody.Count; x++)
+                                    {
+                                        p.playerbody.RemoveAt(0);
+                                    }
+                                }
                             }
                         }
                     }

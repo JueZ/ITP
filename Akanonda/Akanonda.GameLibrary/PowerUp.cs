@@ -23,7 +23,8 @@ namespace Akanonda.GameLibrary
             movePowerUps,
             othersGoSlow,
             iGoSlow,
-            iGoFast
+            iGoFast,
+            rabies
         }
 
         public PowerUp(PowerUpKind kind, Guid guid = new Guid())
@@ -53,7 +54,7 @@ namespace Akanonda.GameLibrary
             startX = Game.getRandomNumber(5, Game.Instance.getFieldx() - 5);
             startY = Game.getRandomNumber(5, Game.Instance.getFieldy() - 5);
 
-            if (kind == PowerUpKind.goldenApple || kind == PowerUpKind.redApple)
+            if (kind == PowerUpKind.goldenApple || kind == PowerUpKind.redApple || kind == PowerUpKind.rabies)
             {
                 this._PowerUpLocation.Add(new int[2] { startX, startY });
             }
@@ -175,6 +176,21 @@ namespace Akanonda.GameLibrary
             return false;
         }
 
+        public static bool playerHasRabies(Guid guid)
+        {
+            foreach (KeyValuePair<Guid, int> item in Game.Instance.rabiesDict)
+            {
+                if (item.Key.Equals(guid))
+                {
+                    Game.Instance.rabiesDict.Remove(item.Key);
+                    if (item.Value - 1 > 0)
+                        Game.Instance.rabiesDict.Add(item.Key, item.Value - 1);
+
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public static void moveAllPowerUps(bool reset = false)
         {
