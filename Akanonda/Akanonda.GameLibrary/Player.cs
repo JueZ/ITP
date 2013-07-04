@@ -191,7 +191,7 @@ namespace Akanonda.GameLibrary
             {
                 case PlayerSteering.Up:
                     y--;
-                    if (Game.Instance.othersGoFast || Game.Instance.iGoFast)
+                    if (Game.Instance.othersGoFastCounter > 0 || Game.Instance.iGoFastCounter > 0)
                     {
                         if (Game.Instance.othersGoFastList.Contains(this._guid) || Game.Instance.iGoFastList.Contains(this._guid))
                         {
@@ -203,7 +203,7 @@ namespace Akanonda.GameLibrary
                     break;
                 case PlayerSteering.Down:
                     y++;
-                    if (Game.Instance.othersGoFast || Game.Instance.iGoFast)
+                    if (Game.Instance.othersGoFastCounter > 0 || Game.Instance.iGoFastCounter > 0)
                     {
                         if (Game.Instance.othersGoFastList.Contains(this._guid) || Game.Instance.iGoFastList.Contains(this._guid))
                         {
@@ -215,7 +215,7 @@ namespace Akanonda.GameLibrary
                     break;
                 case PlayerSteering.Left:
                     x--;
-                    if (Game.Instance.othersGoFast || Game.Instance.iGoFast)
+                    if (Game.Instance.othersGoFastCounter > 0 || Game.Instance.iGoFastCounter > 0)
                     {
                         if (Game.Instance.othersGoFastList.Contains(this._guid) || Game.Instance.iGoFastList.Contains(this._guid))
                         {
@@ -227,7 +227,7 @@ namespace Akanonda.GameLibrary
                     break;
                 case PlayerSteering.Right:
                     x++;
-                    if (Game.Instance.othersGoFast || Game.Instance.iGoFast)
+                    if (Game.Instance.othersGoFastCounter > 0 || Game.Instance.iGoFastCounter > 0)
                     {
                         if (Game.Instance.othersGoFastList.Contains(this._guid) || Game.Instance.iGoFastList.Contains(this._guid))
                         {
@@ -245,6 +245,21 @@ namespace Akanonda.GameLibrary
                 _playerbody[_playerbody.Count - 1][1] = -10;
             }
 
+            // i did this because when u go slow, and press buttons fast u crash into yourself
+            //int check = 0;
+            //if (Game.Instance.iGoSlow)
+            //{
+            //    for (int i = 0; i < _playerbody.Count; i++)
+            //    {
+            //        if (x == _playerbody[i][0] && y == _playerbody[i][1])
+            //            check++;
+            //    }
+            //    if(check == 0)
+            //        this._playerbody.Add(new int[2] { x, y });
+
+            //}
+            //else
+            //{
                 this._playerbody.Add(new int[2] { x, y });
             
 
@@ -252,9 +267,17 @@ namespace Akanonda.GameLibrary
 
             //this._playerbody.Add(new int[2] {x, y});
 
+                //if (!PowerUp.playerAteGoldenApple(this._guid) || !PowerUp.playerAteGoldenApple(this._guid))
+                //{
+                    if (PowerUp.playerAteGoldenApple(this._guid))
+                        grow = true;
 
-            if (PowerUp.playerAteGoldenApple(this._guid))
-                grow = true;
+                    if (PowerUp.playerAteRedApple(this._guid))
+                    {
+                        if (playerbody.Count - 1 > 1)
+                            this._playerbody.RemoveAt(0);
+                    }
+                //}
 
             if (!grow)
                 this._playerbody.RemoveAt(0);

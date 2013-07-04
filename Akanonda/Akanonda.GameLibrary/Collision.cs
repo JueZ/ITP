@@ -46,7 +46,7 @@ namespace Akanonda.GameLibrary
                             switch(power.kind){
                                 case PowerUp.PowerUpKind.openWalls:
                                     Game.Instance.goThroughWallCounter += 100;
-                                    Game.Instance.goThroughWalls = true;
+                                    //Game.Instance.goThroughWalls = true;
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.othersGoFast:
@@ -63,29 +63,47 @@ namespace Akanonda.GameLibrary
 
                                         //Game.Instance.othersGoSlowList.Add(player.guid);
                                         Game.Instance.othersGoFastCounter += 100;
-                                        Game.Instance.othersGoFast = true;
+                                        //Game.Instance.othersGoFast = true;
                                     }
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.iGoFast:
                                     Game.Instance.iGoFastList.Add(player.guid);
                                     Game.Instance.iGoFastCounter += 100;
-                                    Game.Instance.iGoFast = true;
+                                    //Game.Instance.iGoFast = true;
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.iGoSlow:
                                     Game.Instance.iGoSlowList.Add(player.guid);
                                     Game.Instance.iGoSlowCounter += 100;
-                                    Game.Instance.iGoSlow = true;
+                                    //Game.Instance.iGoSlow = true;
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.goldenApple:
                                     Game.Instance.goldenAppleDict.Add(player.guid, 20); //sets how much a player will grow when he eats the golden apple
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
+                                case PowerUp.PowerUpKind.redApple:
+                                    //Game.Instance.redAppleDict.Add(player.guid, 20); //sets how much a player will loose when he eats the red apple
+
+
+                                    if (Game.Instance.PLayerList.Count > 1)
+                                    {
+                                        for (int i = 0; i < Game.Instance.PLayerList.Count; i++)
+                                        {
+                                            if (!Game.Instance.PLayerList[i].guid.Equals(player.guid))
+                                            {
+                                                if (!Game.Instance.redAppleDict.ContainsKey(Game.Instance.PLayerList[i].guid))
+                                                    Game.Instance.redAppleDict.Add(Game.Instance.PLayerList[i].guid, 20);
+                                            }
+                                        }
+                                    }
+                                    
+                                    Game.Instance.RemovePowerUp(power.guid);
+                                    break;
                                 case PowerUp.PowerUpKind.movePowerUps:
                                     Game.Instance.movePowerUpsCounter += 150;
-                                    Game.Instance.movePowerUps = true;
+                                    //Game.Instance.movePowerUps = true;
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.othersGoSlow:
@@ -102,7 +120,7 @@ namespace Akanonda.GameLibrary
 
                                         //Game.Instance.othersGoSlowList.Add(player.guid);
                                         Game.Instance.othersGoSlowCounter += 100;
-                                        Game.Instance.othersGoSlow = true;
+                                        //Game.Instance.othersGoSlow = true;
                                     }
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
@@ -120,7 +138,7 @@ namespace Akanonda.GameLibrary
                     // Collision!!
                     Console.WriteLine("Mit Kopf gegen Wand!");
 
-                    if (Game.Instance.goThroughWalls)
+                    if (Game.Instance.goThroughWallCounter > 0)
                     {
                         PowerUp.openTheWalls(headCoordinates);
                     }

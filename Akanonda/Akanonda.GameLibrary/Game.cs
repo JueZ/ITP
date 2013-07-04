@@ -24,21 +24,22 @@ namespace Akanonda.GameLibrary
         private Dictionary<Guid, CollisionType> _collisionList;
 
         //Powerup thingies
-        private bool _goThroughWalls = false;
+        //private bool _goThroughWalls = false;
         private int _goThroughWallCounter = 0;
-        private bool _othersGoFast = false;
+        //private bool _othersGoFast = false;
         private int _othersGoFastCounter = 0;
         private Dictionary<Guid, int> _goldenAppleDict = new Dictionary<Guid, int>();
+        private Dictionary<Guid, int> _redAppleDict = new Dictionary<Guid, int>();
         private List<Guid> _othersGoSlowList = new List<Guid>();
         private List<Guid> _othersGoFastList = new List<Guid>();
         private int _othersGoSlowCounter = 0;
-        private bool _othersGoSlow = false;
-        private bool _movePowerUps = false;
+        //private bool _othersGoSlow = false;
+        //private bool _movePowerUps = false;
         private int _movePowerUpsCounter = 0;
-        private bool _iGoFast = false;
+        //private bool _iGoFast = false;
         private int _iGoFastCounter = 0;
         private List<Guid> _iGoFastList = new List<Guid>();
-        private bool _iGoSlow = false;
+        //private bool _iGoSlow = false;
         private int _iGoSlowCounter = 0;
         private List<Guid> _iGoSlowList = new List<Guid>();
 
@@ -110,17 +111,17 @@ namespace Akanonda.GameLibrary
         }
 
         //PowerUp get set --------------------
-        public bool goThroughWalls
-        {
-            get { return _goThroughWalls; }
-            set { _goThroughWalls = value; }
-        }
+        //public bool goThroughWalls
+        //{
+        //    get { return _goThroughWalls; }
+        //    set { _goThroughWalls = value; }
+        //}
 
-        public bool othersGoFast
-        {
-            get { return _othersGoFast; }
-            set { _othersGoFast = value; }
-        }
+        //public bool othersGoFast
+        //{
+        //    get { return _othersGoFast; }
+        //    set { _othersGoFast = value; }
+        //}
         public int othersGoFastCounter
         {
             get { return _othersGoFastCounter; }
@@ -140,21 +141,26 @@ namespace Akanonda.GameLibrary
         {
             get { return _othersGoSlowList; }
         }
-        public bool othersGoSlow
-        {
-            get { return _othersGoSlow; }
-            set { _othersGoSlow = value; }
-        }
+        //public bool othersGoSlow
+        //{
+        //    get { return _othersGoSlow; }
+        //    set { _othersGoSlow = value; }
+        //}
         public Dictionary<Guid, int> goldenAppleDict
         {
             get { return _goldenAppleDict; }
             set { _goldenAppleDict = value; }
         }
-        public bool movePowerUps
+        public Dictionary<Guid, int> redAppleDict
         {
-            get { return _movePowerUps; }
-            set { _movePowerUps = value; }
+            get { return _redAppleDict; }
+            set { _redAppleDict = value; }
         }
+        //public bool movePowerUps
+        //{
+        //    get { return _movePowerUps; }
+        //    set { _movePowerUps = value; }
+        //}
         public int movePowerUpsCounter
         {
             get { return _movePowerUpsCounter; }
@@ -174,11 +180,11 @@ namespace Akanonda.GameLibrary
         {
             get { return _iGoFastList; }
         }
-        public bool iGoFast
-        {
-            get { return _iGoFast; }
-            set { _iGoFast = value; }
-        }
+        //public bool iGoFast
+        //{
+        //    get { return _iGoFast; }
+        //    set { _iGoFast = value; }
+        //}
 
         public int iGoSlowCounter
         {
@@ -189,11 +195,11 @@ namespace Akanonda.GameLibrary
         {
             get { return _iGoSlowList; }
         }
-        public bool iGoSlow
-        {
-            get { return _iGoSlow; }
-            set { _iGoSlow = value; }
-        }
+        //public bool iGoSlow
+        //{
+        //    get { return _iGoSlow; }
+        //    set { _iGoSlow = value; }
+        //}
 
         //PowerUp get set --------------------END
 
@@ -322,61 +328,61 @@ namespace Akanonda.GameLibrary
         public void gametick()
         {
             _tickCounter = (_tickCounter + 1) % _ticksUntilAdd;
-            if (goThroughWalls)
+            if (goThroughWallCounter > 0)
             {
                 goThroughWallCounter--;
-                if (goThroughWallCounter < 0)
-                {
-                    goThroughWalls = false;
-                }
+                //if (goThroughWallCounter < 0)
+                //{
+                //    goThroughWalls = false;
+                //}
             }
-            if (othersGoFast)
+            if (othersGoFastCounter > 0)
             {
                 othersGoFastCounter--;
-                if (othersGoFastCounter < 0)
-                {
-                    othersGoFastList.Clear();
-                    othersGoFast = false;
-                }
+                //if (othersGoFastCounter < 0)
+                //{
+                //    othersGoFastList.Clear();
+                //    othersGoFast = false;
+                //}
             }
-            if (iGoFast)
+            if (iGoFastCounter > 0)
             {
                 iGoFastCounter--;
-                if (iGoFastCounter < 0)
-                {
-                    iGoFastList.Clear();
-                    iGoFast = false;
-                }
+                //if (iGoFastCounter < 0)
+                //{
+                //    iGoFastList.Clear();
+                //    iGoFast = false;
+                //}
             }
-            if (iGoSlow)
+            if (iGoSlowCounter > 0)
             {
                 iGoSlowCounter--;
-                if (iGoSlowCounter < 0)
-                {
-                    iGoSlowList.Clear();
-                    iGoSlow = false;
-                }
+                //if (iGoSlowCounter < 0)
+                //{
+                //    iGoSlowList.Clear();
+                //    iGoSlow = false;
+                //}
             }
-            if (movePowerUps)
+            if (movePowerUpsCounter > 0)
             {
                 if (_tickCounter % 2 == 0)
                     PowerUp.moveAllPowerUps();
 
                 movePowerUpsCounter--;
-                if (movePowerUpsCounter < 0)
-                {                           // reset Direction of moving powerups
-                    PowerUp.moveAllPowerUps(true);
-                    movePowerUps = false;
-                }
+                //if (movePowerUpsCounter < 0)
+                //{                           // reset Direction of moving powerups
+                //    PowerUp.moveAllPowerUps(true);
+                //    movePowerUps = false;
+                //}
             }
-            if (othersGoSlow)
+            if (othersGoSlowCounter > 0)
             {
                 othersGoSlowCounter--;
-                if (othersGoSlowCounter < 0)
-                {
-                    othersGoSlowList.Clear();
-                    othersGoSlow = false;
-                }
+                //if (othersGoSlowCounter < 0)
+                //{
+                //    othersGoSlowList.Clear();
+                //    othersGoSlow = false;
+                //}
             }
             bool grow = false;
             if (_tickCounter == 0)
@@ -385,11 +391,11 @@ namespace Akanonda.GameLibrary
             for (int i = 0; i < _playerList.Count; i++)
             {
 
-                if (Game.Instance.othersGoSlow || Game.Instance.iGoSlow)
+                if (othersGoSlowCounter > 0 || iGoSlowCounter > 0)
                 {
-                    if(Game.Instance.othersGoSlowList.Contains(_playerList[i].guid) || Game.Instance.iGoSlowList.Contains(_playerList[i].guid))
+                    if(othersGoSlowList.Contains(_playerList[i].guid) || iGoSlowList.Contains(_playerList[i].guid))
                     {
-                        if (Game.Instance.tickCounter % 3 == 0)
+                        if (tickCounter % 2 == 0)
                             _playerList[i].playerMove(grow);
                     }
                     else
@@ -466,7 +472,7 @@ namespace Akanonda.GameLibrary
             };
 
             SolidBrush brush;
-            if (goThroughWalls == true)
+            if (goThroughWallCounter > 0)
             {
                     brush = new SolidBrush(Color.Gray);
             }
@@ -542,10 +548,11 @@ namespace Akanonda.GameLibrary
                             }
                             
                         break;
+                    case PowerUp.PowerUpKind.redApple:
                     case PowerUp.PowerUpKind.goldenApple:
                         foreach (int[] powerUpLocation in power.PowerUpLocation)
                         {
-                            g.FillRectangle(new SolidBrush(Color.Yellow), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                            g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.goldenApple ? Color.Yellow : Color.Red), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
                         }
                         break;
                     case PowerUp.PowerUpKind.movePowerUps:

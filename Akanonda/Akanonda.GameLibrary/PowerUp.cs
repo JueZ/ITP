@@ -18,7 +18,8 @@ namespace Akanonda.GameLibrary
         {
             openWalls,
             othersGoFast,
-            goldenApple,
+            goldenApple, //gives the player 20 extra snake pieces
+            redApple, // removes all other players 20 snake pieces
             movePowerUps,
             othersGoSlow,
             iGoSlow,
@@ -52,7 +53,7 @@ namespace Akanonda.GameLibrary
             startX = Game.getRandomNumber(5, Game.Instance.getFieldx() - 5);
             startY = Game.getRandomNumber(5, Game.Instance.getFieldy() - 5);
 
-            if (kind == PowerUpKind.goldenApple)
+            if (kind == PowerUpKind.goldenApple || kind == PowerUpKind.redApple)
             {
                 this._PowerUpLocation.Add(new int[2] { startX, startY });
             }
@@ -151,6 +152,22 @@ namespace Akanonda.GameLibrary
                     Game.Instance.goldenAppleDict.Remove(item.Key);
                     if (item.Value - 1 > 0)
                         Game.Instance.goldenAppleDict.Add(item.Key, item.Value - 1);
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool playerAteRedApple(Guid guid)
+        {
+            foreach (KeyValuePair<Guid, int> item in Game.Instance.redAppleDict)
+            {
+                if (item.Key.Equals(guid))
+                {
+                    Game.Instance.redAppleDict.Remove(item.Key);
+                    if (item.Value - 1 > 0)
+                        Game.Instance.redAppleDict.Add(item.Key, item.Value - 1);
 
                     return true;
                 }
