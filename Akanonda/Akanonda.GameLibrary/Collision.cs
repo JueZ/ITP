@@ -164,6 +164,7 @@ namespace Akanonda.GameLibrary
                         int x = 0;
                         foreach (int[] array in p.playerbody)
                         {
+                            x++;
                             if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with other player
                             {
                                 // Collision!
@@ -176,7 +177,7 @@ namespace Akanonda.GameLibrary
                                 }
                                 else
                                 {
-                                    for (int i = 0; i < p.playerbody.Count; i++)
+                                    for (int i = 0; i < x; i++)
                                     {
                                             p.playerbody.RemoveAt(0);
                                     }
@@ -186,7 +187,7 @@ namespace Akanonda.GameLibrary
                                 }
                                 // other player would be p.guid
                             }
-                            x++;
+                            
                         }
                     }
                     else // check against player itself
@@ -210,7 +211,7 @@ namespace Akanonda.GameLibrary
                                 }
                                 else
                                 {
-                                    for (int x = 0; x < p.playerbody.Count; x++)
+                                    for (int x = 0; x < i; x++)
                                     {
                                         p.playerbody.RemoveAt(0);
                                     }

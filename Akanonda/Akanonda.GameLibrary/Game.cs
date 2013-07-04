@@ -65,7 +65,7 @@ namespace Akanonda.GameLibrary
             _field.Offset = new int[] {20, 20, 20, 20}; // testhalber
 
             _collision = new Collision(_field.x, _field.y);
-            _ticksUntilAdd = 10; // set how fast player grows
+            _ticksUntilAdd = 1; // set how fast player grows
             _tickCounter = 0;
         }
 
