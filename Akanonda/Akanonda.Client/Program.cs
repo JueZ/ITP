@@ -179,6 +179,9 @@ namespace Akanonda
                                     case CollisionType.ToWall:
                                         text = "Your face hit the wall!";
                                         break;
+                                    case CollisionType.ToDead:
+                                        text = "Your hit a dead Snake!";
+                                        break;
 
                                     default:
                                         text = "You crashed!";

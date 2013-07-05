@@ -10,7 +10,8 @@ namespace Akanonda.GameLibrary
     {
         ToPlayer,
         ToWall,
-        ToSelf
+        ToSelf,
+        ToDead
     }
 
     [Serializable()]
@@ -157,6 +158,38 @@ namespace Akanonda.GameLibrary
                     
                     
                 }
+
+
+                foreach (Player deadPlayer in Game.Instance.DeadList) // player with which current head is checked against (can be same as above)
+                {
+                    int size = deadPlayer.playerbody.Count;
+                    int[] array;
+
+                    for (int i = 0; i < size - 1; i++) // skip head, otherwise loop would always find a collision
+                    {
+                        array = deadPlayer.playerbody[i];
+                        if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with own tail
+                        {
+                            //player.playerbody.Remove(player.playerbody[0]);
+                            // Collision!
+                            Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
+                            if (!PowerUp.playerHasRabies(player.guid))
+                            {
+
+                                if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
+                                    collisions.Add(player.guid, CollisionType.ToDead);
+                            }
+                            else
+                            {
+                                for (int x = 0; x < i; x++)
+                                {
+                                    deadPlayer.playerbody.RemoveAt(0);
+                                }
+                            }
+                        }
+                    }
+                }
+
 
 
                 foreach (Player p in playerList) // player with which current head is checked against (can be same as above)

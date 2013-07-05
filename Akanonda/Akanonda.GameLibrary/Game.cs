@@ -355,7 +355,7 @@ namespace Akanonda.GameLibrary
             if (closingWallsCounter > 0)
             {
                 closingWallsCounter--;
-                if (tickCounter % 2 == 0) //closingWall speed
+                if (tickCounter % 3 == 0) //closingWall speed
                 {
                      // hindert powerups am 
                     setFieldSize(Game.Instance.getFieldx() - 1, Game.Instance.getFieldy() - 1);
@@ -369,7 +369,7 @@ namespace Akanonda.GameLibrary
             if (biggerWallsCounter > 0)
             {
                 biggerWallsCounter--;
-                if (tickCounter % 2 == 0) //closingWall speed
+                if (tickCounter % 3 == 0) //biggerWall speed
                 {
                     // hindert powerups am 
                     setFieldSize(Game.Instance.getFieldx() + 1, Game.Instance.getFieldy() + 1);
@@ -665,6 +665,7 @@ namespace Akanonda.GameLibrary
             {
                 foreach (int[] playerbody in player.playerbody)
                 {
+                    if(playerbody[0] > 0 && playerbody[0] < getFieldx() && playerbody[1] > 0 && playerbody[1] < getFieldy())
                     g.FillRectangle(new SolidBrush(player.color), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
                     //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
                 }
@@ -675,6 +676,7 @@ namespace Akanonda.GameLibrary
             {
                 foreach (int[] playerbody in player.playerbody)
                 {
+                    if (playerbody[0] > 0 && playerbody[0] < getFieldx() && playerbody[1] > 0 && playerbody[1] < getFieldy())
                     g.FillRectangle(new SolidBrush(player.color), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
                     //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
                 }

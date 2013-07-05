@@ -45,6 +45,7 @@ namespace Akanonda
         void DrawTimerTick(object sender, System.EventArgs e)
         {
             M_Form.Invalidate();
+            Game.Instance.adjustGameFormSize(M_Form);
         }
         
         void MainFormKeyDown(object sender, KeyEventArgs e)
