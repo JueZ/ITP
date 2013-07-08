@@ -234,13 +234,29 @@ namespace Akanonda
                 Game.Instance.addDeadRemoveLivingPlayer(key.Key);
             }
 
+            List<Guid> removeDeadList = new List<Guid>();
             
                 foreach (Player player in game.DeadList)
                 {
                     if (player.playerbody.Count > 0)
-                        player.playerbody.Remove(player.playerbody[0]);
+                        player.playerbody.RemoveAt(0);
                     else
-                        game.removeDeadPlayer(player.guid);
+                        removeDeadList.Add(player.guid);
+                        //game.removeDeadPlayer(player.guid);
+                }
+
+                foreach (Guid guid in removeDeadList)
+                {
+                    game.removeDeadPlayer(guid);
+
+                    //private Dictionary<Guid, int> _goldenAppleDict = new Dictionary<Guid, int>();
+                    //private Dictionary<Guid, int> _redAppleDict = new Dictionary<Guid, int>();
+                    //private Dictionary<Guid, int> _rabiesDict = new Dictionary<Guid, int>();
+                    //private List<Guid> _othersGoSlowList = new List<Guid>();
+                    //private List<Guid> _othersGoFastList = new List<Guid>();
+                    //private List<Guid> _iGoFastList = new List<Guid>();
+                    //private List<Guid> _iGoSlowList = new List<Guid>();
+       
                 }
             
 
@@ -287,7 +303,7 @@ namespace Akanonda
                             {
                                 game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                                 //game.AddPowerUp(PowerUp.PowerUpKind.rabies); // For testing
-                                game.AddPowerUp(PowerUp.PowerUpKind.closingWalls); // For testing
+                                game.AddPowerUp(PowerUp.PowerUpKind.openWalls); // For testing
                                 //game.RemoveLobbyPlayer(Guid.Parse(remotehailmessagearray[0]));
                                 //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                                 Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));

@@ -195,7 +195,7 @@ namespace Akanonda
                                 //Overlay.Show();
 
                                 MainForm.M_Form.showOverlay(SurvivalMinute, SurvivalSecond, text, length);
-
+                                guid = Guid.NewGuid();
                                 //MessageBox.Show(text);
                                 LobbyForm.L_form.StartGame_Enable();
                                 LobbyForm.L_form.Focus();

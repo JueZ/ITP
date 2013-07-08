@@ -32,6 +32,7 @@ namespace Akanonda.GameLibrary
         public Guid guid
         {
             get { return _guid; }
+            set { _guid = value; }
         }
 
         public PlayerStatus playerstatus

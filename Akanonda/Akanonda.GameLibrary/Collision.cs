@@ -100,7 +100,7 @@ namespace Akanonda.GameLibrary
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.rabies:
-                                    Game.Instance.rabiesDict.Add(player.guid, 5); //sets how many times a player can bite
+                                    Game.Instance.rabiesDict.Add(player.guid, 1); //sets how many times a player can bite
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.movePowerUps:

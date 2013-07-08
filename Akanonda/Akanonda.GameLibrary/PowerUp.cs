@@ -132,7 +132,7 @@ namespace Akanonda.GameLibrary
             {
                 headCoordinates[0] = Game.Instance.getFieldx() - 1;
             }
-            if (headCoordinates[0] >= Game.Instance.getFieldx())
+            if (headCoordinates[0] > Game.Instance.getFieldx())
             {
                 headCoordinates[0] = 0;
             }
@@ -140,7 +140,7 @@ namespace Akanonda.GameLibrary
             {
                 headCoordinates[1] = Game.Instance.getFieldy() - 1;
             }
-            if (headCoordinates[1] >= Game.Instance.getFieldy())
+            if (headCoordinates[1] > Game.Instance.getFieldy())
             {
                 headCoordinates[1] = 0;
             }
