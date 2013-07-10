@@ -11,6 +11,7 @@ using System.Threading;
 
 using Lidgren.Network;
 
+
 namespace Akanonda
 {
     public partial class LobbyForm : Form
@@ -33,7 +34,6 @@ namespace Akanonda
             L_form = this;
             //startChat();
             MessageBox.KeyDown += new KeyEventHandler(MessageBox_KeyDown);
-            
         }
 
         //[STAThread]
@@ -158,6 +158,8 @@ namespace Akanonda
                             string[] PlayersInLobby = chat2[0].Split(';');
                             string[] PlayersInGame = chat2[1].Split(';');
                             L_form.FillList(PlayersInLobby, PlayersInGame);
+                            //L_form.PlayersInLobbyList.View = View.Details;
+
                         }
                         else
                         {
@@ -223,13 +225,35 @@ namespace Akanonda
             PlayersInLobbyList.Items.Clear();
             for (int i = 1; i < PlayersInLobby.Length; i++ )
             {
-                PlayersInLobbyList.Items.Add(PlayersInLobby[i]);
+                string[] Player = PlayersInLobby[i].Split('-');
+                ListViewItem newPlayer = new ListViewItem(Player[0]);
+                newPlayer.SubItems.Add(Player[1]);
+                newPlayer.SubItems.Add(Player[2]);
+                PlayersInLobbyList.Items.Add(newPlayer);
             }
             PlayersInGameList.Items.Clear();
             for (int i = 1; i < PlayersInGame.Length; i++)
             {
-                PlayersInGameList.Items.Add(PlayersInGame[i]);
+                string[] Player = PlayersInGame[i].Split('-');
+                ListViewItem newPlayer = new ListViewItem(Player[0]);
+                newPlayer.SubItems.Add(Player[1]);
+                newPlayer.SubItems.Add(Player[2]);
+                PlayersInGameList.Items.Add(newPlayer);
             }
+        }
+
+        private static String GetColorName(Color color)
+        {
+            string name = "Unknown";
+            foreach (KnownColor kc in Enum.GetValues(typeof(KnownColor)))
+            {
+                Color known = Color.FromKnownColor(kc);
+                if (color.ToArgb() == known.ToArgb())
+                {
+                    name = known.Name;
+                }
+            }
+            return "";
         }
 
         private void LobbyForm_FormClosing(object sender, FormClosingEventArgs e)

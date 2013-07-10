@@ -34,11 +34,17 @@
             this.SendButton = new System.Windows.Forms.Button();
             this.ChatBox = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.PlayersInLobbyList = new System.Windows.Forms.ListBox();
-            this.PlayersInGameList = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.PlayersInLobbyList = new System.Windows.Forms.ListView();
+            this.LobbyPlayerName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.LobbyPlayerColor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.LobbyPlayerScore = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.PlayersInGameList = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -90,22 +96,6 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "Chat";
             // 
-            // PlayersInLobbyList
-            // 
-            this.PlayersInLobbyList.FormattingEnabled = true;
-            this.PlayersInLobbyList.Location = new System.Drawing.Point(14, 283);
-            this.PlayersInLobbyList.Name = "PlayersInLobbyList";
-            this.PlayersInLobbyList.Size = new System.Drawing.Size(257, 134);
-            this.PlayersInLobbyList.TabIndex = 6;
-            // 
-            // PlayersInGameList
-            // 
-            this.PlayersInGameList.FormattingEnabled = true;
-            this.PlayersInGameList.Location = new System.Drawing.Point(14, 446);
-            this.PlayersInGameList.Name = "PlayersInGameList";
-            this.PlayersInGameList.Size = new System.Drawing.Size(257, 134);
-            this.PlayersInGameList.TabIndex = 7;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -139,6 +129,68 @@
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             // 
+            // PlayersInLobbyList
+            // 
+            this.PlayersInLobbyList.AutoArrange = false;
+            this.PlayersInLobbyList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.LobbyPlayerName,
+            this.LobbyPlayerColor,
+            this.LobbyPlayerScore});
+            this.PlayersInLobbyList.FullRowSelect = true;
+            this.PlayersInLobbyList.Location = new System.Drawing.Point(15, 286);
+            this.PlayersInLobbyList.MultiSelect = false;
+            this.PlayersInLobbyList.Name = "PlayersInLobbyList";
+            this.PlayersInLobbyList.Size = new System.Drawing.Size(257, 133);
+            this.PlayersInLobbyList.TabIndex = 11;
+            this.PlayersInLobbyList.UseCompatibleStateImageBehavior = false;
+            this.PlayersInLobbyList.View = System.Windows.Forms.View.Details;
+            // 
+            // LobbyPlayerName
+            // 
+            this.LobbyPlayerName.Text = "Name";
+            this.LobbyPlayerName.Width = 114;
+            // 
+            // LobbyPlayerColor
+            // 
+            this.LobbyPlayerColor.Text = "Color";
+            this.LobbyPlayerColor.Width = 63;
+            // 
+            // LobbyPlayerScore
+            // 
+            this.LobbyPlayerScore.Text = "Score";
+            this.LobbyPlayerScore.Width = 75;
+            // 
+            // PlayersInGameList
+            // 
+            this.PlayersInGameList.AutoArrange = false;
+            this.PlayersInGameList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.PlayersInGameList.FullRowSelect = true;
+            this.PlayersInGameList.Location = new System.Drawing.Point(15, 446);
+            this.PlayersInGameList.MultiSelect = false;
+            this.PlayersInGameList.Name = "PlayersInGameList";
+            this.PlayersInGameList.Size = new System.Drawing.Size(257, 133);
+            this.PlayersInGameList.TabIndex = 12;
+            this.PlayersInGameList.UseCompatibleStateImageBehavior = false;
+            this.PlayersInGameList.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 114;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Color";
+            this.columnHeader2.Width = 63;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Score";
+            this.columnHeader3.Width = 75;
+            // 
             // LobbyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -146,10 +198,10 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(284, 640);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.PlayersInGameList);
             this.Controls.Add(this.PlayersInLobbyList);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ChatBox);
             this.Controls.Add(this.SendButton);
@@ -174,10 +226,16 @@
         private System.Windows.Forms.Button SendButton;
         private System.Windows.Forms.RichTextBox ChatBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ListBox PlayersInLobbyList;
-        private System.Windows.Forms.ListBox PlayersInGameList;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ListView PlayersInLobbyList;
+        private System.Windows.Forms.ColumnHeader LobbyPlayerName;
+        private System.Windows.Forms.ColumnHeader LobbyPlayerColor;
+        private System.Windows.Forms.ColumnHeader LobbyPlayerScore;
+        private System.Windows.Forms.ListView PlayersInGameList;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
     }
 }

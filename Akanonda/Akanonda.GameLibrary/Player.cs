@@ -16,11 +16,25 @@ namespace Akanonda.GameLibrary
         private PlayerStatus _playerstatus;
         private PlayerSteering _playersteering;
         int startX, startY;
+        private int _score;
+        private int _survivalTime = 1;
 
         public string name
         {
             get { return _name; }
             //set { _name = value; }
+        }
+
+        public int score
+        {
+            get { return _score; }
+            set { _score = value; }
+        }
+
+        public int SurvivalTime
+        {
+            get { return _survivalTime; }
+            set { _survivalTime = value; }
         }
 
         public Color color
@@ -52,7 +66,7 @@ namespace Akanonda.GameLibrary
             get { return _playerbody; }
         }
 
-        public Player(string name, Color color, Guid guid = new Guid())
+        public Player(string name, Color color, Guid guid = new Guid(), int score = 0)
         {
             this._playerbody = new List<int[]>();
 
@@ -61,6 +75,8 @@ namespace Akanonda.GameLibrary
 
             this._name = name;
             this._color = color;
+            this._score = score;
+            this._survivalTime = 1;
 
             var guidIsEmpty = guid == Guid.Empty;
             if (guidIsEmpty)
@@ -179,7 +195,7 @@ namespace Akanonda.GameLibrary
             this._color = color;
             this._guid = Guid.NewGuid();
             this._playerstatus = PlayerStatus.None;
-            
+
             return this._guid;
         }
         
@@ -280,8 +296,10 @@ namespace Akanonda.GameLibrary
                     }
                 //}
 
-            if (!grow)
-                this._playerbody.RemoveAt(0);
+                    if (!grow)
+                        this._playerbody.RemoveAt(0);
+                    else
+                        this._score++; //for ervery snake piece u get 1 point
         }
         
 //        public void initPlayer(string name, Color color, Guid guid)

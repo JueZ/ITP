@@ -66,7 +66,7 @@ namespace Akanonda.GameLibrary
             _field.Offset = new int[] {20, 20, 20, 20}; // testhalber
 
             _collision = new Collision(_field.x, _field.y);
-            _ticksUntilAdd = 1; // set how fast player grows
+            _ticksUntilAdd = 10; // set how fast player grows
             _tickCounter = 0;
         }
 
@@ -240,7 +240,17 @@ namespace Akanonda.GameLibrary
 
         public void addPlayer(string name, Color color, Guid guid)
         {
-            _playerList.Add(new Player(name, color, guid));
+            int setScore = 0;
+            for (int i = 0; i < _lobbyList.Count; i++)
+            {
+                if (_lobbyList[i].guid.Equals(guid))
+                {
+                    setScore = _lobbyList[i].score;
+                    break;
+                }
+            }
+
+            _playerList.Add(new Player(name, color, guid, setScore));
         }
 
         public void addDeadRemoveLivingPlayer(Guid guid)
@@ -290,6 +300,68 @@ namespace Akanonda.GameLibrary
 
             return color;
         }
+
+
+        public void setScoreToLobbyPlayer(Guid guid)
+        {
+            int setScore = 0;
+
+            for (int i = 0; i < _playerList.Count; i++)
+            {
+                if (_playerList[i].guid.Equals(guid))
+                {
+                    setScore = _playerList[i].score;
+                    break;
+                }
+            }
+
+            for (int i = 0; i < _lobbyList.Count; i++)
+            {
+                if (_lobbyList[i].guid.Equals(guid))
+                {
+                    _lobbyList[i].score = setScore;
+                    break;
+                }
+            }
+            
+        }
+
+        public void updateScore(Guid guid)
+        {
+            for (int i = 0; i < _playerList.Count; i++)
+            {
+                if (_playerList[i].guid.Equals(guid))
+                {
+                    int addScore = _playerList[i].playerbody.Count / 2;
+                    addScore += _playerList[i].SurvivalTime % 60;
+                    _playerList[i].score = addScore;
+                    break;
+                }
+            }
+        }
+
+        //public void setScoreToGamePlayer(Guid guid)
+        //{
+        //    int setScore = 0;
+        //    for (int i = 0; i < _lobbyList.Count; i++)
+        //    {
+        //        if (_lobbyList[i].guid.Equals(guid))
+        //        {
+        //            setScore = _lobbyList[i].score;
+        //            break;
+        //        }
+        //    }
+        //    for (int i = 0; i < _playerList.Count; i++)
+        //    {
+        //        if (_playerList[i].guid.Equals(guid))
+        //        {
+        //            _playerList[i].score = setScore;
+        //            break;
+        //        }
+        //    }
+
+        //}
+
 
         public void removePlayer(Guid guid)
         {
@@ -409,10 +481,18 @@ namespace Akanonda.GameLibrary
                     _playerList[i].playerMove(grow);
                 }
 
+                if (_playerList[i].SurvivalTime % 30 == 0)
+                {
+                    _playerList[i].score += 10; //for ervery half minute of survived time u get 10 points
+                    _playerList[i].SurvivalTime = 1;
+                }
                 //_playerList[i].playerMove(grow);
+                
+                
+                
             }
             
-            if (PowerUpList.Count < getFieldx() / 10 && PLayerList.Count > 0) //powerups according to fieldsize
+            if (PowerUpList.Count < getFieldx() / 8 && PLayerList.Count > 0) //powerups according to fieldsize
             {
                 if (getRandomNumber(0, 9999) % 79 == 0)
                 {
@@ -452,7 +532,6 @@ namespace Akanonda.GameLibrary
                 }
             }
 
-            
 
         }
 

@@ -18,6 +18,8 @@ namespace Akanonda
         private static NetServer chatServer;
         private static volatile bool _chatStopped = false;
         private static Settings settings = new Settings();
+        public static System.Timers.Timer SurvivalTimer;
+
         static void Main(string[] args)
         {
             Console.WriteLine("Akanonda Server");
@@ -38,9 +40,12 @@ namespace Akanonda
             config.MaximumConnections = 100;
             config.Port = 1338;
             chatServer = new NetServer(config);
-           
-            
 
+
+            SurvivalTimer = new System.Timers.Timer();
+            SurvivalTimer.Interval = 1000;
+            SurvivalTimer.Elapsed += new ElapsedEventHandler(gameSecondTick);
+            SurvivalTimer.Start();
 
             if (SynchronizationContext.Current == null)
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
@@ -106,6 +111,15 @@ namespace Akanonda
 			// ConsoleCommand END
         }
 
+
+        public static void gameSecondTick(object source, ElapsedEventArgs e)
+        {
+            foreach (Player p in game.PLayerList)
+            {
+                p.SurvivalTime++;
+            }
+
+        }
 
 
         public static void StartChat()
@@ -228,9 +242,10 @@ namespace Akanonda
         {
             game.gametick();
             game.DetectCollision();
-
+            UpdateLobbyLists();
             foreach (KeyValuePair<Guid, CollisionType> key in game.CollisionList)
             {
+                Game.Instance.setScoreToLobbyPlayer(key.Key);
                 Game.Instance.addDeadRemoveLivingPlayer(key.Key);
             }
 
@@ -302,6 +317,7 @@ namespace Akanonda
                             if (remotehailmessagearray[3] == "playing")
                             {
                                 game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
+                                //game.setScoreToGamePlayer(Guid.Parse(remotehailmessagearray[0]));
                                 game.AddPowerUp(PowerUp.PowerUpKind.rabies); // For testing
                                 //game.AddPowerUp(PowerUp.PowerUpKind.openWalls); // For testing
                                 //game.RemoveLobbyPlayer(Guid.Parse(remotehailmessagearray[0]));
@@ -324,9 +340,9 @@ namespace Akanonda
                                 Console.WriteLine("[Game]Player died <now watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
                             }
-                                UpdateLobbyLists();
+                                //UpdateLobbyLists();
 
-                                                        }
+                        }
 
                         if (status == NetConnectionStatus.Disconnected)
                         {
@@ -360,7 +376,7 @@ namespace Akanonda
 
                         game.setsteering(remoteplayer, remoteplayersteering);
 
-						
+                        //UpdateLobbyLists();
 //						Output("Broadcasting '" + chat + "'");
 //
 //						// broadcast this to all connections, except sender
@@ -382,6 +398,20 @@ namespace Akanonda
 			}        
         }
 
+        private static string getColorFormARGB(Color colorToCheck)
+        {
+            string name = "Unknown";
+            foreach (KnownColor kc in Enum.GetValues(typeof(KnownColor)))
+            {
+                Color known = Color.FromKnownColor(kc);
+                if (colorToCheck.ToArgb() == known.ToArgb())
+                {
+                    name = known.Name;
+                }
+            }
+            return name;
+        }
+
 
         private static void UpdateLobbyLists()
         {
@@ -400,12 +430,12 @@ namespace Akanonda
                     foreach (GameLibrary.Player p in game.LobbyList)
                     {
                         if(game.getPlayerName(p.guid) == "")
-                        inLobby += p.name + ";";
+                            inLobby += p.name + "-" + getColorFormARGB(p.color) + "-" + p.score + ";";
 
                     }
                     foreach (GameLibrary.Player p in game.PLayerList)
                     {
-                        inGame += p.name + ";";
+                        inGame += p.name + "-" + getColorFormARGB(p.color) + "-" + p.score + ";";
                     }
                     inGame = inGame.Remove(inGame.Length - 1);
                     inLobby = inLobby.Remove(inLobby.Length - 1);

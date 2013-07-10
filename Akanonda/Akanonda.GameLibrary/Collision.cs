@@ -43,7 +43,9 @@ namespace Akanonda.GameLibrary
                 int[] headCoordinates = player.playerbody[player.playerbody.Count-1];
                 //Console.WriteLine("x: " + coordinates[0].ToString() + "  y: " + coordinates[1].ToString());
 
-                //check for PowerUps
+
+
+                //check for PowerUp Collision
                 foreach (PowerUp power in Game.Instance.PowerUpList)
                 {
                     foreach (int[] array in power.PowerUpLocation)
@@ -185,7 +187,6 @@ namespace Akanonda.GameLibrary
                                 if (deadPlayer.playerbody.Count > i)
                                     deadPlayer.playerbody.RemoveRange(0, i);
 
-
                                 //for (int x = 0; x < i; x++)
                                 //{
                                 //    deadPlayer.playerbody.RemoveAt(0);
@@ -208,10 +209,11 @@ namespace Akanonda.GameLibrary
                             if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with other player
                             {
                                 // Collision!
-                                Console.WriteLine("Player " + player.guid.ToString() + " collides with another player!");
+                                
 
                                 if (!PowerUp.playerHasRabies(player.guid))
                                 {
+                                    Console.WriteLine("Player " + player.guid.ToString() + " collides with another player!");
                                     if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
                                         collisions.Add(player.guid, CollisionType.ToPlayer);
                                 }
@@ -219,7 +221,7 @@ namespace Akanonda.GameLibrary
                                 {
                                     if (p.playerbody.Count > x)
                                         p.playerbody.RemoveRange(0, x);
-
+                                        p.score -= x;
 
 
                                 }
@@ -240,10 +242,10 @@ namespace Akanonda.GameLibrary
                             {
                                 //player.playerbody.Remove(player.playerbody[0]);
                                 // Collision!
-                                Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
+                                
                                 if (!PowerUp.playerHasRabies(player.guid))
                                 {
-
+                                    Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
                                     if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
                                         collisions.Add(player.guid, CollisionType.ToSelf);
                                 }
@@ -252,7 +254,7 @@ namespace Akanonda.GameLibrary
 
                                     if (p.playerbody.Count > i)
                                         p.playerbody.RemoveRange(0, i);
-
+                                        p.score -= i;
                                     //for (int x = 0; x < i; x++)
                                     //{
                                     //    p.playerbody.RemoveAt(0);
