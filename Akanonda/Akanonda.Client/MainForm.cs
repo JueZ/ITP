@@ -39,13 +39,21 @@ namespace Akanonda
             if(Program.game != null)
                 Program.game.gamepaint(g);
 
+            
         }
         
                 
         void DrawTimerTick(object sender, System.EventArgs e)
         {
             M_Form.Invalidate();
-            Game.Instance.adjustGameFormSize(M_Form);
+            if (38 + (Program.game.getFieldY() * Program.game.getFieldScale()) + 38 < Screen.PrimaryScreen.WorkingArea.Height - 50)
+            {
+                this.Size = new System.Drawing.Size
+                   (
+                       28 + (Program.game.getFieldX() * Program.game.getFieldScale()) + 28,
+                       38 + (Program.game.getFieldY() * Program.game.getFieldScale()) + 38
+                   );
+            }
         }
         
         void MainFormKeyDown(object sender, KeyEventArgs e)

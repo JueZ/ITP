@@ -27,7 +27,8 @@ namespace Akanonda.GameLibrary
             rabies,
             closingWalls,
             biggerWalls,
-            morePowerUps
+            morePowerUps,
+            iGoThroughWalls
         }
 
         public PowerUp(PowerUpKind kind, Guid guid = new Guid())
@@ -54,8 +55,8 @@ namespace Akanonda.GameLibrary
             else
                 _movePowerUpY = false;
 
-            startX = Game.getRandomNumber(5, Game.Instance.getFieldx() - 5);
-            startY = Game.getRandomNumber(5, Game.Instance.getFieldy() - 5);
+            startX = Game.getRandomNumber(5, Game.Instance.getFieldX() - 5);
+            startY = Game.getRandomNumber(5, Game.Instance.getFieldY() - 5);
 
             if (kind == PowerUpKind.goldenApple || kind == PowerUpKind.redApple || kind == PowerUpKind.rabies)
             {
@@ -131,17 +132,17 @@ namespace Akanonda.GameLibrary
         {
             if (headCoordinates[0] < 0)
             {
-                headCoordinates[0] = Game.Instance.getFieldx() - 1;
+                headCoordinates[0] = Game.Instance.getFieldX() - 1;
             }
-            if (headCoordinates[0] > Game.Instance.getFieldx())
+            if (headCoordinates[0] > Game.Instance.getFieldX())
             {
                 headCoordinates[0] = 0;
             }
             if (headCoordinates[1] < 0)
             {
-                headCoordinates[1] = Game.Instance.getFieldy() - 1;
+                headCoordinates[1] = Game.Instance.getFieldY() - 1;
             }
-            if (headCoordinates[1] > Game.Instance.getFieldy())
+            if (headCoordinates[1] > Game.Instance.getFieldY())
             {
                 headCoordinates[1] = 0;
             }
@@ -149,51 +150,32 @@ namespace Akanonda.GameLibrary
 
         public static bool playerAteGoldenApple(Guid guid)
         {
-            foreach (KeyValuePair<Guid, int> item in Game.Instance.goldenAppleDict)
+            if (Game.Instance.goldenAppleDict.ContainsKey(guid))
             {
-                if (item.Key.Equals(guid))
-                {
-                    Game.Instance.goldenAppleDict.Remove(item.Key);
-                    if (item.Value - 1 > 0)
-                        Game.Instance.goldenAppleDict.Add(item.Key, item.Value - 1);
-
-                    return true;
-                }
+                if (Game.Instance.goldenAppleDict[guid] - 1 > 0)
+                    Game.Instance.goldenAppleDict[guid]--;
+                else
+                    Game.Instance.goldenAppleDict.Remove(guid);
+                return true;
             }
+
             return false;
         }
 
         public static bool playerAteRedApple(Guid guid)
         {
-            foreach (KeyValuePair<Guid, int> item in Game.Instance.redAppleDict)
+            if (Game.Instance.iGoFastList.ContainsKey(guid))
             {
-                if (item.Key.Equals(guid))
-                {
-                    Game.Instance.redAppleDict.Remove(item.Key);
-                    if (item.Value - 1 > 0)
-                        Game.Instance.redAppleDict.Add(item.Key, item.Value - 1);
-
-                    return true;
-                }
+                if (Game.Instance.iGoFastList[guid] - 1 > 0)
+                    Game.Instance.iGoFastList[guid]--;
+                else
+                    Game.Instance.iGoFastList.Remove(guid);
+                return true;
             }
+
             return false;
         }
 
-        public static bool playerHasRabies(Guid guid)
-        {
-            foreach (KeyValuePair<Guid, int> item in Game.Instance.rabiesDict)
-            {
-                if (item.Key.Equals(guid))
-                {
-                    Game.Instance.rabiesDict.Remove(item.Key);
-                    if (item.Value - 1 > 0)
-                        Game.Instance.rabiesDict.Add(item.Key, item.Value - 1);
-
-                    return true;
-                }
-            }
-            return false;
-        }
 
         public static void moveAllPowerUps(bool reset = false)
         {
@@ -224,25 +206,21 @@ namespace Akanonda.GameLibrary
                     int yMinusCounter = 0;
                     foreach (int[] location in power.PowerUpLocation)
                     {
-                        if (location[0] + 1 > Game.Instance.getFieldx() - 1)
+                        if (location[0] + 1 > Game.Instance.getFieldX() - 1)
                         {
                             xPlusCounter++;
-
                         }
                         if (location[0] - 1 < 0)
                         {
                             xMinusCounter++;
-
                         }
-                        if (location[1] + 1 > Game.Instance.getFieldy() - 1)
+                        if (location[1] + 1 > Game.Instance.getFieldY() - 1)
                         {
                             yPlusCounter++;
-
                         }
                         if (location[1] - 1 < 0)
                         {
                             yMinusCounter++;
-
                         }
                     }
                     foreach (int[] location in power.PowerUpLocation)
@@ -275,61 +253,31 @@ namespace Akanonda.GameLibrary
         }
 
 
-        public static void moveAllTouchingPowerUps()
+        public static void removeAllTouchingPowerUps()
         {
 
             foreach (PowerUp power in Game.Instance.PowerUpList)
             {
-                //int xPlusCounter = 0;
-                //int xMinusCounter = 0;
-                //int yPlusCounter = 0;
-                //int yMinusCounter = 0;
+
                 foreach (int[] location in power.PowerUpLocation)
                 {
-                    if (location[0] - 3 > Game.Instance.getFieldx())
+                    if (location[0] - 3 > Game.Instance.getFieldX())
                     {
                         Game.Instance.RemovePowerUp(power.guid);
-                       //xPlusCounter++;
-
                     }
                     if (location[0] + 3 < 0)
                     {
                         Game.Instance.RemovePowerUp(power.guid);
-                        //xMinusCounter++;
-
                     }
-                    if (location[1] - 3> Game.Instance.getFieldy())
+                    if (location[1] - 3> Game.Instance.getFieldY())
                     {
                         Game.Instance.RemovePowerUp(power.guid);
-                        //yPlusCounter++;
-
                     }
                     if (location[1] + 3 < 0)
                     {
                         Game.Instance.RemovePowerUp(power.guid);
-                        //yMinusCounter++;
-
                     }
                 }
-                //foreach (int[] location in power.PowerUpLocation)
-                //{
-                //    if (xPlusCounter > 0)
-                //        Game.Instance.RemovePowerUp(power.guid);
-                //        //location[0]--;
-
-                //    if (xMinusCounter > 0)
-                //        Game.Instance.RemovePowerUp(power.guid);
-                //        //location[0]++;
-
-                //    if (yPlusCounter > 0)
-                //        Game.Instance.RemovePowerUp(power.guid);
-                //        //location[1]--;
-
-                //    if (yMinusCounter > 0)
-                //        Game.Instance.RemovePowerUp(power.guid);
-                //        //location[1]++;
-
-                //}
             }
         }
 
