@@ -172,19 +172,24 @@ namespace Akanonda.GameLibrary
                         {
                             //player.playerbody.Remove(player.playerbody[0]);
                             // Collision!
-                            Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
+                            
                             if (!PowerUp.playerHasRabies(player.guid))
                             {
-
+                                Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
                                 if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
                                     collisions.Add(player.guid, CollisionType.ToDead);
                             }
                             else
                             {
-                                for (int x = 0; x < i; x++)
-                                {
-                                    deadPlayer.playerbody.RemoveAt(0);
-                                }
+
+                                if (deadPlayer.playerbody.Count > i)
+                                    deadPlayer.playerbody.RemoveRange(0, i);
+
+
+                                //for (int x = 0; x < i; x++)
+                                //{
+                                //    deadPlayer.playerbody.RemoveAt(0);
+                                //}
                             }
                         }
                     }
@@ -212,10 +217,8 @@ namespace Akanonda.GameLibrary
                                 }
                                 else
                                 {
-                                    for (int i = 0; i < x; i++)
-                                    {
-                                            p.playerbody.RemoveAt(0);
-                                    }
+                                    if (p.playerbody.Count > x)
+                                        p.playerbody.RemoveRange(0, x);
 
 
 
@@ -246,10 +249,14 @@ namespace Akanonda.GameLibrary
                                 }
                                 else
                                 {
-                                    for (int x = 0; x < i; x++)
-                                    {
-                                        p.playerbody.RemoveAt(0);
-                                    }
+
+                                    if (p.playerbody.Count > i)
+                                        p.playerbody.RemoveRange(0, i);
+
+                                    //for (int x = 0; x < i; x++)
+                                    //{
+                                    //    p.playerbody.RemoveAt(0);
+                                    //}
                                 }
                             }
                         }
