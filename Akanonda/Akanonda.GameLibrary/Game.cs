@@ -529,6 +529,8 @@ namespace Akanonda.GameLibrary
                     if (getRandomNumber(0, 9999) % 11 == 0)
                         AddPowerUp(PowerUp.PowerUpKind.biggerWalls);
 
+                    if (getRandomNumber(0, 9999) % 18 == 0)
+                        AddPowerUp(PowerUp.PowerUpKind.morePowerUps);
                 }
             }
 
@@ -556,8 +558,6 @@ namespace Akanonda.GameLibrary
             
 
             
-            //g.DrawRectangles(new Pen(brush), border);
-
             foreach (PowerUp power in _powerupList)
             {
                 int idx = 0;
@@ -566,9 +566,7 @@ namespace Akanonda.GameLibrary
                     case PowerUp.PowerUpKind.openWalls:
                             foreach (int[] powerUpLocation in power.PowerUpLocation)
                             {
-                    
-                                //Random randonGen = new Random();
-                                //Color randomColor = Color.FromArgb(randonGen.Next(255), randonGen.Next(255), randonGen.Next(255));
+
                                 if (idx > 15)
                                 {
                                     g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
@@ -593,7 +591,6 @@ namespace Akanonda.GameLibrary
                                 }
 
                                 idx++;
-                                //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
                             }
                             break;
                     case PowerUp.PowerUpKind.iGoFast:
@@ -682,8 +679,6 @@ namespace Akanonda.GameLibrary
                         foreach (int[] powerUpLocation in power.PowerUpLocation)
                         {
 
-                            //Random randonGen = new Random();
-                            //Color randomColor = Color.FromArgb(randonGen.Next(255), randonGen.Next(255), randonGen.Next(255));
                             if (idx > 15)
                             {
                                 g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
@@ -694,15 +689,11 @@ namespace Akanonda.GameLibrary
                             }
 
                             idx++;
-                            //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
                         }
                         break;
                     case PowerUp.PowerUpKind.closingWalls:
                         foreach (int[] powerUpLocation in power.PowerUpLocation)
                         {
-
-                            //Random randonGen = new Random();
-                            //Color randomColor = Color.FromArgb(randonGen.Next(255), randonGen.Next(255), randonGen.Next(255));
                             if (idx < 15)
                             {
                                 g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
@@ -716,7 +707,33 @@ namespace Akanonda.GameLibrary
                             }
 
                             idx++;
-                            //g.DrawRectangle(new Pen(player.color, (float)1), (offset_west + playerbody[0] * scale), (offset_north + playerbody[1] * scale), scale, scale);
+                        }
+                        break;
+                    case PowerUp.PowerUpKind.morePowerUps:
+                        Random randonGen = new Random();
+                        Color randomColor = Color.White;
+                            if (_tickCounter % 10 == 5 || _tickCounter % 5 == 2)
+                            randomColor = Color.FromArgb(randonGen.Next(255), randonGen.Next(255), randonGen.Next(255));
+
+                        foreach (int[] powerUpLocation in power.PowerUpLocation)
+                        {
+                            switch (idx)
+                            {
+                                case 2:
+                                case 6:
+                                case 10:
+                                case 14:
+                                case 16:
+                                case 18:
+                                case 22:
+                                case 24:
+                                    g.FillRectangle(new SolidBrush(Color.White), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                    break;
+                                default:
+                                    g.FillRectangle(new SolidBrush(randomColor), (offset_west + powerUpLocation[0] * scale), (offset_north + powerUpLocation[1] * scale), scale, scale);
+                                    break;
+                            }
+                            idx++;
                         }
                         break;
                 }

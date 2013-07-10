@@ -133,6 +133,32 @@ namespace Akanonda.GameLibrary
                                     Game.Instance.biggerWallsCounter += 40;
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
+                                case PowerUp.PowerUpKind.morePowerUps:
+                                    Game.Instance.RemovePowerUp(power.guid);
+                                    if (Game.getRandomNumber(0, 10) % 3 == 0)
+                                        Game.Instance.AddPowerUp(PowerUp.PowerUpKind.othersGoFast);
+                                    if (Game.getRandomNumber(0, 10) % 3 == 0)
+                                        Game.Instance.AddPowerUp(PowerUp.PowerUpKind.iGoFast);
+                                    if (Game.getRandomNumber(0, 10) % 3 == 0)
+                                        Game.Instance.AddPowerUp(PowerUp.PowerUpKind.openWalls);
+                                    if (Game.getRandomNumber(0, 10) % 3 == 0)
+                                        Game.Instance.AddPowerUp(PowerUp.PowerUpKind.movePowerUps);
+                                    if (Game.getRandomNumber(0, 10) % 3 == 0)
+                                        Game.Instance.AddPowerUp(PowerUp.PowerUpKind.goldenApple);
+                                    if (Game.getRandomNumber(0, 10) % 3 == 0)
+                                        Game.Instance.AddPowerUp(PowerUp.PowerUpKind.redApple);
+                                    if (Game.getRandomNumber(0, 10) % 3 == 0)
+                                        Game.Instance.AddPowerUp(PowerUp.PowerUpKind.rabies);
+                                    if (Game.getRandomNumber(0, 10) % 3 == 0)
+                                        Game.Instance.AddPowerUp(PowerUp.PowerUpKind.othersGoSlow);
+                                    if (Game.getRandomNumber(0, 10) % 3 == 0)
+                                        Game.Instance.AddPowerUp(PowerUp.PowerUpKind.iGoSlow);
+                                    if (Game.getRandomNumber(0, 10) % 3 == 0)
+                                        Game.Instance.AddPowerUp(PowerUp.PowerUpKind.closingWalls);
+                                    if (Game.getRandomNumber(0, 10) % 3 == 0)
+                                        Game.Instance.AddPowerUp(PowerUp.PowerUpKind.biggerWalls);
+                                    
+                                    break;
                             }
                         }
                     }
