@@ -269,6 +269,7 @@ namespace Akanonda
 
         private void LobbyForm_Activated(object sender, EventArgs e)
         {
+            //MainForm.M_Form.BringToFront();
             StartGame.Focus();
         }
     }

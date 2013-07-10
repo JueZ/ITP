@@ -183,6 +183,11 @@ namespace Akanonda
             M_Form.closeOverlay();
         }
 
+        private void MainForm_Activated(object sender, EventArgs e)
+        {
+            LobbyForm.L_form.Activate();
+        }
+
 
   }
 }

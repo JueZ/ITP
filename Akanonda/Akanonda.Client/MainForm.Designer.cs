@@ -113,6 +113,7 @@ namespace Akanonda
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Akanonda Game";
+            this.Activated += new System.EventHandler(this.MainForm_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainFormPaint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainFormKeyDown);
