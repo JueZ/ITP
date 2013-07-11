@@ -185,7 +185,7 @@ namespace Akanonda
 
         private void MainForm_Activated(object sender, EventArgs e)
         {
-            LobbyForm.L_form.Activate();
+            //LobbyForm.L_form.Activate();
         }
 
 

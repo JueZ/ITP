@@ -164,12 +164,12 @@ namespace Akanonda.GameLibrary
 
         public static bool playerAteRedApple(Guid guid)
         {
-            if (Game.Instance.iGoFastList.ContainsKey(guid))
+            if (Game.Instance.redAppleDict.ContainsKey(guid))
             {
-                if (Game.Instance.iGoFastList[guid] - 1 > 0)
-                    Game.Instance.iGoFastList[guid]--;
+                if (Game.Instance.redAppleDict[guid] - 1 > 0)
+                    Game.Instance.redAppleDict[guid]--;
                 else
-                    Game.Instance.iGoFastList.Remove(guid);
+                    Game.Instance.redAppleDict.Remove(guid);
                 return true;
             }
 

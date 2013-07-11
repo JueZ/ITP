@@ -154,6 +154,10 @@ namespace Akanonda.GameLibrary
 
                     if (Game.Instance.othersGoFastList.ContainsKey(this._guid) || Game.Instance.iGoFastList.ContainsKey(this._guid))
                         {
+                            this._playerbody.Add(new int[2] { x, y });
+                            y--;
+                            this._playerbody.RemoveAt(0);
+
                             if (Game.Instance.othersGoFastList.ContainsKey(this._guid))
                             {
                                 if (Game.Instance.othersGoFastList[this.guid] - 1 > 0)
@@ -168,9 +172,7 @@ namespace Akanonda.GameLibrary
                                 else
                                     Game.Instance.iGoFastList.Remove(this.guid);
                             }
-                            this._playerbody.Add(new int[2] { x, y });
-                            y--;
-                            this._playerbody.RemoveAt(0);
+
                         }
                     
                     break;
@@ -178,6 +180,9 @@ namespace Akanonda.GameLibrary
                     y++;
                     if (Game.Instance.othersGoFastList.ContainsKey(this._guid) || Game.Instance.iGoFastList.ContainsKey(this._guid))
                     {
+                        this._playerbody.Add(new int[2] { x, y });
+                        y++;
+                        this._playerbody.RemoveAt(0);
                         if (Game.Instance.othersGoFastList.ContainsKey(this._guid))
                         {
                             if (Game.Instance.othersGoFastList[this.guid] - 1 > 0)
@@ -192,15 +197,17 @@ namespace Akanonda.GameLibrary
                             else
                                 Game.Instance.iGoFastList.Remove(this.guid);
                         }
-                        this._playerbody.Add(new int[2] { x, y });
-                        y++;
-                        this._playerbody.RemoveAt(0);
+                        
                     }
                     break;
                 case PlayerSteering.Left:
                     x--;
                     if (Game.Instance.othersGoFastList.ContainsKey(this._guid) || Game.Instance.iGoFastList.ContainsKey(this._guid))
                     {
+                        this._playerbody.Add(new int[2] { x, y });
+                        x--;
+                        this._playerbody.RemoveAt(0);
+
                         if (Game.Instance.othersGoFastList.ContainsKey(this._guid))
                         {
                             if (Game.Instance.othersGoFastList[this.guid] - 1 > 0)
@@ -215,15 +222,17 @@ namespace Akanonda.GameLibrary
                             else
                                 Game.Instance.iGoFastList.Remove(this.guid);
                         }
-                        this._playerbody.Add(new int[2] { x, y });
-                        x--;
-                        this._playerbody.RemoveAt(0);
+                        
                     }
                     break;
                 case PlayerSteering.Right:
                     x++;
                     if (Game.Instance.othersGoFastList.ContainsKey(this._guid) || Game.Instance.iGoFastList.ContainsKey(this._guid))
                     {
+                        this._playerbody.Add(new int[2] { x, y });
+                        x++;
+                        this._playerbody.RemoveAt(0);
+
                         if (Game.Instance.othersGoFastList.ContainsKey(this._guid))
                         {
                             if (Game.Instance.othersGoFastList[this.guid] - 1 > 0)
@@ -238,9 +247,6 @@ namespace Akanonda.GameLibrary
                             else
                                 Game.Instance.iGoFastList.Remove(this.guid);
                         }
-                        this._playerbody.Add(new int[2] { x, y });
-                        x++;
-                        this._playerbody.RemoveAt(0);
                     }
                     break;
             }
