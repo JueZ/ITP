@@ -152,25 +152,25 @@ namespace Akanonda.GameLibrary
                 case PlayerSteering.Up:
                     y--;
 
-                    if (Game.Instance.othersGoFastList.ContainsKey(this._guid) || Game.Instance.iGoFastList.ContainsKey(this._guid))
+                    if (Game.Instance.othersGoFastDict.ContainsKey(this._guid) || Game.Instance.iGoFastDict.ContainsKey(this._guid))
                         {
                             this._playerbody.Add(new int[2] { x, y });
                             y--;
                             this._playerbody.RemoveAt(0);
 
-                            if (Game.Instance.othersGoFastList.ContainsKey(this._guid))
+                            if (Game.Instance.othersGoFastDict.ContainsKey(this._guid))
                             {
-                                if (Game.Instance.othersGoFastList[this.guid] - 1 > 0)
-                                    Game.Instance.othersGoFastList[this.guid]--;
+                                if (Game.Instance.othersGoFastDict[this.guid] - 1 > 0)
+                                    Game.Instance.othersGoFastDict[this.guid]--;
                                 else
-                                    Game.Instance.othersGoFastList.Remove(this.guid);
+                                    Game.Instance.othersGoFastDict.Remove(this.guid);
                             }
-                            if (Game.Instance.iGoFastList.ContainsKey(this._guid))
+                            if (Game.Instance.iGoFastDict.ContainsKey(this._guid))
                             {
-                                if (Game.Instance.iGoFastList[this.guid] - 1 > 0)
-                                    Game.Instance.iGoFastList[this.guid]--;
+                                if (Game.Instance.iGoFastDict[this.guid] - 1 > 0)
+                                    Game.Instance.iGoFastDict[this.guid]--;
                                 else
-                                    Game.Instance.iGoFastList.Remove(this.guid);
+                                    Game.Instance.iGoFastDict.Remove(this.guid);
                             }
 
                         }
@@ -178,74 +178,74 @@ namespace Akanonda.GameLibrary
                     break;
                 case PlayerSteering.Down:
                     y++;
-                    if (Game.Instance.othersGoFastList.ContainsKey(this._guid) || Game.Instance.iGoFastList.ContainsKey(this._guid))
+                    if (Game.Instance.othersGoFastDict.ContainsKey(this._guid) || Game.Instance.iGoFastDict.ContainsKey(this._guid))
                     {
                         this._playerbody.Add(new int[2] { x, y });
                         y++;
                         this._playerbody.RemoveAt(0);
-                        if (Game.Instance.othersGoFastList.ContainsKey(this._guid))
+                        if (Game.Instance.othersGoFastDict.ContainsKey(this._guid))
                         {
-                            if (Game.Instance.othersGoFastList[this.guid] - 1 > 0)
-                                Game.Instance.othersGoFastList[this.guid]--;
+                            if (Game.Instance.othersGoFastDict[this.guid] - 1 > 0)
+                                Game.Instance.othersGoFastDict[this.guid]--;
                             else
-                                Game.Instance.othersGoFastList.Remove(this.guid);
+                                Game.Instance.othersGoFastDict.Remove(this.guid);
                         }
-                        if (Game.Instance.iGoFastList.ContainsKey(this._guid))
+                        if (Game.Instance.iGoFastDict.ContainsKey(this._guid))
                         {
-                            if (Game.Instance.iGoFastList[this.guid] - 1 > 0)
-                                Game.Instance.iGoFastList[this.guid]--;
+                            if (Game.Instance.iGoFastDict[this.guid] - 1 > 0)
+                                Game.Instance.iGoFastDict[this.guid]--;
                             else
-                                Game.Instance.iGoFastList.Remove(this.guid);
+                                Game.Instance.iGoFastDict.Remove(this.guid);
                         }
                         
                     }
                     break;
                 case PlayerSteering.Left:
                     x--;
-                    if (Game.Instance.othersGoFastList.ContainsKey(this._guid) || Game.Instance.iGoFastList.ContainsKey(this._guid))
+                    if (Game.Instance.othersGoFastDict.ContainsKey(this._guid) || Game.Instance.iGoFastDict.ContainsKey(this._guid))
                     {
                         this._playerbody.Add(new int[2] { x, y });
                         x--;
                         this._playerbody.RemoveAt(0);
 
-                        if (Game.Instance.othersGoFastList.ContainsKey(this._guid))
+                        if (Game.Instance.othersGoFastDict.ContainsKey(this._guid))
                         {
-                            if (Game.Instance.othersGoFastList[this.guid] - 1 > 0)
-                                Game.Instance.othersGoFastList[this.guid]--;
+                            if (Game.Instance.othersGoFastDict[this.guid] - 1 > 0)
+                                Game.Instance.othersGoFastDict[this.guid]--;
                             else
-                                Game.Instance.othersGoFastList.Remove(this.guid);
+                                Game.Instance.othersGoFastDict.Remove(this.guid);
                         }
-                        if (Game.Instance.iGoFastList.ContainsKey(this._guid))
+                        if (Game.Instance.iGoFastDict.ContainsKey(this._guid))
                         {
-                            if (Game.Instance.iGoFastList[this.guid] - 1 > 0)
-                                Game.Instance.iGoFastList[this.guid]--;
+                            if (Game.Instance.iGoFastDict[this.guid] - 1 > 0)
+                                Game.Instance.iGoFastDict[this.guid]--;
                             else
-                                Game.Instance.iGoFastList.Remove(this.guid);
+                                Game.Instance.iGoFastDict.Remove(this.guid);
                         }
                         
                     }
                     break;
                 case PlayerSteering.Right:
                     x++;
-                    if (Game.Instance.othersGoFastList.ContainsKey(this._guid) || Game.Instance.iGoFastList.ContainsKey(this._guid))
+                    if (Game.Instance.othersGoFastDict.ContainsKey(this._guid) || Game.Instance.iGoFastDict.ContainsKey(this._guid))
                     {
                         this._playerbody.Add(new int[2] { x, y });
                         x++;
                         this._playerbody.RemoveAt(0);
 
-                        if (Game.Instance.othersGoFastList.ContainsKey(this._guid))
+                        if (Game.Instance.othersGoFastDict.ContainsKey(this._guid))
                         {
-                            if (Game.Instance.othersGoFastList[this.guid] - 1 > 0)
-                                Game.Instance.othersGoFastList[this.guid]--;
+                            if (Game.Instance.othersGoFastDict[this.guid] - 1 > 0)
+                                Game.Instance.othersGoFastDict[this.guid]--;
                             else
-                                Game.Instance.othersGoFastList.Remove(this.guid);
+                                Game.Instance.othersGoFastDict.Remove(this.guid);
                         }
-                        if (Game.Instance.iGoFastList.ContainsKey(this._guid))
+                        if (Game.Instance.iGoFastDict.ContainsKey(this._guid))
                         {
-                            if (Game.Instance.iGoFastList[this.guid] - 1 > 0)
-                                Game.Instance.iGoFastList[this.guid]--;
+                            if (Game.Instance.iGoFastDict[this.guid] - 1 > 0)
+                                Game.Instance.iGoFastDict[this.guid]--;
                             else
-                                Game.Instance.iGoFastList.Remove(this.guid);
+                                Game.Instance.iGoFastDict.Remove(this.guid);
                         }
                     }
                     break;
@@ -260,12 +260,12 @@ namespace Akanonda.GameLibrary
             
                 this._playerbody.Add(new int[2] { x, y });
 
-                if (Game.Instance.iGoThroughWalls.ContainsKey(this.guid))
+                if (Game.Instance.iGoThroughWallsDict.ContainsKey(this.guid))
                 {
-                    if (Game.Instance.iGoThroughWalls[this.guid] - 1 > 0)
-                        Game.Instance.iGoThroughWalls[this.guid]--;
+                    if (Game.Instance.iGoThroughWallsDict[this.guid] - 1 > 0)
+                        Game.Instance.iGoThroughWallsDict[this.guid]--;
                     else
-                        Game.Instance.iGoThroughWalls.Remove(this.guid);
+                        Game.Instance.iGoThroughWallsDict.Remove(this.guid);
                 }
 
 

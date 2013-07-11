@@ -65,10 +65,10 @@ namespace Akanonda.GameLibrary
                                         {
                                             if (!Game.Instance.PLayerList[i].guid.Equals(player.guid))
                                             {
-                                                if (Game.Instance.othersGoFastList.ContainsKey(Game.Instance.PLayerList[i].guid))
-                                                    Game.Instance.othersGoFastList[Game.Instance.PLayerList[i].guid] = 100;
+                                                if (Game.Instance.othersGoFastDict.ContainsKey(Game.Instance.PLayerList[i].guid))
+                                                    Game.Instance.othersGoFastDict[Game.Instance.PLayerList[i].guid] = 100;
                                                 else
-                                                    Game.Instance.othersGoFastList.Add(Game.Instance.PLayerList[i].guid, 100);
+                                                    Game.Instance.othersGoFastDict.Add(Game.Instance.PLayerList[i].guid, 100);
                                             }
                                         }
                                     }
@@ -76,19 +76,19 @@ namespace Akanonda.GameLibrary
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.iGoFast:
-                                     if(Game.Instance.iGoFastList.ContainsKey(player.guid))
-                                        Game.Instance.iGoFastList[player.guid] = 100;
+                                     if(Game.Instance.iGoFastDict.ContainsKey(player.guid))
+                                        Game.Instance.iGoFastDict[player.guid] = 100;
                                     else
-                                        Game.Instance.iGoFastList.Add(player.guid, 100);
+                                        Game.Instance.iGoFastDict.Add(player.guid, 100);
 
                                      //deletePowerUpList.Add(power.guid);
                                      Game.Instance.RemovePowerUp(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.iGoSlow:
-                                    if(Game.Instance.iGoSlowList.ContainsKey(player.guid))
-                                        Game.Instance.iGoSlowList[player.guid] = 100;
+                                    if(Game.Instance.iGoSlowDict.ContainsKey(player.guid))
+                                        Game.Instance.iGoSlowDict[player.guid] = 100;
                                     else
-                                        Game.Instance.iGoSlowList.Add(player.guid, 100);
+                                        Game.Instance.iGoSlowDict.Add(player.guid, 100);
 
                                     //deletePowerUpList.Add(power.guid);
                                     Game.Instance.RemovePowerUp(power.guid);
@@ -129,10 +129,10 @@ namespace Akanonda.GameLibrary
                                     {
                                         Game.Instance.rabiesDict.Add(player.guid, 1); //sets how many times a player can bite
                                     }
-                                    if (Game.Instance.iGoFastList.ContainsKey(player.guid))
-                                        Game.Instance.iGoFastList[player.guid] += 50;
+                                    if (Game.Instance.iGoFastDict.ContainsKey(player.guid))
+                                        Game.Instance.iGoFastDict[player.guid] += 50;
                                     else
-                                        Game.Instance.iGoFastList.Add(player.guid, 50);
+                                        Game.Instance.iGoFastDict.Add(player.guid, 50);
                                     //deletePowerUpList.Add(power.guid);
                                     Game.Instance.RemovePowerUp(power.guid);
                                     break;
@@ -148,10 +148,10 @@ namespace Akanonda.GameLibrary
                                         {
                                             if (!Game.Instance.PLayerList[i].guid.Equals(player.guid))
                                             {
-                                                if (Game.Instance.othersGoSlowList.ContainsKey(Game.Instance.PLayerList[i].guid))
-                                                    Game.Instance.othersGoSlowList.Add(Game.Instance.PLayerList[i].guid, 100);
+                                                if (Game.Instance.othersGoSlowDict.ContainsKey(Game.Instance.PLayerList[i].guid))
+                                                    Game.Instance.othersGoSlowDict.Add(Game.Instance.PLayerList[i].guid, 100);
                                                 else
-                                                    Game.Instance.othersGoSlowList[Game.Instance.PLayerList[i].guid] = 100;
+                                                    Game.Instance.othersGoSlowDict[Game.Instance.PLayerList[i].guid] = 100;
                                             }
                                         }
                                     }
@@ -196,10 +196,10 @@ namespace Akanonda.GameLibrary
                                     
                                     break;
                                 case PowerUp.PowerUpKind.iGoThroughWalls:
-                                    if (Game.Instance.iGoThroughWalls.ContainsKey(player.guid))
-                                        Game.Instance.iGoThroughWalls[player.guid] = 100;
+                                    if (Game.Instance.iGoThroughWallsDict.ContainsKey(player.guid))
+                                        Game.Instance.iGoThroughWallsDict[player.guid] = 100;
                                     else
-                                        Game.Instance.iGoThroughWalls.Add(player.guid, 100);
+                                        Game.Instance.iGoThroughWallsDict.Add(player.guid, 100);
 
                                     //deletePowerUpList.Add(power.guid);
                                     Game.Instance.RemovePowerUp(power.guid);
@@ -223,7 +223,7 @@ namespace Akanonda.GameLibrary
                     // Collision!!
                     
 
-                    if (Game.Instance.goThroughWallCounter > 0 || Game.Instance.iGoThroughWalls.ContainsKey(player.guid))
+                    if (Game.Instance.goThroughWallCounter > 0 || Game.Instance.iGoThroughWallsDict.ContainsKey(player.guid))
                     {
                         PowerUp.openTheWalls(headCoordinates);
                     }
@@ -265,10 +265,10 @@ namespace Akanonda.GameLibrary
 
                                 Game.Instance.rabiesDict.Remove(player.guid);
 
-                                if (Game.Instance.iGoFastList[player.guid] - 1 > 0)
-                                    Game.Instance.iGoFastList[player.guid]--;
+                                if (Game.Instance.iGoFastDict[player.guid] - 1 > 0)
+                                    Game.Instance.iGoFastDict[player.guid]--;
                                 else
-                                    Game.Instance.iGoFastList.Remove(player.guid);
+                                    Game.Instance.iGoFastDict.Remove(player.guid);
 
                                 //if (Game.Instance.rabiesDict[player.guid] - 1 > 0)
                                 //    Game.Instance.rabiesDict[player.guid]--;
@@ -312,10 +312,10 @@ namespace Akanonda.GameLibrary
                                     }
                                     Game.Instance.rabiesDict.Remove(player.guid);
 
-                                    if (Game.Instance.iGoFastList[player.guid] - 1 > 0)
-                                        Game.Instance.iGoFastList[player.guid]--;
+                                    if (Game.Instance.iGoFastDict[player.guid] - 1 > 0)
+                                        Game.Instance.iGoFastDict[player.guid]--;
                                     else
-                                        Game.Instance.iGoFastList.Remove(player.guid);
+                                        Game.Instance.iGoFastDict.Remove(player.guid);
                                     
                                 }
                                 // other player would be p.guid
@@ -349,10 +349,10 @@ namespace Akanonda.GameLibrary
                                     p.score -= i;
                                     Game.Instance.rabiesDict.Remove(player.guid);
 
-                                    if (Game.Instance.iGoFastList[player.guid] - 1 > 0)
-                                        Game.Instance.iGoFastList[player.guid]--;
+                                    if (Game.Instance.iGoFastDict[player.guid] - 1 > 0)
+                                        Game.Instance.iGoFastDict[player.guid]--;
                                     else
-                                        Game.Instance.iGoFastList.Remove(player.guid);
+                                        Game.Instance.iGoFastDict.Remove(player.guid);
 
                                     
                                     

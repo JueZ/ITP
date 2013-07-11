@@ -256,24 +256,44 @@ namespace Akanonda
                     if (player.playerbody.Count > 0)
                         player.playerbody.RemoveAt(0);
                     else
+                    {
                         removeDeadList.Add(player.guid);
                         //game.removeDeadPlayer(player.guid);
+
+
+                        if(game.goldenAppleDict.ContainsKey(player.guid))
+                            game.goldenAppleDict.Remove(player.guid);
+
+                        if (game.redAppleDict.ContainsKey(player.guid))
+                            game.redAppleDict.Remove(player.guid);
+
+                        if (game.iGoFastDict.ContainsKey(player.guid))
+                            game.iGoFastDict.Remove(player.guid);
+
+                        if (game.iGoSlowDict.ContainsKey(player.guid))
+                            game.iGoSlowDict.Remove(player.guid);
+
+                        if (game.othersGoFastDict.ContainsKey(player.guid))
+                            game.othersGoFastDict.Remove(player.guid);
+
+                        if (game.othersGoSlowDict.ContainsKey(player.guid))
+                            game.othersGoSlowDict.Remove(player.guid);
+
+                        if (game.rabiesDict.ContainsKey(player.guid))
+                            game.rabiesDict.Remove(player.guid);
+
+                        if (game.iGoThroughWallsDict.ContainsKey(player.guid))
+                            game.iGoThroughWallsDict.Remove(player.guid);
+                    }
                 }
 
                 foreach (Guid guid in removeDeadList)
                 {
                     game.removeDeadPlayer(guid);
-
-                    //private Dictionary<Guid, int> _goldenAppleDict = new Dictionary<Guid, int>();
-                    //private Dictionary<Guid, int> _redAppleDict = new Dictionary<Guid, int>();
-                    //private Dictionary<Guid, int> _rabiesDict = new Dictionary<Guid, int>();
-                    //private List<Guid> _othersGoSlowList = new List<Guid>();
-                    //private List<Guid> _othersGoFastList = new List<Guid>();
-                    //private List<Guid> _iGoFastList = new List<Guid>();
-                    //private List<Guid> _iGoSlowList = new List<Guid>();
-       
                 }
             
+            
+
 
             /*  
              *  DetectCollison speichert alle fälle die gefunden werden in das dictionary.

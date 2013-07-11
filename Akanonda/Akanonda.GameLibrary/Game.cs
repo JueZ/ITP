@@ -28,11 +28,11 @@ namespace Akanonda.GameLibrary
         private Dictionary<Guid, int> _goldenAppleDict = new Dictionary<Guid, int>();
         private Dictionary<Guid, int> _redAppleDict = new Dictionary<Guid, int>();
         private Dictionary<Guid, int> _rabiesDict = new Dictionary<Guid, int>();
-        private Dictionary<Guid, int> _othersGoSlowList = new Dictionary<Guid, int>();
-        private Dictionary<Guid, int> _othersGoFastList = new Dictionary<Guid, int>();
-        private Dictionary<Guid, int> _iGoFastList = new Dictionary<Guid, int>();
-        private Dictionary<Guid, int> _iGoSlowList = new Dictionary<Guid, int>();
-        private Dictionary<Guid, int> _iGoThroughWalls = new Dictionary<Guid, int>();
+        private Dictionary<Guid, int> _othersGoSlowDict = new Dictionary<Guid, int>();
+        private Dictionary<Guid, int> _othersGoFastDict = new Dictionary<Guid, int>();
+        private Dictionary<Guid, int> _iGoFastDict = new Dictionary<Guid, int>();
+        private Dictionary<Guid, int> _iGoSlowDict = new Dictionary<Guid, int>();
+        private Dictionary<Guid, int> _iGoThroughWallsDict = new Dictionary<Guid, int>();
 
         private int _movePowerUpsCounter = 0;
         private int _goThroughWallCounter = 0;
@@ -80,14 +80,14 @@ namespace Akanonda.GameLibrary
         public int closingWallsCounter { get { return _closingWallsCounter; } set { _closingWallsCounter = value; } }
         public int biggerWallsCounter { get { return _biggerWallsCounter; } set { _biggerWallsCounter = value; } }
 
-        public Dictionary<Guid, int> othersGoSlowList { get { return _othersGoSlowList; } }
+        public Dictionary<Guid, int> othersGoSlowDict { get { return _othersGoSlowDict; } }
         public Dictionary<Guid, int> goldenAppleDict { get { return _goldenAppleDict; } set { _goldenAppleDict = value; } }
         public Dictionary<Guid, int> redAppleDict { get { return _redAppleDict; } set { _redAppleDict = value; } }
         public Dictionary<Guid, int> rabiesDict { get { return _rabiesDict; } set { _rabiesDict = value; } }
-        public Dictionary<Guid, int> othersGoFastList { get { return _othersGoFastList; } }
-        public Dictionary<Guid, int> iGoFastList { get { return _iGoFastList; } }
-        public Dictionary<Guid, int> iGoSlowList { get { return _iGoSlowList; } }
-        public Dictionary<Guid, int> iGoThroughWalls { get { return _iGoThroughWalls; } }
+        public Dictionary<Guid, int> othersGoFastDict { get { return _othersGoFastDict; } }
+        public Dictionary<Guid, int> iGoFastDict { get { return _iGoFastDict; } }
+        public Dictionary<Guid, int> iGoSlowDict { get { return _iGoSlowDict; } }
+        public Dictionary<Guid, int> iGoThroughWallsDict { get { return _iGoThroughWallsDict; } }
         //PowerUp get set --------------------END
 
 
@@ -316,22 +316,22 @@ namespace Akanonda.GameLibrary
             for (int i = 0; i < _playerList.Count; i++)
             {
 
-                    if (othersGoSlowList.ContainsKey(_playerList[i].guid) || iGoSlowList.ContainsKey(_playerList[i].guid))
+                    if (othersGoSlowDict.ContainsKey(_playerList[i].guid) || iGoSlowDict.ContainsKey(_playerList[i].guid))
                     {
-                        if (othersGoSlowList.ContainsKey(_playerList[i].guid))
+                        if (othersGoSlowDict.ContainsKey(_playerList[i].guid))
                         {
-                            if (Game.Instance.othersGoSlowList[_playerList[i].guid] - 1 > 0)
-                                Game.Instance.othersGoSlowList[_playerList[i].guid]--;
+                            if (Game.Instance.othersGoSlowDict[_playerList[i].guid] - 1 > 0)
+                                Game.Instance.othersGoSlowDict[_playerList[i].guid]--;
                             else
-                                Game.Instance.othersGoSlowList.Remove(_playerList[i].guid);
+                                Game.Instance.othersGoSlowDict.Remove(_playerList[i].guid);
                         }
 
-                        if (iGoSlowList.ContainsKey(_playerList[i].guid))
+                        if (iGoSlowDict.ContainsKey(_playerList[i].guid))
                         {
-                            if (Game.Instance.iGoSlowList[_playerList[i].guid] - 1 > 0)
-                                Game.Instance.iGoSlowList[_playerList[i].guid]--;
+                            if (Game.Instance.iGoSlowDict[_playerList[i].guid] - 1 > 0)
+                                Game.Instance.iGoSlowDict[_playerList[i].guid]--;
                             else
-                                Game.Instance.iGoSlowList.Remove(_playerList[i].guid);
+                                Game.Instance.iGoSlowDict.Remove(_playerList[i].guid);
 
                         }
                         if (tickCounter % 2 == 0)
