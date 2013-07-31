@@ -16,19 +16,20 @@ namespace Akanonda.GameLibrary
        
         public enum PowerUpKind
         {
-            openWalls,
-            othersGoFast,
-            goldenApple, //gives the player 20 extra snake pieces
-            redApple, // removes all other players 20 snake pieces
-            movePowerUps,
-            othersGoSlow,
-            iGoSlow,
-            iGoFast,
-            rabies,
-            closingWalls,
-            biggerWalls,
-            morePowerUps,
-            iGoThroughWalls
+            openWalls = 1,
+            othersGoFast = 2,
+            movePowerUps = 3,
+            othersGoSlow = 4,
+            iGoSlow = 5,
+            iGoFast = 6,
+            closingWalls = 7,
+            biggerWalls = 8,
+            morePowerUps = 9,
+            iGoThroughWalls = 10,
+            goldenApple = 13, //gives the player 20 extra snake pieces
+            redApple = 17, // removes all other players 20 snake pieces
+            rabies = 21,
+            
         }
 
         public PowerUp(PowerUpKind kind, Guid guid = new Guid())
@@ -176,84 +177,81 @@ namespace Akanonda.GameLibrary
             return false;
         }
 
-
-        public static void moveAllPowerUps(bool reset = false)
+        public static void resetPowerUpMovingDirection()
         {
-            if (reset)
-            {
-                foreach (PowerUp power in Game.Instance.PowerUpList)
-                {
-                    if (Game.getRandomNumber(0, 10) % 2 == 0)
-                        power._movePowerUpX = false;
-                    else
-                        power._movePowerUpX = true;
+             foreach (PowerUp power in Game.Instance.PowerUpList)
+             {
+                 if (Game.getRandomNumber(0, 10) % 2 == 0)
+                     power._movePowerUpX = false;
+                 else
+                     power._movePowerUpX = true;
 
-                    if (Game.getRandomNumber(0, 10) % 2 == 0)
-                        power._movePowerUpY = false;
-                    else
-                        power._movePowerUpY = true;
+                 if (Game.getRandomNumber(0, 10) % 2 == 0)
+                     power._movePowerUpY = false;
+                 else
+                     power._movePowerUpY = true;
 
-                }
-
-            }
-            else
-            {
-                foreach (PowerUp power in Game.Instance.PowerUpList)
-                {
-                    int xPlusCounter = 0;
-                    int xMinusCounter = 0;
-                    int yPlusCounter = 0;
-                    int yMinusCounter = 0;
-                    foreach (int[] location in power.PowerUpLocation)
-                    {
-                        if (location[0] + 1 > Game.Instance.getFieldX() - 1)
-                        {
-                            xPlusCounter++;
-                        }
-                        if (location[0] - 1 < 0)
-                        {
-                            xMinusCounter++;
-                        }
-                        if (location[1] + 1 > Game.Instance.getFieldY() - 1)
-                        {
-                            yPlusCounter++;
-                        }
-                        if (location[1] - 1 < 0)
-                        {
-                            yMinusCounter++;
-                        }
-                    }
-                    foreach (int[] location in power.PowerUpLocation)
-                    {
-                        if (xPlusCounter > 0)
-                            power.movePowerUpX = false;
-
-                        if (xMinusCounter > 0)
-                            power.movePowerUpX = true;
-
-                        if (yPlusCounter > 0)
-                            power.movePowerUpY = false;
-
-                        if (yMinusCounter > 0)
-                            power.movePowerUpY = true;
-
-                        if (power.movePowerUpX)
-                            location[0]++;
-                        else
-                            location[0]--;
-
-                        if (power.movePowerUpY)
-                            location[1]++;
-                        else
-                            location[1]--;
-
-                    }
-                }
-            }
+             }
         }
 
 
-        public static void removeAllTouchingPowerUps()
+        public static void moveAllPowerUps()
+        {     
+              foreach (PowerUp power in Game.Instance.PowerUpList)
+              {
+                  int xPlusCounter = 0;
+                  int xMinusCounter = 0;
+                  int yPlusCounter = 0;
+                  int yMinusCounter = 0;
+                  foreach (int[] location in power.PowerUpLocation)
+                  {
+                      if (location[0] + 1 > Game.Instance.getFieldX() - 1)
+                      {
+                          xPlusCounter++;
+                      }
+                      if (location[0] - 1 < 0)
+                      {
+                          xMinusCounter++;
+                      }
+                      if (location[1] + 1 > Game.Instance.getFieldY() - 1)
+                      {
+                          yPlusCounter++;
+                      }
+                      if (location[1] - 1 < 0)
+                      {
+                          yMinusCounter++;
+                      }
+                  }
+                  foreach (int[] location in power.PowerUpLocation)
+                  {
+                      if (xPlusCounter > 0)
+                          power.movePowerUpX = false;
+
+                      if (xMinusCounter > 0)
+                          power.movePowerUpX = true;
+
+                      if (yPlusCounter > 0)
+                          power.movePowerUpY = false;
+
+                      if (yMinusCounter > 0)
+                          power.movePowerUpY = true;
+
+                      if (power.movePowerUpX)
+                          location[0]++;
+                      else
+                          location[0]--;
+
+                      if (power.movePowerUpY)
+                          location[1]++;
+                      else
+                          location[1]--;
+
+                  }
+              }
+        }
+
+
+        public static void removeAllPowerUpsOutsideField()
         {
 
             foreach (PowerUp power in Game.Instance.PowerUpList)

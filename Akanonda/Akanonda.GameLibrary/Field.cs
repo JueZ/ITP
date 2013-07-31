@@ -46,6 +46,29 @@ namespace Akanonda.GameLibrary
             }
         }
 
+        public int offsetNorth
+        {
+            get { return Offset[0]; }
+        }
+        public int offsetEast
+        {
+            get { return Offset[1]; }
+        }
+        public int offsetSouth
+        {
+            get { return Offset[2]; }
+        }
+        public int offsetWest
+        {
+            get { return Offset[3]; }
+        }
+
+        public int Width {
+           get { return Offset[3] + (x * Scale) + Offset[1]; }
+        }
+        public int Height{
+            get { return Offset[0] + (y * Scale) + Offset[2]; }
+        }
         public int[] Offset
         {
             get { return _offset; }
