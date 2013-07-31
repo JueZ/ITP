@@ -17,23 +17,14 @@ namespace Akanonda.GameLibrary
         private List<Player> _lobbyList;
         private List<Player> _deadList;
         private Guid _localplayer;
-        //private Color _localColor; // compiler sagt wird nirgens verwendet?
         private Collision _collision;
         private int _ticksUntilAdd;
         private int _tickCounter;
         private Dictionary<Guid, CollisionType> _collisionList;
 
 
-        private int scale;
-
         
-      
-        
-        
-
-
-        //Powerup thingies
-
+        //Powerup thingies---> Ne idee wie man das in eine Liste oder Dict zusammenfassen könnte?
         private Dictionary<Guid, int> _goldenAppleDict = new Dictionary<Guid, int>();
         private Dictionary<Guid, int> _redAppleDict = new Dictionary<Guid, int>();
         private Dictionary<Guid, int> _rabiesDict = new Dictionary<Guid, int>();
@@ -70,10 +61,6 @@ namespace Akanonda.GameLibrary
             _collision = new Collision(_field.x, _field.y);
             _ticksUntilAdd = 10; // set how fast player grows
             _tickCounter = 0;
-
-            scale = _field.Scale;
-            
-           
         }
 
 
@@ -172,7 +159,6 @@ namespace Akanonda.GameLibrary
 
         public void addDeadRemoveLivingPlayer(Guid guid)
         {
-
             for (int i = 0; i < _playerList.Count; i++)
             {
                 if (_playerList[i].guid.Equals(guid))
@@ -183,10 +169,8 @@ namespace Akanonda.GameLibrary
                     break;
                 }
             }
-
-
-
         }
+
         public string getPlayerName(Guid guid){
 
             string name = "";
@@ -284,63 +268,12 @@ namespace Akanonda.GameLibrary
         public void gametick()
         {
             _tickCounter = (_tickCounter + 1) % _ticksUntilAdd;
+            handlePowerUpTicks();
+            movePlayersandAddScore();
+            checkIfPowerUpsShouldBeAddedRelativeToFieldsize();
+        }
 
-            handlePowerUpTicks(_tickCounter);
-            
-            bool grow = false;
-            if (_tickCounter == 0)
-                grow = true;
-
-            for (int i = 0; i < _playerList.Count; i++)
-            {
-
-                    if (othersGoSlowDict.ContainsKey(_playerList[i].guid) || iGoSlowDict.ContainsKey(_playerList[i].guid))
-                    {
-                        if (othersGoSlowDict.ContainsKey(_playerList[i].guid))
-                        {
-                            if (Game.Instance.othersGoSlowDict[_playerList[i].guid] - 1 > 0)
-                                Game.Instance.othersGoSlowDict[_playerList[i].guid]--;
-                            else
-                                Game.Instance.othersGoSlowDict.Remove(_playerList[i].guid);
-                        }
-
-                        if (iGoSlowDict.ContainsKey(_playerList[i].guid))
-                        {
-                            if (Game.Instance.iGoSlowDict[_playerList[i].guid] - 1 > 0)
-                                Game.Instance.iGoSlowDict[_playerList[i].guid]--;
-                            else
-                                Game.Instance.iGoSlowDict.Remove(_playerList[i].guid);
-
-                        }
-                        if (tickCounter % 2 == 0)
-                            _playerList[i].playerMove(grow);
-                    }
-                    else
-                    {
-                        _playerList[i].playerMove(grow);
-                    }
-                
-
-                if (_playerList[i].SurvivalTime % 30 == 0)
-                {
-                    _playerList[i].score += 10; //for ervery half minute of survived time u get 10 points
-                    _playerList[i].SurvivalTime = 1;
-                }
-                //_playerList[i].playerMove(grow);
-                
-                
-                
-            }
-            
-            if (PowerUpList.Count < getFieldX() / 8 && PLayerList.Count > 0) //powerups according to fieldsize
-            {
-                makePowerUpsPopUp();
-            }
-
-
-        }//tick END-------------------
-
-        private void handlePowerUpTicks(int tickCounter)
+        private void handlePowerUpTicks()
         {
             checkgoThroughWallCounter();
             checkMovePowerUpsCounter();
@@ -399,6 +332,66 @@ namespace Akanonda.GameLibrary
             }
         }
 
+        private void movePlayersandAddScore()
+        {
+            bool grow = false;
+            if (_tickCounter == 0)
+                grow = true;
+
+            for (int i = 0; i < _playerList.Count; i++)
+            {
+                if (othersGoSlowDict.ContainsKey(_playerList[i].guid) || iGoSlowDict.ContainsKey(_playerList[i].guid))
+                {
+                    substrateTickfromSlowDict(i);
+                    if (tickCounter % 2 == 0)
+                        _playerList[i].playerMove(grow);
+                }
+                else
+                {
+                    _playerList[i].playerMove(grow);
+                }
+
+                addScoreEvery30Seconds(i);
+
+            }
+        }
+        private void substrateTickfromSlowDict(int i)
+        {
+            if (othersGoSlowDict.ContainsKey(_playerList[i].guid))
+            {
+                if (Game.Instance.othersGoSlowDict[_playerList[i].guid] - 1 > 0)
+                    Game.Instance.othersGoSlowDict[_playerList[i].guid]--;
+                else
+                    Game.Instance.othersGoSlowDict.Remove(_playerList[i].guid);
+            }
+
+            if (iGoSlowDict.ContainsKey(_playerList[i].guid))
+            {
+                if (Game.Instance.iGoSlowDict[_playerList[i].guid] - 1 > 0)
+                    Game.Instance.iGoSlowDict[_playerList[i].guid]--;
+                else
+                    Game.Instance.iGoSlowDict.Remove(_playerList[i].guid);
+
+            }
+        }
+
+        private void addScoreEvery30Seconds(int i)
+        {
+            if (_playerList[i].SurvivalTime % 30 == 0)
+            {
+                _playerList[i].score += 10;
+                _playerList[i].SurvivalTime = 1;
+            }
+        }
+
+        private void checkIfPowerUpsShouldBeAddedRelativeToFieldsize()
+        {
+            if (PowerUpList.Count < getFieldX() / 8 && PLayerList.Count > 0) 
+            {
+                makePowerUpsPopUp();
+            }
+        }
+
         private void makePowerUpsPopUp()
                 {
                     if (getRandomNumber(0, 9999) % 79 == 0)
@@ -421,18 +414,12 @@ namespace Akanonda.GameLibrary
              
         }
 
-
-        
-
         public void gamepaint(Graphics g)
         {
-
             paintPowerUps(g);
             paintAlivePlayers(g);
             paintDeadPlayers(g);
             paintGameBorderBlackOrGrayDependingOnOpenWalls(g);
-
-
         }
 
         private void paintPowerUps(Graphics g)
@@ -489,7 +476,7 @@ namespace Akanonda.GameLibrary
                 if (idx > 15)
                 {
                     g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.iGoThroughWalls ? Color.Green : Color.LightSkyBlue),
-                        (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                        (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                 }
                 else
                 {
@@ -497,17 +484,17 @@ namespace Akanonda.GameLibrary
                     {
                         if (idx % 2 != 0)
                             g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.iGoThroughWalls ? Color.Green : Color.LightSkyBlue),
-                                (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                                (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                         else
-                            g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                            g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                     }
                     else
                     {
                         if (idx % 2 == 0)
                             g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.iGoThroughWalls ? Color.Green : Color.LightSkyBlue),
-                                (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                                (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                         else
-                            g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                            g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
 
                     }
                 }
@@ -532,11 +519,11 @@ namespace Akanonda.GameLibrary
                     case 20:
                     case 21:
                     case 22:
-                        g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                        g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                         break;
                     default:
                         g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.iGoFast ? Color.Green : Color.Red),
-                            (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                            (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                         break;
                 }
                 idx++;
@@ -548,7 +535,7 @@ namespace Akanonda.GameLibrary
             foreach (int[] powerUpLocation in power.PowerUpLocation)
             {
                 g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.goldenApple ? Color.Yellow : power.kind == PowerUp.PowerUpKind.rabies ? Color.Black : Color.Red),
-                    (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                    (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
             }
         }
 
@@ -566,10 +553,10 @@ namespace Akanonda.GameLibrary
                      case 18:
                      case 22:
                      case 24:
-                         g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                         g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                          break;
                      default:
-                         g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                         g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                          break;
                  }
                  idx++;
@@ -592,11 +579,11 @@ namespace Akanonda.GameLibrary
                     case 20:
                     case 21:
                     case 24:
-                        g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                        g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                         break;
                     default:
                         g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.iGoSlow ? Color.Green : Color.Red),
-                            (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                            (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                         break;
                 }
                 idx++;
@@ -611,11 +598,11 @@ namespace Akanonda.GameLibrary
 
                 if (idx > 15)
                 {
-                    g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                    g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                 }
                 else
                 {
-                    g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                    g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                 }
 
                 idx++;
@@ -629,14 +616,14 @@ namespace Akanonda.GameLibrary
             {
                 if (idx < 15)
                 {
-                    g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                    g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                 }
                 else
                 {
                     if (idx == 20 || idx == 15)
-                        g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                        g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                     else
-                        g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                        g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                 }
 
                 idx++;
@@ -663,10 +650,10 @@ namespace Akanonda.GameLibrary
                     case 18:
                     case 22:
                     case 24:
-                        g.FillRectangle(new SolidBrush(Color.White), (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                        g.FillRectangle(new SolidBrush(Color.White), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                         break;
                     default:
-                        g.FillRectangle(new SolidBrush(randomColor), (_field.offsetWest + powerUpLocation[0] * scale), (_field.offsetNorth + powerUpLocation[1] * scale), scale, scale);
+                        g.FillRectangle(new SolidBrush(randomColor), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
                         break;
                 }
                 idx++;
@@ -680,7 +667,7 @@ namespace Akanonda.GameLibrary
                 foreach (int[] playerbody in player.playerbody)
                 {
                     if (playerbody[0] > -1 && playerbody[0] < getFieldX() && playerbody[1] > -1 && playerbody[1] < getFieldY())
-                        g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + playerbody[0] * scale), (_field.offsetNorth + playerbody[1] * scale), scale, scale);
+                        g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + playerbody[0] * _field.Scale), (_field.offsetNorth + playerbody[1] * _field.Scale), _field.Scale, _field.Scale);
                 }
             }
         }
@@ -693,7 +680,7 @@ namespace Akanonda.GameLibrary
                 foreach (int[] playerbody in player.playerbody)
                 {
                     if (playerbody[0] > -1 && playerbody[0] < getFieldX() && playerbody[1] > -1 && playerbody[1] < getFieldY())
-                        g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + playerbody[0] * scale), (_field.offsetNorth + playerbody[1] * scale), scale, scale);
+                        g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + playerbody[0] * _field.Scale), (_field.offsetNorth + playerbody[1] * _field.Scale), _field.Scale, _field.Scale);
                 }
             }
         }
@@ -703,8 +690,8 @@ namespace Akanonda.GameLibrary
             Rectangle[] border = 
             { 
                 new Rectangle(0, 0, _field.Width, _field.offsetNorth), // north
-                new Rectangle((_field.offsetWest + (_field.x * scale)), 0, _field.offsetEast, _field.Height), // east
-                new Rectangle(0, (_field.offsetNorth + (_field.y * scale)), _field.Width, _field.offsetSouth), // south
+                new Rectangle((_field.offsetWest + (_field.x * _field.Scale)), 0, _field.offsetEast, _field.Height), // east
+                new Rectangle(0, (_field.offsetNorth + (_field.y * _field.Scale)), _field.Width, _field.offsetSouth), // south
                 new Rectangle(0, 0, _field.offsetWest, _field.Height) // west
             };
 

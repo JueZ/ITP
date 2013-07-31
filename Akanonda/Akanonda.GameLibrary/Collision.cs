@@ -193,7 +193,6 @@ namespace Akanonda.GameLibrary
                                         Game.Instance.AddPowerUp(PowerUp.PowerUpKind.closingWalls);
                                     if (Game.getRandomNumber(0, 10) % 3 == 0)
                                         Game.Instance.AddPowerUp(PowerUp.PowerUpKind.biggerWalls);
-                                    
                                     break;
                                 case PowerUp.PowerUpKind.iGoThroughWalls:
                                     if (Game.Instance.iGoThroughWallsDict.ContainsKey(player.guid))
@@ -206,19 +205,20 @@ namespace Akanonda.GameLibrary
                                     break;
                             }
 
+                            foreach (Guid guid in deletePowerUpList)
+                            {
+                                Game.Instance.RemovePowerUp(guid);
+                            }
                            
                         }
                     }
                 }
 
-                foreach (Guid guid in deletePowerUpList)
-                {
-                    Game.Instance.RemovePowerUp(guid);
-                }
+                
 
 
                 // collision with head to wall
-                if (headCoordinates[0] < 0 || headCoordinates[0] > _x || headCoordinates[1] < 0 || headCoordinates[1] > _y)
+                if (headCoordinates[0] < 0 || headCoordinates[0] > _x-1 || headCoordinates[1] < 0 || headCoordinates[1] > _y-1)
                 {
                     // Collision!!
                     

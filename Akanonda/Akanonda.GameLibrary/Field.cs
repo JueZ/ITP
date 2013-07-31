@@ -69,6 +69,8 @@ namespace Akanonda.GameLibrary
         public int Height{
             get { return Offset[0] + (y * Scale) + Offset[2]; }
         }
+        
+
         public int[] Offset
         {
             get { return _offset; }
