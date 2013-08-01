@@ -24,11 +24,11 @@ namespace Akanonda.GameLibrary
             iGoFast = 6,
             closingWalls = 7,
             biggerWalls = 8,
-            morePowerUps = 9,
             iGoThroughWalls = 10,
-            goldenApple = 13, //gives the player 20 extra snake pieces
             redApple = 17, // removes all other players 20 snake pieces
-            rabies = 21,
+            morePowerUps = 32,
+            goldenApple = 33, //gives the player 20 extra snake pieces
+            rabies = 37,
             
         }
 
@@ -253,7 +253,7 @@ namespace Akanonda.GameLibrary
 
         public static void removeAllPowerUpsOutsideField()
         {
-
+            List<Guid> deletePowerUpList = new List<Guid>();
             foreach (PowerUp power in Game.Instance.PowerUpList)
             {
 
@@ -261,22 +261,28 @@ namespace Akanonda.GameLibrary
                 {
                     if (location[0] - 3 > Game.Instance.getFieldX())
                     {
-                        Game.Instance.RemovePowerUp(power.guid);
+                        deletePowerUpList.Add(power.guid);
                     }
                     if (location[0] + 3 < 0)
                     {
-                        Game.Instance.RemovePowerUp(power.guid);
+                        deletePowerUpList.Add(power.guid);
                     }
                     if (location[1] - 3> Game.Instance.getFieldY())
                     {
-                        Game.Instance.RemovePowerUp(power.guid);
+                        deletePowerUpList.Add(power.guid);
                     }
                     if (location[1] + 3 < 0)
                     {
-                        Game.Instance.RemovePowerUp(power.guid);
+                        deletePowerUpList.Add(power.guid);
                     }
                 }
             }
+
+            foreach (Guid guid in deletePowerUpList)
+            {
+                Game.Instance.RemovePowerUp(guid);
+            }
+
         }
 
 

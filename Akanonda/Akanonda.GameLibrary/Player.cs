@@ -22,7 +22,6 @@ namespace Akanonda.GameLibrary
         public string name
         {
             get { return _name; }
-            //set { _name = value; }
         }
 
         public int score
@@ -151,140 +150,113 @@ namespace Akanonda.GameLibrary
             {
                 case PlayerSteering.Up:
                     y--;
-
-                    if (Game.Instance.othersGoFastDict.ContainsKey(this._guid) || Game.Instance.iGoFastDict.ContainsKey(this._guid))
-                        {
-                            this._playerbody.Add(new int[2] { x, y });
-                            y--;
-                            this._playerbody.RemoveAt(0);
-
-                            if (Game.Instance.othersGoFastDict.ContainsKey(this._guid))
-                            {
-                                if (Game.Instance.othersGoFastDict[this.guid] - 1 > 0)
-                                    Game.Instance.othersGoFastDict[this.guid]--;
-                                else
-                                    Game.Instance.othersGoFastDict.Remove(this.guid);
-                            }
-                            if (Game.Instance.iGoFastDict.ContainsKey(this._guid))
-                            {
-                                if (Game.Instance.iGoFastDict[this.guid] - 1 > 0)
-                                    Game.Instance.iGoFastDict[this.guid]--;
-                                else
-                                    Game.Instance.iGoFastDict.Remove(this.guid);
-                            }
-
-                        }
-                    
+                    if (playerGoesFast(x, y))
+                    {
+                        y--;
+                        this._playerbody.RemoveAt(0);
+                    }
                     break;
                 case PlayerSteering.Down:
                     y++;
-                    if (Game.Instance.othersGoFastDict.ContainsKey(this._guid) || Game.Instance.iGoFastDict.ContainsKey(this._guid))
+                    if (playerGoesFast(x, y))
                     {
-                        this._playerbody.Add(new int[2] { x, y });
                         y++;
                         this._playerbody.RemoveAt(0);
-                        if (Game.Instance.othersGoFastDict.ContainsKey(this._guid))
-                        {
-                            if (Game.Instance.othersGoFastDict[this.guid] - 1 > 0)
-                                Game.Instance.othersGoFastDict[this.guid]--;
-                            else
-                                Game.Instance.othersGoFastDict.Remove(this.guid);
-                        }
-                        if (Game.Instance.iGoFastDict.ContainsKey(this._guid))
-                        {
-                            if (Game.Instance.iGoFastDict[this.guid] - 1 > 0)
-                                Game.Instance.iGoFastDict[this.guid]--;
-                            else
-                                Game.Instance.iGoFastDict.Remove(this.guid);
-                        }
-                        
                     }
                     break;
                 case PlayerSteering.Left:
                     x--;
-                    if (Game.Instance.othersGoFastDict.ContainsKey(this._guid) || Game.Instance.iGoFastDict.ContainsKey(this._guid))
+                    if (playerGoesFast(x, y))
                     {
-                        this._playerbody.Add(new int[2] { x, y });
                         x--;
                         this._playerbody.RemoveAt(0);
-
-                        if (Game.Instance.othersGoFastDict.ContainsKey(this._guid))
-                        {
-                            if (Game.Instance.othersGoFastDict[this.guid] - 1 > 0)
-                                Game.Instance.othersGoFastDict[this.guid]--;
-                            else
-                                Game.Instance.othersGoFastDict.Remove(this.guid);
-                        }
-                        if (Game.Instance.iGoFastDict.ContainsKey(this._guid))
-                        {
-                            if (Game.Instance.iGoFastDict[this.guid] - 1 > 0)
-                                Game.Instance.iGoFastDict[this.guid]--;
-                            else
-                                Game.Instance.iGoFastDict.Remove(this.guid);
-                        }
-                        
                     }
                     break;
                 case PlayerSteering.Right:
                     x++;
-                    if (Game.Instance.othersGoFastDict.ContainsKey(this._guid) || Game.Instance.iGoFastDict.ContainsKey(this._guid))
+                    if (playerGoesFast(x, y))
                     {
-                        this._playerbody.Add(new int[2] { x, y });
                         x++;
                         this._playerbody.RemoveAt(0);
-
-                        if (Game.Instance.othersGoFastDict.ContainsKey(this._guid))
-                        {
-                            if (Game.Instance.othersGoFastDict[this.guid] - 1 > 0)
-                                Game.Instance.othersGoFastDict[this.guid]--;
-                            else
-                                Game.Instance.othersGoFastDict.Remove(this.guid);
-                        }
-                        if (Game.Instance.iGoFastDict.ContainsKey(this._guid))
-                        {
-                            if (Game.Instance.iGoFastDict[this.guid] - 1 > 0)
-                                Game.Instance.iGoFastDict[this.guid]--;
-                            else
-                                Game.Instance.iGoFastDict.Remove(this.guid);
-                        }
                     }
                     break;
             }
+            //makeSnakeHoles();
+            this._playerbody.Add(new int[2] { x, y });
+            reduceGoThroughWallCounterEveryTick();
+            makeSnakeSmallerIfOtherPlayerAteRedApple();
+            checkIfPlayerShouldGrowThenGivePoint(grow);
 
-            if (Game.getRandomNumber(0, 20) % 20 == 0)
-            {
-                _playerbody[_playerbody.Count - 1][0] = -10;
-                _playerbody[_playerbody.Count - 1][1] = -10;
-            }
-
-            
-                this._playerbody.Add(new int[2] { x, y });
-
-                if (Game.Instance.iGoThroughWallsDict.ContainsKey(this.guid))
-                {
-                    if (Game.Instance.iGoThroughWallsDict[this.guid] - 1 > 0)
-                        Game.Instance.iGoThroughWallsDict[this.guid]--;
-                    else
-                        Game.Instance.iGoThroughWallsDict.Remove(this.guid);
-                }
-
-
-            
-                    if (PowerUp.playerAteGoldenApple(this._guid))
-                        grow = true;
-
-                    if (PowerUp.playerAteRedApple(this._guid))
-                    {
-                        if (playerbody.Count - 1 > 1)
-                            this._playerbody.RemoveAt(0);
-                    }
-                
-                    if (!grow)
-                        this._playerbody.RemoveAt(0);
-                    else
-                        this._score++; //for ervery snake piece u get 1 point
         }
 
 
+        private bool playerGoesFast(int x, int y)
+        {
+
+            if (Game.Instance.othersGoFastDict.ContainsKey(this._guid) || Game.Instance.iGoFastDict.ContainsKey(this._guid))
+            {
+                this._playerbody.Add(new int[2] { x, y });
+                remove1TickFromDict();
+                return true;
+            }
+            return false;
+        }
+
+        private void remove1TickFromDict()
+        {
+            if (Game.Instance.othersGoFastDict.ContainsKey(this._guid))
+            {
+                if (Game.Instance.othersGoFastDict[this.guid] - 1 > 0)
+                    Game.Instance.othersGoFastDict[this.guid]--;
+                else
+                    Game.Instance.othersGoFastDict.Remove(this.guid);
+            }
+            if (Game.Instance.iGoFastDict.ContainsKey(this._guid))
+            {
+                if (Game.Instance.iGoFastDict[this.guid] - 1 > 0)
+                    Game.Instance.iGoFastDict[this.guid]--;
+                else
+                    Game.Instance.iGoFastDict.Remove(this.guid);
+            }
+        }
+
+        private void makeSnakeHoles()
+        {
+            if (Game.getRandomNumber(0, 20) % 20 == 0)
+            {
+                _playerbody.RemoveAt(_playerbody.Count - 1);
+            }
+        }
+
+        private void reduceGoThroughWallCounterEveryTick()
+        {
+            if (Game.Instance.iGoThroughWallsDict.ContainsKey(this.guid))
+            {
+                if (Game.Instance.iGoThroughWallsDict[this.guid] - 1 > 0)
+                    Game.Instance.iGoThroughWallsDict[this.guid]--;
+                else
+                    Game.Instance.iGoThroughWallsDict.Remove(this.guid);
+            }
+        }
+
+        private void makeSnakeSmallerIfOtherPlayerAteRedApple()
+        {
+            if (PowerUp.playerAteRedApple(this._guid))
+            {
+                if (playerbody.Count - 1 > 1)
+                    this._playerbody.RemoveAt(0);
+            }
+        }
+
+        private void checkIfPlayerShouldGrowThenGivePoint(bool grow)
+        {
+            if (PowerUp.playerAteGoldenApple(this._guid))
+                grow = true;
+
+            if (!grow)
+                this._playerbody.RemoveAt(0);
+            else
+                this._score++;
+        }
     }
 }

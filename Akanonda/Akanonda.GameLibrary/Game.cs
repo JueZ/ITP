@@ -34,10 +34,13 @@ namespace Akanonda.GameLibrary
         private Dictionary<Guid, int> _iGoSlowDict = new Dictionary<Guid, int>();
         private Dictionary<Guid, int> _iGoThroughWallsDict = new Dictionary<Guid, int>();
 
-        private int _movePowerUpsCounter = 0;
-        private int _goThroughWallCounter = 0;
-        private int _closingWallsCounter = 0;
-        private int _biggerWallsCounter = 0;
+        private int[] _powerUpCounters = new int[4];
+        public const int moveAllPowerUps = 0;
+        public const int openWalls = 1;
+        public const int closingWalls = 2;
+        public const int biggerWalls = 3;
+
+        public int powerUpPopUpRate = 79;
 
         public static Game Instance
         {
@@ -61,6 +64,12 @@ namespace Akanonda.GameLibrary
             _collision = new Collision(_field.x, _field.y);
             _ticksUntilAdd = 10; // set how fast player grows
             _tickCounter = 0;
+
+            _powerUpCounters[moveAllPowerUps] = 0;
+            _powerUpCounters[openWalls] = 0;
+            _powerUpCounters[closingWalls] = 0;
+            _powerUpCounters[biggerWalls] = 0;
+
         }
 
 
@@ -78,10 +87,7 @@ namespace Akanonda.GameLibrary
         }
 
         //PowerUp get set --------------------
-        public int goThroughWallCounter { get { return _goThroughWallCounter; } set { _goThroughWallCounter = value; } }
-        public int movePowerUpsCounter { get { return _movePowerUpsCounter; } set { _movePowerUpsCounter = value; } }
-        public int closingWallsCounter { get { return _closingWallsCounter; } set { _closingWallsCounter = value; } }
-        public int biggerWallsCounter { get { return _biggerWallsCounter; } set { _biggerWallsCounter = value; } }
+        public int[] powerUpCounters { get { return _powerUpCounters; } set { _powerUpCounters = value; } }
 
         public Dictionary<Guid, int> othersGoSlowDict { get { return _othersGoSlowDict; } }
         public Dictionary<Guid, int> goldenAppleDict { get { return _goldenAppleDict; } set { _goldenAppleDict = value; } }
@@ -171,7 +177,8 @@ namespace Akanonda.GameLibrary
             }
         }
 
-        public string getPlayerName(Guid guid){
+        public string getPlayerName(Guid guid)
+        {
 
             string name = "";
             foreach (Player pl in _playerList)
@@ -224,7 +231,7 @@ namespace Akanonda.GameLibrary
                     break;
                 }
             }
-            
+
         }
 
         public void updateScore(Guid guid)
@@ -275,35 +282,49 @@ namespace Akanonda.GameLibrary
 
         private void handlePowerUpTicks()
         {
-            checkgoThroughWallCounter();
+            checkOpenWallCounter();
             checkMovePowerUpsCounter();
-            checkClosingWallsCounter();
-            checkBiggerWallsCounter();
+            checkIfWallsShouldGetSmallerOrBigger();
         }
 
-        private void checkgoThroughWallCounter(){
-            if (goThroughWallCounter > 0)
-                goThroughWallCounter--;
-         }
+        private void checkOpenWallCounter()
+        {
+            if (powerUpCounters[openWalls] > 0)
+                powerUpCounters[openWalls]--;
+        }
 
         private void checkMovePowerUpsCounter()
         {
-            if (movePowerUpsCounter > 0)
+            if (powerUpCounters[moveAllPowerUps] > 0)
             {
                 if (_tickCounter % 2 == 0) //Powerup moving speed
                     PowerUp.moveAllPowerUps();
 
-                movePowerUpsCounter--;
-                if (movePowerUpsCounter <= 0)
+                powerUpCounters[moveAllPowerUps]--;
+                if (powerUpCounters[moveAllPowerUps] <= 0)
                     PowerUp.resetPowerUpMovingDirection();
+            }
+        }
+
+        private void checkIfWallsShouldGetSmallerOrBigger()
+        {
+            if (powerUpCounters[closingWalls] > 0 && powerUpCounters[biggerWalls] > 0)
+            {
+                powerUpCounters[closingWalls]--;
+                powerUpCounters[biggerWalls]--;
+            }
+            else
+            {
+                checkClosingWallsCounter();
+                checkBiggerWallsCounter();
             }
         }
 
         private void checkClosingWallsCounter()
         {
-            if (closingWallsCounter > 0)
+            if (powerUpCounters[closingWalls] > 0)
             {
-                closingWallsCounter--;
+                powerUpCounters[closingWalls]--;
                 if (tickCounter % 3 == 0) //closingWall speed
                 {
                     if (Game.Instance.getFieldX() > 60 && Game.Instance.getFieldY() > 60)
@@ -318,9 +339,9 @@ namespace Akanonda.GameLibrary
 
         private void checkBiggerWallsCounter()
         {
-            if (biggerWallsCounter > 0)
+            if (powerUpCounters[biggerWalls] > 0)
             {
-                biggerWallsCounter--;
+                powerUpCounters[biggerWalls]--;
                 if (tickCounter % 3 == 0) //biggerWall speed
                 {
                     if (Game.Instance.getFieldX() > 60 && Game.Instance.getFieldY() > 60)
@@ -386,20 +407,20 @@ namespace Akanonda.GameLibrary
 
         private void checkIfPowerUpsShouldBeAddedRelativeToFieldsize()
         {
-            if (PowerUpList.Count < getFieldX() / 8 && PLayerList.Count > 0) 
+            if (PowerUpList.Count < getFieldX() / 8 && PLayerList.Count > 0)
             {
                 makePowerUpsPopUp();
             }
         }
 
         private void makePowerUpsPopUp()
-                {
-                    if (getRandomNumber(0, 9999) % 79 == 0)
-                    {
-                        PowerUp.PowerUpKind RandomPowerUp = GetRandomPowerUp<PowerUp.PowerUpKind>();
-                        AddPowerUp(RandomPowerUp);
-                    }
-                }
+        {
+            if (getRandomNumber(0, 9999) % powerUpPopUpRate == 0)
+            {
+                PowerUp.PowerUpKind RandomPowerUp = GetRandomPowerUp<PowerUp.PowerUpKind>();
+                AddPowerUp(RandomPowerUp);
+            }
+        }
 
         static T GetRandomPowerUp<T>()
         {
@@ -410,8 +431,8 @@ namespace Akanonda.GameLibrary
 
         public void DetectCollision()
         {
-             _collisionList = _collision.DetectCollision(_playerList);
-             
+            _collisionList = _collision.DetectCollision(_playerList);
+
         }
 
         public void gamepaint(Graphics g)
@@ -539,28 +560,29 @@ namespace Akanonda.GameLibrary
             }
         }
 
-        private void paintPowerUpMovePowerUps(PowerUp power, Graphics g){
-             int idx = 0;
-             foreach (int[] powerUpLocation in power.PowerUpLocation)
-             {
-                 switch (idx)
-                 {
-                     case 2:
-                     case 6:
-                     case 10:
-                     case 14:
-                     case 16:
-                     case 18:
-                     case 22:
-                     case 24:
-                         g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                         break;
-                     default:
-                         g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                         break;
-                 }
-                 idx++;
-             }
+        private void paintPowerUpMovePowerUps(PowerUp power, Graphics g)
+        {
+            int idx = 0;
+            foreach (int[] powerUpLocation in power.PowerUpLocation)
+            {
+                switch (idx)
+                {
+                    case 2:
+                    case 6:
+                    case 10:
+                    case 14:
+                    case 16:
+                    case 18:
+                    case 22:
+                    case 24:
+                        g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
+                        break;
+                    default:
+                        g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
+                        break;
+                }
+                idx++;
+            }
         }
 
         private void paintiGoSlowAandothersGoSlow(PowerUp power, Graphics g)
@@ -697,7 +719,7 @@ namespace Akanonda.GameLibrary
 
             SolidBrush brush;
 
-            if (goThroughWallCounter > 0)
+            if (powerUpCounters[openWalls] > 0)
                 brush = new SolidBrush(Color.Gray);
             else
                 brush = new SolidBrush(Color.Black);
@@ -731,7 +753,7 @@ namespace Akanonda.GameLibrary
 
         public int getPlayerLength(Guid guid)
         {
-            foreach(Player p in _playerList)
+            foreach (Player p in _playerList)
             {
                 if (p.guid.Equals(guid))
                 {
