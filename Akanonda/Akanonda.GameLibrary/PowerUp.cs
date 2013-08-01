@@ -199,57 +199,81 @@ namespace Akanonda.GameLibrary
         {     
               foreach (PowerUp power in Game.Instance.PowerUpList)
               {
-                  int xPlusCounter = 0;
-                  int xMinusCounter = 0;
-                  int yPlusCounter = 0;
-                  int yMinusCounter = 0;
-                  foreach (int[] location in power.PowerUpLocation)
+
+                  if (Game.Instance.powerUpCounters[Game.openWalls] > 40)
                   {
-                      if (location[0] + 1 > Game.Instance.getFieldX() - 1)
+                      foreach (int[] location in power.PowerUpLocation)
                       {
-                          xPlusCounter++;
-                      }
-                      if (location[0] - 1 < 0)
-                      {
-                          xMinusCounter++;
-                      }
-                      if (location[1] + 1 > Game.Instance.getFieldY() - 1)
-                      {
-                          yPlusCounter++;
-                      }
-                      if (location[1] - 1 < 0)
-                      {
-                          yMinusCounter++;
+                          if (power.movePowerUpX)
+                              location[0]++;
+                          else
+                              location[0]--;
+
+                          if (power.movePowerUpY)
+                              location[1]++;
+                          else
+                              location[1]--;
+
+                          int[] firstToTouchSide = new int[2];
+                          firstToTouchSide[0] = location[0];
+                          firstToTouchSide[1] = location[1];
+                          openTheWalls(firstToTouchSide);
                       }
                   }
-                  foreach (int[] location in power.PowerUpLocation)
+                  else
                   {
-                      if (xPlusCounter > 0)
-                          power.movePowerUpX = false;
+                      int xPlusCounter = 0;
+                      int xMinusCounter = 0;
+                      int yPlusCounter = 0;
+                      int yMinusCounter = 0;
 
-                      if (xMinusCounter > 0)
-                          power.movePowerUpX = true;
+                      foreach (int[] location in power.PowerUpLocation)
+                      {
+                          if (location[0] + 1 > Game.Instance.getFieldX() - 1)
+                          {
+                              xPlusCounter++;
+                          }
+                          if (location[0] - 1 < 0)
+                          {
+                              xMinusCounter++;
+                          }
+                          if (location[1] + 1 > Game.Instance.getFieldY() - 1)
+                          {
+                              yPlusCounter++;
+                          }
+                          if (location[1] - 1 < 0)
+                          {
+                              yMinusCounter++;
+                          }
+                      }
+                      foreach (int[] location in power.PowerUpLocation)
+                      {
+                          if (xPlusCounter > 0)
+                              power.movePowerUpX = false;
 
-                      if (yPlusCounter > 0)
-                          power.movePowerUpY = false;
+                          if (xMinusCounter > 0)
+                              power.movePowerUpX = true;
 
-                      if (yMinusCounter > 0)
-                          power.movePowerUpY = true;
+                          if (yPlusCounter > 0)
+                              power.movePowerUpY = false;
 
-                      if (power.movePowerUpX)
-                          location[0]++;
-                      else
-                          location[0]--;
+                          if (yMinusCounter > 0)
+                              power.movePowerUpY = true;
 
-                      if (power.movePowerUpY)
-                          location[1]++;
-                      else
-                          location[1]--;
+                          if (power.movePowerUpX)
+                              location[0]++;
+                          else
+                              location[0]--;
 
+                          if (power.movePowerUpY)
+                              location[1]++;
+                          else
+                              location[1]--;
+
+                      }
                   }
               }
         }
-
 
         public static void removeAllPowerUpsOutsideField()
         {
@@ -282,7 +306,6 @@ namespace Akanonda.GameLibrary
             {
                 Game.Instance.RemovePowerUp(guid);
             }
-
         }
 
 
