@@ -179,7 +179,7 @@ namespace Akanonda.GameLibrary
 
 
                 // collision with head to wall
-                if (headCoordinates[0] < 0 || headCoordinates[0] > _x || headCoordinates[1] < 0 || headCoordinates[1] > _y)
+                if (headCoordinates[0] < 0 || headCoordinates[0] > _x - 1 || headCoordinates[1] < 0 || headCoordinates[1] > _y - 1)
                 {
                     if (game.powerUpCounters[Game.openWalls] > 0 || Game.Instance.iGoThroughWallsDict.ContainsKey(player.guid))
                     {

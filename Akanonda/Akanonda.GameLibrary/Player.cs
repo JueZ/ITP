@@ -181,7 +181,7 @@ namespace Akanonda.GameLibrary
                     }
                     break;
             }
-            //makeSnakeHoles();
+            makeSnakeHoles();
             this._playerbody.Add(new int[2] { x, y });
             reduceGoThroughWallCounterEveryTick();
             makeSnakeSmallerIfOtherPlayerAteRedApple();
@@ -224,7 +224,8 @@ namespace Akanonda.GameLibrary
         {
             if (Game.getRandomNumber(0, 20) % 20 == 0)
             {
-                _playerbody.RemoveAt(_playerbody.Count - 1);
+                _playerbody[_playerbody.Count - 1][0] = -40;
+                _playerbody[_playerbody.Count - 1][1] = -40;
             }
         }
 

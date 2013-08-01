@@ -32,32 +32,10 @@ namespace Akanonda
             name = n;
             color = c;
             L_form = this;
-            //startChat();
             MessageBox.KeyDown += new KeyEventHandler(MessageBox_KeyDown);
         }
 
-        //[STAThread]
-        //static void startChat()
-        //{
-        //    //Application.EnableVisualStyles();
-        //    //Application.SetCompatibleTextRenderingDefault(false);
-        //    //s_form = ;
-
-        //    NetPeerConfiguration config = new NetPeerConfiguration("chat");
-        //    config.AutoFlushSendQueue = false;
-        //    s_client = new NetClient(config);
-
-        //    s_client.RegisterReceivedCallback(new SendOrPostCallback(GotMessage));
-
-        //    int port;
-        //    Int32.TryParse("1338", out port);
-        //    Connect("localhost", port);
-
-
-        //    //Application.Run(s_form);
-
-        //    //s_client.Shutdown("Bye");
-        //}
+      
 
         public static void Connect(string host, int port)
         {

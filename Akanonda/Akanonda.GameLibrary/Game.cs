@@ -129,7 +129,6 @@ namespace Akanonda.GameLibrary
                     if (_playerList[i].guid.Equals(_localplayer))
                     {
                         return _playerList[i].playersteering;
-                        //break;
                     }
                 }
                 throw new Exception("No localplayer found");
@@ -202,7 +201,7 @@ namespace Akanonda.GameLibrary
                 if (pl.guid == guid)
                 {
                     color = pl.color;
-                    break;
+                    return color;
                 }
             }
 
@@ -526,28 +525,27 @@ namespace Akanonda.GameLibrary
 
         private void paintPowerUpiGoFastAndOthersGoFast(PowerUp power, Graphics g)
         {
-            int idx = 0;
+            int lowestX = 9999;
+            int lowestY = 9999;
+            
             foreach (int[] powerUpLocation in power.PowerUpLocation)
             {
-                switch (idx)
-                {
-                    case 2:
-                    case 6:
-                    case 10:
-                    case 14:
-                    case 16:
-                    case 19:
-                    case 20:
-                    case 21:
-                    case 22:
-                        g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                        break;
-                    default:
-                        g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.iGoFast ? Color.Green : Color.Red),
-                            (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                        break;
-                }
-                idx++;
+                
+                    lowestX = lowestX < (_field.offsetWest + powerUpLocation[0] * _field.Scale) ? lowestX : (_field.offsetWest + powerUpLocation[0] * _field.Scale);
+                    lowestY = lowestY < (_field.offsetNorth + powerUpLocation[1] * _field.Scale) ? lowestY : (_field.offsetNorth + powerUpLocation[1] * _field.Scale);
+                
+            }
+            if (power.kind == PowerUp.PowerUpKind.iGoFast)
+            {
+                Icon fastIcon = new Icon("iGoFast.ico");
+                Rectangle rect = new Rectangle(lowestX - 3, lowestY - 3, 31, 31);
+                g.DrawIcon(fastIcon, rect);
+            }
+            else
+            {
+                Icon fastIcon = new Icon("othersGoFast.ico");
+                Rectangle rect = new Rectangle(lowestX - 3, lowestY - 3, 31, 31);
+                g.DrawIcon(fastIcon, rect);
             }
         }
 
@@ -587,28 +585,27 @@ namespace Akanonda.GameLibrary
 
         private void paintiGoSlowAandothersGoSlow(PowerUp power, Graphics g)
         {
-            int idx = 0;
+            int lowestX = 9999;
+            int lowestY = 9999;
+
             foreach (int[] powerUpLocation in power.PowerUpLocation)
             {
-                switch (idx)
-                {
-                    case 2:
-                    case 6:
-                    case 10:
-                    case 14:
-                    case 18:
-                    case 19:
-                    case 20:
-                    case 21:
-                    case 24:
-                        g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                        break;
-                    default:
-                        g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.iGoSlow ? Color.Green : Color.Red),
-                            (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                        break;
-                }
-                idx++;
+
+                lowestX = lowestX < (_field.offsetWest + powerUpLocation[0] * _field.Scale) ? lowestX : (_field.offsetWest + powerUpLocation[0] * _field.Scale);
+                lowestY = lowestY < (_field.offsetNorth + powerUpLocation[1] * _field.Scale) ? lowestY : (_field.offsetNorth + powerUpLocation[1] * _field.Scale);
+
+            }
+            if (power.kind == PowerUp.PowerUpKind.iGoSlow)
+            {
+                Icon slowIcon = new Icon("iGoSlow.ico");
+                Rectangle rect = new Rectangle(lowestX - 3, lowestY - 3, 31, 31);
+                g.DrawIcon(slowIcon, rect);
+            }
+            else
+            {
+                Icon slowIcon = new Icon("othersGoSlow.ico");
+                Rectangle rect = new Rectangle(lowestX - 3, lowestY - 3, 31, 31);
+                g.DrawIcon(slowIcon, rect);
             }
         }
 

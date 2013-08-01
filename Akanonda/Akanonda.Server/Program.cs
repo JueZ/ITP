@@ -25,22 +25,16 @@ namespace Akanonda
             Console.WriteLine("Akanonda Server");
             Console.WriteLine("---------------");
 
-            
-
             // NetServer START
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
             netconfig.MaximumConnections = settings.MaxConnections;
 			netconfig.Port = settings.LocalPort;
 			netserver = new NetServer(netconfig);
 
-            
-            
-
             NetPeerConfiguration config = new NetPeerConfiguration("chat");
             config.MaximumConnections = 100;
             config.Port = 1338;
             chatServer = new NetServer(config);
-
 
             SurvivalTimer = new System.Timers.Timer();
             SurvivalTimer.Interval = 1000;
@@ -50,38 +44,21 @@ namespace Akanonda
             if (SynchronizationContext.Current == null)
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             
-			netserver.RegisterReceivedCallback(new SendOrPostCallback(ReceiveData)); 
-		
-			netserver.Start();
-            //chatServer.Start();
+			netserver.RegisterReceivedCallback(new SendOrPostCallback(ReceiveData));
 
+            netserver.Start();
             StartChat();
 
-            // NetServer END
-			
-            // Game START
             game = Game.Instance;
-            //game.setFieldSize(250, 250);
-            //game.addPlayer("Martin", Color.Blue, Guid.NewGuid());
-            
-            
-            
-            // Game END            
-            
-
-            // GameTimer START                                  set gameSpeed here
-            System.Timers.Timer timer = new System.Timers.Timer(settings.GameSpeed);
-            timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
-            timer.Enabled = true;
-            // GameTimer END
+  
+            System.Timers.Timer gameSpeedTimer = new System.Timers.Timer(settings.GameSpeed);
+            gameSpeedTimer.Elapsed += new ElapsedEventHandler(gameSpeedTimer_Elapsed);
+            gameSpeedTimer.Enabled = true;
                         
-            // ConsoleCommand START
             Console.Write("Command: ");
-
 			while (true)
             {
                 string input = Console.ReadLine();
-                
                 switch (input)
                 { 
                     case "start":
@@ -105,10 +82,8 @@ namespace Akanonda
                         Console.WriteLine("Command not found.");
                         break;
                 }
-                
                 Console.Write("Command: ");
             }
-			// ConsoleCommand END
         }
 
 
@@ -130,25 +105,19 @@ namespace Akanonda
             t.Start();
         }
 
-
         public static void StopChat()
         {
             _chatStopped = true;
             chatServer.Shutdown("Chat disabled by Server administrator");
         }
 
-
-        //object sender, EventArgs e
         private static void getMessages()
         {
-            
             while (!_chatStopped)
             {
                 NetIncomingMessage im;
                 while ((im = chatServer.ReadMessage()) != null)
                 {
-                   
-                    // handle incoming message
                     switch (im.MessageType)
                     {
                         case NetIncomingMessageType.DebugMessage:
@@ -157,14 +126,10 @@ namespace Akanonda
                         case NetIncomingMessageType.VerboseDebugMessage:
                             string text = im.ReadString();
                             Console.WriteLine(text);
-                            //Output(text);
                             break;
                         case NetIncomingMessageType.StatusChanged:
                             NetConnectionStatus status = (NetConnectionStatus)im.ReadByte();
                             string reason = im.ReadString();
-                            //Output(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " " + status + ": " + reason);
-
-                            //UpdateConnectionsList()
 
                             if (im.SenderConnection.RemoteHailMessage != null && status == NetConnectionStatus.Connected)
                             {
@@ -172,9 +137,7 @@ namespace Akanonda
                                 string[] remotehailmessagearray = remotehailmessage.Split(';');
 
                                 game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-                                
-                                //Console.WriteLine("Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
-                                UpdateLobbyLists();
+
                                 Console.WriteLine("[Chat]Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                             }
 
@@ -182,37 +145,20 @@ namespace Akanonda
                             {
                                 game.removePlayer(Guid.Parse(reason));
                                 game.RemoveLobbyPlayer(Guid.Parse(reason));
-                                Console.WriteLine("[Chat]Player disconnected! \t GUID: " + Guid.Parse(reason));
-                                UpdateLobbyLists();
-                                
+                                Console.WriteLine("[Chat]Player disconnected! \t GUID: " + Guid.Parse(reason)); 
                             }
                             break;
 
                         case NetIncomingMessageType.Data:
-                            // incoming chat message from a client
-                            
-
-                            //Output("Broadcasting '" + chat + "'");
-
                             // broadcast this to all connections, except sender
                             List<NetConnection> all = chatServer.Connections; // get copy
-                            //all.Remove(im.SenderConnection);
-
                             if (all.Count > 0)
                             {
-                                //string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
-                                //string[] remotehailmessagearray = remotehailmessage.Split(';');
-                                //string chat = remotehailmessagearray[1];
                                 string chat = im.ReadString();
-                                Console.WriteLine(chat);
-                                
-
-
-                                    string[] chatMessage = chat.Split(';');
-                                    NetOutgoingMessage om = chatServer.CreateMessage();
-                                    //om.Write(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " said: " + chat);
-                                    om.Write(game.getLobbyPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
-                                    chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
+                                string[] chatMessage = chat.Split(';');
+                                NetOutgoingMessage om = chatServer.CreateMessage();
+                                om.Write(game.getLobbyPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
+                                chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
                                 
                             }
                             break;
@@ -227,8 +173,6 @@ namespace Akanonda
 
         private static void UpdateConnectionsList()
         {
-            
-
             foreach (NetConnection conn in chatServer.Connections)
             {
                 string str = NetUtility.ToHexString(conn.RemoteUniqueIdentifier) + " from " + conn.RemoteEndPoint.ToString() + " [" + conn.Status + "]";
@@ -238,7 +182,7 @@ namespace Akanonda
 
 
 
-        static void timer_Elapsed(object sender, ElapsedEventArgs e)
+        static void gameSpeedTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             game.gametick();
             game.DetectCollision();
@@ -258,9 +202,7 @@ namespace Akanonda
                     else
                     {
                         removeDeadList.Add(player.guid);
-                        //game.removeDeadPlayer(player.guid);
-
-
+                      
                         if(game.goldenAppleDict.ContainsKey(player.guid))
                             game.goldenAppleDict.Remove(player.guid);
 
@@ -287,26 +229,16 @@ namespace Akanonda
                     }
                 }
 
-                foreach (Guid guid in removeDeadList)
-                {
-                    game.removeDeadPlayer(guid);
-                }
-            
-            
-
-
-            /*  
-             *  DetectCollison speichert alle fälle die gefunden werden in das dictionary.
-             *  Anhand der Guid kann der player identifiziert werden, CollisonType gibt an was passiert ist:
-             *  Collision mit Wand, sich selber oder anderem Spieler
-            */
+            foreach (Guid guid in removeDeadList)
+            {
+                game.removeDeadPlayer(guid);
+            }
             
             byte[] gamebyte = SerializeHelper.ObjectToByteArray(game);
             
             NetOutgoingMessage sendMsg = netserver.CreateMessage();
             sendMsg.Write(Convert.ToInt32(gamebyte.Length));
             sendMsg.Write(gamebyte);
-
             netserver.SendToAll(sendMsg, NetDeliveryMethod.ReliableSequenced);
         }
         
@@ -325,11 +257,8 @@ namespace Akanonda
                         Console.WriteLine(text);
                         break;
 					case NetIncomingMessageType.StatusChanged:
-                        
                         NetConnectionStatus status = (NetConnectionStatus)im.ReadByte();
-
-                        string reason = im.ReadString();
-                                                                     						
+                        string reason = im.ReadString();	
                         if(im.SenderConnection.RemoteHailMessage != null && status == NetConnectionStatus.Connected)
                         {
                             string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
@@ -337,79 +266,40 @@ namespace Akanonda
                             if (remotehailmessagearray[3] == "playing")
                             {
                                 game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-                                //game.setScoreToGamePlayer(Guid.Parse(remotehailmessagearray[0]));
-                                game.AddPowerUp(PowerUp.PowerUpKind.morePowerUps); // For testing
-                                game.AddPowerUp(PowerUp.PowerUpKind.rabies); // For testing
+                                game.AddPowerUp(PowerUp.PowerUpKind.iGoSlow); // For testing
+                                //game.AddPowerUp(PowerUp.PowerUpKind.rabies); // For testing
                                 //game.AddPowerUp(PowerUp.PowerUpKind.biggerWalls); // For testing
-                                //game.RemoveLobbyPlayer(Guid.Parse(remotehailmessagearray[0]));
-                                //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                                 Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
                             }
                             else if (remotehailmessagearray[3] == "justWatching")
                             {
                                 game.removePlayer(Guid.Parse(remotehailmessagearray[0]));
-                                //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                                 Console.WriteLine("[Game]Player connected <watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
                             }
                             else if (remotehailmessagearray[3] == "dead")
                             {
-                               // game.removePlayer(Guid.Parse(remotehailmessagearray[0]));
                                 game.addDeadRemoveLivingPlayer(Guid.Parse(remotehailmessagearray[0]));
-                                //game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                                 Console.WriteLine("[Game]Player died <now watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
                             }
-                                //UpdateLobbyLists();
-
                         }
 
                         if (status == NetConnectionStatus.Disconnected)
                         {
-                            if (reason != "Connection timed out" && Guid.Parse(reason) != null)
+                            if (reason != "Connection timed out" && Guid.Parse(reason) != null) //fix for server crashes
                             {
                                 game.removePlayer(Guid.Parse(reason));
                                 game.RemoveLobbyPlayer(Guid.Parse(reason));
-                                UpdateLobbyLists();
                                 Console.WriteLine("[Game]Player disconnected! \t GUID: " + Guid.Parse(reason));
                             }
                         }
-
-						
-						
-                        //Console.WriteLine(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " " + status + ": " + reason);
-
-
-
-                        
-                        //Update user status
-						//UpdateConnectionsList();
 						break;
 					case NetIncomingMessageType.Data:
-						// incoming chat message from a client
-
-                        //Console.WriteLine(im.ReadString());
-						//Console.WriteLine(im.ReadInt32());
-
                         Guid remoteplayer = new Guid(im.ReadString());
                         PlayerSteering remoteplayersteering = (PlayerSteering)im.ReadInt32();
-
                         game.setsteering(remoteplayer, remoteplayersteering);
-
-                        //UpdateLobbyLists();
-//						Output("Broadcasting '" + chat + "'");
-//
-//						// broadcast this to all connections, except sender
-//						List<NetConnection> all = s_server.Connections; // get copy
-//						all.Remove(im.SenderConnection);
-//
-//						if (all.Count > 0)
-//						{
-//							NetOutgoingMessage om = s_server.CreateMessage();
-//							om.Write(NetUtility.ToHexString(im.SenderConnection.RemoteUniqueIdentifier) + " said: " + chat);
-//							s_server.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
-//						}
 						break;
 					default:
 						Console.WriteLine("Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes " + im.DeliveryMethod + "|" + im.SequenceChannel);
@@ -437,32 +327,25 @@ namespace Akanonda
         private static void UpdateLobbyLists()
         {
             List<NetConnection> all = chatServer.Connections; // get copy
-            //all.Remove(im.SenderConnection);
-
             if (all.Count > 0)
             {
-                //string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
-                //string[] remotehailmessagearray = remotehailmessage.Split(';');
-                //string chat = remotehailmessagearray[1];
-                
-                
-                    string inLobby = "PlayersInLobby;";
-                    string inGame = "PlayersInGame;";
-                    foreach (GameLibrary.Player p in game.LobbyList)
-                    {
-                        if(game.getPlayerName(p.guid) == "")
-                            inLobby += p.name + "-" + getColorFormARGB(p.color) + "-" + p.score + ";";
+                string inLobby = "PlayersInLobby;";
+                string inGame = "PlayersInGame;";
+                foreach (GameLibrary.Player p in game.LobbyList)
+                {
+                    if(game.getPlayerName(p.guid) == "")
+                        inLobby += p.name + "-" + getColorFormARGB(p.color) + "-" + p.score + ";";
 
-                    }
-                    foreach (GameLibrary.Player p in game.PLayerList)
-                    {
-                        inGame += p.name + "-" + getColorFormARGB(p.color) + "-" + p.score + ";";
-                    }
-                    inGame = inGame.Remove(inGame.Length - 1);
-                    inLobby = inLobby.Remove(inLobby.Length - 1);
-                    NetOutgoingMessage om = chatServer.CreateMessage();
-                    om.Write(inLobby + ":" + inGame);
-                    chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
+                }
+                foreach (GameLibrary.Player p in game.PLayerList)
+                {
+                    inGame += p.name + "-" + getColorFormARGB(p.color) + "-" + p.score + ";";
+                }
+                inGame = inGame.Remove(inGame.Length - 1);
+                inLobby = inLobby.Remove(inLobby.Length - 1);
+                NetOutgoingMessage om = chatServer.CreateMessage();
+                om.Write(inLobby + ":" + inGame);
+                chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
                 
             }
         }
