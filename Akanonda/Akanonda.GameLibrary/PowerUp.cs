@@ -195,13 +195,26 @@ namespace Akanonda.GameLibrary
         }
 
 
-        public static void moveAllPowerUps()
+        public static void checkIfWallsAreOpenThenMovePowerUps()
         {     
+
+            if (Game.Instance.powerUpCounters[Game.openWalls] > 40)
+            {
+                movePowerUpsThroughWall();
+            }
+            else
+            {
+                movePowerUpsButNotThroughWall();
+            }
+
+              }
+        
+
+
+        public static void movePowerUpsThroughWall()
+        {
               foreach (PowerUp power in Game.Instance.PowerUpList)
               {
-
-                  if (Game.Instance.powerUpCounters[Game.openWalls] > 40)
-                  {
                       foreach (int[] location in power.PowerUpLocation)
                       {
                           if (power.movePowerUpX)
@@ -214,65 +227,65 @@ namespace Akanonda.GameLibrary
                           else
                               location[1]--;
 
-                          int[] firstToTouchSide = new int[2];
-                          firstToTouchSide[0] = location[0];
-                          firstToTouchSide[1] = location[1];
-                          openTheWalls(firstToTouchSide);
+                          openTheWalls(location);
                       }
-                  }
-                  else
-                  {
-                      int xPlusCounter = 0;
-                      int xMinusCounter = 0;
-                      int yPlusCounter = 0;
-                      int yMinusCounter = 0;
+                }
+        }
 
-                      foreach (int[] location in power.PowerUpLocation)
-                      {
-                          if (location[0] + 1 > Game.Instance.getFieldX() - 1)
-                          {
-                              xPlusCounter++;
-                          }
-                          if (location[0] - 1 < 0)
-                          {
-                              xMinusCounter++;
-                          }
-                          if (location[1] + 1 > Game.Instance.getFieldY() - 1)
-                          {
-                              yPlusCounter++;
-                          }
-                          if (location[1] - 1 < 0)
-                          {
-                              yMinusCounter++;
-                          }
-                      }
-                      foreach (int[] location in power.PowerUpLocation)
-                      {
-                          if (xPlusCounter > 0)
-                              power.movePowerUpX = false;
+        private static void movePowerUpsButNotThroughWall()
+        {
+            int xPlusCounter = 0;
+            int xMinusCounter = 0;
+            int yPlusCounter = 0;
+            int yMinusCounter = 0;
+            foreach (PowerUp power in Game.Instance.PowerUpList)
+            {
+                foreach (int[] location in power.PowerUpLocation)
+                {
+                    if (location[0] + 1 > Game.Instance.getFieldX() - 1)
+                    {
+                        xPlusCounter++;
+                    }
+                    if (location[0] - 1 < 0)
+                    {
+                        xMinusCounter++;
+                    }
+                    if (location[1] + 1 > Game.Instance.getFieldY() - 1)
+                    {
+                        yPlusCounter++;
+                    }
+                    if (location[1] - 1 < 0)
+                    {
+                        yMinusCounter++;
+                    }
+                }
+                foreach (int[] location in power.PowerUpLocation)
+                {
+                    if (xPlusCounter > 0)
+                        power.movePowerUpX = false;
 
-                          if (xMinusCounter > 0)
-                              power.movePowerUpX = true;
+                    if (xMinusCounter > 0)
+                        power.movePowerUpX = true;
 
-                          if (yPlusCounter > 0)
-                              power.movePowerUpY = false;
+                    if (yPlusCounter > 0)
+                        power.movePowerUpY = false;
 
-                          if (yMinusCounter > 0)
-                              power.movePowerUpY = true;
+                    if (yMinusCounter > 0)
+                        power.movePowerUpY = true;
 
-                          if (power.movePowerUpX)
-                              location[0]++;
-                          else
-                              location[0]--;
+                    if (power.movePowerUpX)
+                        location[0]++;
+                    else
+                        location[0]--;
 
-                          if (power.movePowerUpY)
-                              location[1]++;
-                          else
-                              location[1]--;
+                    if (power.movePowerUpY)
+                        location[1]++;
+                    else
+                        location[1]--;
 
-                      }
-                  }
-              }
+
+                }
+            }
         }
 
         public static void removeAllPowerUpsOutsideField()

@@ -297,7 +297,7 @@ namespace Akanonda.GameLibrary
             if (powerUpCounters[moveAllPowerUps] > 0)
             {
                 if (_tickCounter % 2 == 0) //Powerup moving speed
-                    PowerUp.moveAllPowerUps();
+                    PowerUp.checkIfWallsAreOpenThenMovePowerUps();
 
                 powerUpCounters[moveAllPowerUps]--;
                 if (powerUpCounters[moveAllPowerUps] <= 0)
