@@ -52,7 +52,7 @@ namespace Akanonda.GameLibrary
                         {
                             switch(power.kind){
                                 case PowerUp.PowerUpKind.openWalls:
-                                    game.powerUpCounters[Game.openWalls] += 1000;
+                                    game.powerUpCounters[Game.openWalls] += 100;
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.othersGoFast:
@@ -128,7 +128,7 @@ namespace Akanonda.GameLibrary
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.movePowerUps:
-                                    game.powerUpCounters[Game.moveAllPowerUps] += 1000;
+                                    game.powerUpCounters[Game.moveAllPowerUps] += 100;
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.othersGoSlow:
