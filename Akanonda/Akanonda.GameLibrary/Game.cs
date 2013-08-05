@@ -34,13 +34,13 @@ namespace Akanonda.GameLibrary
         private Dictionary<Guid, int> _iGoSlowDict = new Dictionary<Guid, int>();
         private Dictionary<Guid, int> _iGoThroughWallsDict = new Dictionary<Guid, int>();
 
+        private Dictionary<Guid, List<PowerUpModificator>> _powerUpModificationList = new Dictionary<Guid, List<PowerUpModificator>>();
         private int[] _powerUpCounters = new int[4];
         public const int moveAllPowerUps = 0;
         public const int openWalls = 1;
         public const int closingWalls = 2;
         public const int biggerWalls = 3;
-
-        public int powerUpPopUpRate = 79;
+        private int _powerUpPopUpRate = 150;
 
         public static Game Instance
         {
@@ -88,6 +88,15 @@ namespace Akanonda.GameLibrary
 
         //PowerUp get set --------------------
         public int[] powerUpCounters { get { return _powerUpCounters; } set { _powerUpCounters = value; } }
+        public int PowerUpPopUpRate
+        {
+            get { return _powerUpPopUpRate; }
+            set {
+                if (value >= 40 && value <= 150)
+                    _powerUpPopUpRate = value;
+            }
+        }
+        public Dictionary<Guid, List<PowerUpModificator>> powerUpModificationList { get { return _powerUpModificationList; } set { _powerUpModificationList = value; } }
 
         public Dictionary<Guid, int> othersGoSlowDict { get { return _othersGoSlowDict; } }
         public Dictionary<Guid, int> goldenAppleDict { get { return _goldenAppleDict; } set { _goldenAppleDict = value; } }
@@ -284,6 +293,8 @@ namespace Akanonda.GameLibrary
             checkOpenWallCounter();
             checkMovePowerUpsCounter();
             checkIfWallsShouldGetSmallerOrBigger();
+            remove1EveryTick();
+            setPopUpRateToNormal();
         }
 
         private void checkOpenWallCounter()
@@ -317,6 +328,11 @@ namespace Akanonda.GameLibrary
                 checkClosingWallsCounter();
                 checkBiggerWallsCounter();
             }
+        }
+
+        private void setPopUpRateToNormal()
+        {
+            PowerUpPopUpRate++;
         }
 
         private void checkClosingWallsCounter()
@@ -395,6 +411,19 @@ namespace Akanonda.GameLibrary
             }
         }
 
+        private void remove1EveryTick()
+        {
+            foreach (KeyValuePair<Guid, List<PowerUpModificator>> pair in powerUpModificationList)
+            {
+                foreach (PowerUpModificator pUM in pair.Value)
+                {
+                    pUM.reduceCounterBy1();   
+                }
+            }
+
+
+        }
+
         private void addScoreEvery30Seconds(int i)
         {
             if (_playerList[i].SurvivalTime % 30 == 0)
@@ -414,7 +443,7 @@ namespace Akanonda.GameLibrary
 
         private void makePowerUpsPopUp()
         {
-            if (getRandomNumber(0, 9999) % powerUpPopUpRate == 0)
+            if (getRandomNumber(0, 900) % PowerUpPopUpRate == 0)
             {
                 PowerUp.PowerUpKind RandomPowerUp = GetRandomPowerUp<PowerUp.PowerUpKind>();
                 AddPowerUp(RandomPowerUp);

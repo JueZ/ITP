@@ -268,7 +268,7 @@ namespace Akanonda
                                 game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                                 game.AddPowerUp(PowerUp.PowerUpKind.movePowerUps); // For testing
                                 game.AddPowerUp(PowerUp.PowerUpKind.openWalls); // For testing
-                                //game.AddPowerUp(PowerUp.PowerUpKind.biggerWalls); // For testing
+                                game.AddPowerUp(PowerUp.PowerUpKind.iGoThroughWalls); // For testing
                                 Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
                             }

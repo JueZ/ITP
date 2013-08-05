@@ -321,6 +321,18 @@ namespace Akanonda.GameLibrary
             }
         }
 
+        public static int checkIfPlayerhas(Object a, List<PowerUpModificator> list)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].GetType().Equals(a))
+                    return i;
+            }
+            return -1;
+        }
+
+
+
 
     }
 }

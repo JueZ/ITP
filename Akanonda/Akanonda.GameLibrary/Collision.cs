@@ -77,7 +77,7 @@ namespace Akanonda.GameLibrary
                                     else
                                         Game.Instance.iGoFastDict.Add(player.guid, 100);
 
-                                     deletePowerUpList.Add(power.guid);
+                                    deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.iGoSlow:
                                     if(Game.Instance.iGoSlowDict.ContainsKey(player.guid))
@@ -157,14 +157,14 @@ namespace Akanonda.GameLibrary
                                     break;
                                 case PowerUp.PowerUpKind.morePowerUps:
                                     deletePowerUpList.Add(power.guid);
-                                    game.powerUpPopUpRate = 10;
+                                    game.PowerUpPopUpRate -= 10;
                                     break;
                                 case PowerUp.PowerUpKind.iGoThroughWalls:
-                                    if (Game.Instance.iGoThroughWallsDict.ContainsKey(player.guid))
-                                        Game.Instance.iGoThroughWallsDict[player.guid] = 100;
-                                    else
-                                        Game.Instance.iGoThroughWallsDict.Add(player.guid, 100);
+                                    if (!game.powerUpModificationList.ContainsKey(player.guid))
+                                        game.powerUpModificationList.Add(player.guid, new List<PowerUpModificator>());
 
+                                    iGoThroughWallsModificator iGTW = new iGoThroughWallsModificator();
+                                    game.powerUpModificationList[player.guid].Add(iGTW);
                                     deletePowerUpList.Add(power.guid);
                                     break;
                             }
@@ -177,11 +177,11 @@ namespace Akanonda.GameLibrary
                     Game.Instance.RemovePowerUp(guid);
                 }
 
-
+                
                 // collision with head to wall
                 if (headCoordinates[0] < 0 || headCoordinates[0] > _x - 1 || headCoordinates[1] < 0 || headCoordinates[1] > _y - 1)
                 {
-                    if (game.powerUpCounters[Game.openWalls] > 0 || Game.Instance.iGoThroughWallsDict.ContainsKey(player.guid))
+                    if (game.powerUpCounters[Game.openWalls] > 0 || PowerUp.checkIfPlayerhas(new iGoThroughWallsModificator().GetType(), game.powerUpModificationList[player.guid]) > -1)
                     {
                         PowerUp.openTheWalls(headCoordinates);
                     }
