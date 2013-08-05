@@ -183,7 +183,6 @@ namespace Akanonda.GameLibrary
             }
             makeSnakeHoles();
             this._playerbody.Add(new int[2] { x, y });
-            reduceGoThroughWallCounterEveryTick();
             makeSnakeSmallerIfOtherPlayerAteRedApple();
             checkIfPlayerShouldGrowThenGivePoint(grow);
 
@@ -229,16 +228,18 @@ namespace Akanonda.GameLibrary
             }
         }
 
-        private void reduceGoThroughWallCounterEveryTick()
-        {
-            if (Game.Instance.iGoThroughWallsDict.ContainsKey(this.guid))
-            {
-                if (Game.Instance.iGoThroughWallsDict[this.guid] - 1 > 0)
-                    Game.Instance.iGoThroughWallsDict[this.guid]--;
-                else
-                    Game.Instance.iGoThroughWallsDict.Remove(this.guid);
-            }
-        }
+        //private void reduceiGoThroughWallCounterEveryTick()
+        //{
+        //    int powerUpModificator = PowerUp.checkIfPlayerhas(new iGoThroughWallsModificator().GetType(), Game.Instance.powerUpModificationList[this.guid]);
+        //    if (powerUpModificator > -1)
+        //    {
+        //        int iGoThrouWallCounter = Game.Instance.powerUpModificationList[this.guid][powerUpModificator].getCount();
+        //        if (iGoThrouWallCounter - 1 > 0)
+        //            Game.Instance.powerUpModificationList[this.guid][powerUpModificator].setCount(iGoThrouWallCounter -1);
+        //        else
+        //            Game.Instance.powerUpModificationList[this.guid].RemoveAt(powerUpModificator);
+        //    }
+        //}
 
         private void makeSnakeSmallerIfOtherPlayerAteRedApple()
         {
