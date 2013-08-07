@@ -403,6 +403,20 @@ namespace Akanonda.GameLibrary
                 case PowerUp.PowerUpKind.morePowerUps:
                     paintPowerUpmorePowerUps(power, g);
                     break;
+                case PowerUp.PowerUpKind.deleteAllSnakes:
+                    foreach (int[] powerUpLocation in power.PowerUpLocation)
+                    {
+                        g.FillRectangle(new SolidBrush(Color.Red),
+                            (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
+                    }
+                    break;
+                case PowerUp.PowerUpKind.makePlayersBig:
+                    foreach (int[] powerUpLocation in power.PowerUpLocation)
+                    {
+                        g.FillRectangle(new SolidBrush(Color.Blue),
+                            (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
+                    }
+                    break;
             }
         }
 

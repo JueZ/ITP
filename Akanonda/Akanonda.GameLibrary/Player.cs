@@ -59,7 +59,7 @@ namespace Akanonda.GameLibrary
             get { return _playersteering; }
             set { _playersteering = value; }
         }
-        
+
         public List<int[]> playerbody
         {
             get { return _playerbody; }
@@ -86,7 +86,7 @@ namespace Akanonda.GameLibrary
             this._playerstatus = PlayerStatus.None;
 
 
-            int direction = Game.getRandomNumber(0,4);
+            int direction = Game.getRandomNumber(0, 4);
             switch (direction)
             {
                 case 0:
@@ -128,7 +128,7 @@ namespace Akanonda.GameLibrary
             }
 
 
-            
+
         }
 
         public Guid initPlayer(string name, Color color)
@@ -140,13 +140,29 @@ namespace Akanonda.GameLibrary
 
             return this._guid;
         }
-        
+
         public void playerMove(bool grow)
         {
-            int x = _playerbody[_playerbody.Count-1][0];
-            int y = _playerbody[_playerbody.Count-1][1];
+            bool bigSnake = false;
+            List<int[]> checkHead = new List<int[]>();
+            if (PowerUp.checkIfPlayerHasModification(new makePlayersBigModifier().GetType(), this.guid) > -1)
+                bigSnake = true;
 
-            switch (this._playersteering) 
+            if (bigSnake)
+            {
+                for (int i = playerbody.Count - 1; i > playerbody.Count - 7; i--)
+                {
+                    checkHead.Add(playerbody[i]);
+                }
+
+            }
+
+            int x = _playerbody[_playerbody.Count - 1][0];
+            int y = _playerbody[_playerbody.Count - 1][1];
+
+
+
+            switch (this._playersteering)
             {
                 case PlayerSteering.Up:
                     y--;
@@ -154,6 +170,13 @@ namespace Akanonda.GameLibrary
                     {
                         y--;
                         this._playerbody.RemoveAt(0);
+                    }
+                    if (bigSnake)
+                    {
+                        if (!checkHead.Exists(item => item[0] == x - 1 && item[1] == y))
+                            this._playerbody.Add(new int[2] { x - 1, y });
+                        if (!checkHead.Exists(item => item[0] == x + 1 && item[1] == y))
+                            this._playerbody.Add(new int[2] { x + 1, y });
                     }
                     break;
                 case PlayerSteering.Down:
@@ -163,6 +186,13 @@ namespace Akanonda.GameLibrary
                         y++;
                         this._playerbody.RemoveAt(0);
                     }
+                    if (bigSnake)
+                    {
+                        if (!checkHead.Exists(item => item[0] == x - 1 && item[1] == y))
+                            this._playerbody.Add(new int[2] { x - 1, y });
+                        if (!checkHead.Exists(item => item[0] == x + 1 && item[1] == y))
+                            this._playerbody.Add(new int[2] { x + 1, y });
+                    }
                     break;
                 case PlayerSteering.Left:
                     x--;
@@ -170,6 +200,13 @@ namespace Akanonda.GameLibrary
                     {
                         x--;
                         this._playerbody.RemoveAt(0);
+                    }
+                    if (bigSnake)
+                    {
+                        if (!checkHead.Exists(item => item[0] == x && item[1] == y - 1))
+                            this._playerbody.Add(new int[2] { x, y - 1 });
+                        if (!checkHead.Exists(item => item[0] == x && item[1] == y + 1))
+                            this._playerbody.Add(new int[2] { x, y + 1 });
                     }
                     break;
                 case PlayerSteering.Right:
@@ -179,10 +216,19 @@ namespace Akanonda.GameLibrary
                         x++;
                         this._playerbody.RemoveAt(0);
                     }
+                    if (bigSnake)
+                    {
+                        if (!checkHead.Exists(item => item[0] == x && item[1] == y - 1))
+                            this._playerbody.Add(new int[2] { x, y - 1 });
+                        if (!checkHead.Exists(item => item[0] == x && item[1] == y + 1))
+                            this._playerbody.Add(new int[2] { x, y + 1 });
+                    }
                     break;
             }
             makeSnakeHoles();
-            this._playerbody.Add(new int[2] { x, y });
+            if (!checkHead.Exists(item => item[0] == x && item[1] == y))
+                this._playerbody.Add(new int[2] { x, y });
+
             makeSnakeSmallerIfOtherPlayerAteRedApple();
             checkIfPlayerShouldGrowThenGivePoint(grow);
 
@@ -195,7 +241,6 @@ namespace Akanonda.GameLibrary
             if (PowerUp.checkIfPlayerHasModification(new othersGoFastModifier().GetType(), this.guid) > -1 || PowerUp.checkIfPlayerHasModification(new iGoFastModifier().GetType(), this.guid) > -1)
             {
                 this._playerbody.Add(new int[2] { x, y });
-                //remove1TickFromDict();
                 return true;
             }
             return false;
@@ -205,8 +250,26 @@ namespace Akanonda.GameLibrary
         {
             if (Game.getRandomNumber(0, 20) % 20 == 0)
             {
-                _playerbody[_playerbody.Count - 1][0] = -40;
-                _playerbody[_playerbody.Count - 1][1] = -40;
+                if (PowerUp.checkIfPlayerHasModification(new makePlayersBigModifier().GetType(), this.guid) > -1)
+                {
+                    _playerbody[_playerbody.Count - 3][0] = -40;
+                    _playerbody[_playerbody.Count - 3][1] = -40;
+                    _playerbody[_playerbody.Count - 4][0] = -40;
+                    _playerbody[_playerbody.Count - 4][1] = -40;
+                    _playerbody[_playerbody.Count - 5][0] = -40;
+                    _playerbody[_playerbody.Count - 5][1] = -40;
+                    _playerbody[_playerbody.Count - 6][0] = -40;
+                    _playerbody[_playerbody.Count - 6][1] = -40;
+                    _playerbody[_playerbody.Count - 7][0] = -40;
+                    _playerbody[_playerbody.Count - 7][1] = -40;
+                    _playerbody[_playerbody.Count - 8][0] = -40;
+                    _playerbody[_playerbody.Count - 8][1] = -40;
+                }
+                else
+                {
+                    _playerbody[_playerbody.Count - 1][0] = -40;
+                    _playerbody[_playerbody.Count - 1][1] = -40;
+                }
             }
         }
 
@@ -225,9 +288,18 @@ namespace Akanonda.GameLibrary
                 grow = true;
 
             if (!grow)
+            {
                 this._playerbody.RemoveAt(0);
+                if (PowerUp.checkIfPlayerHasModification(new makePlayersBigModifier().GetType(), this.guid) > -1)
+                {
+                    this._playerbody.RemoveAt(0);
+                    this._playerbody.RemoveAt(0);
+                }
+            }
             else
+            {
                 this._score++;
+            }
         }
     }
 }

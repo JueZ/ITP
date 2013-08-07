@@ -51,10 +51,7 @@ namespace Akanonda.GameLibrary
                         if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with PowerUp
                         {
                             switch(power.kind){
-                                case PowerUp.PowerUpKind.openWalls:
-                                    game.powerUpCounters[Game.openWalls] += 100;
-                                    deletePowerUpList.Add(power.guid);
-                                    break;
+                                
                                 case PowerUp.PowerUpKind.othersGoFast:
                                     if (Game.Instance.PLayerList.Count > 1)
                                     {
@@ -137,11 +134,26 @@ namespace Akanonda.GameLibrary
                                                 if (!game.powerUpModificationList.ContainsKey(game.PLayerList[i].guid))
                                                     game.powerUpModificationList.Add(game.PLayerList[i].guid, new List<PowerUpModifier>());
 
-                                                othersGoSlowModifier oGS = new othersGoSlowModifier();
-                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(oGS);
+                                                othersGoSlowModifier oGSM = new othersGoSlowModifier();
+                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(oGSM);
                                             }
                                         }
                                     }
+                                    deletePowerUpList.Add(power.guid);
+                                    break;
+                                case PowerUp.PowerUpKind.makePlayersBig:
+                                    
+                                        for (int i = 0; i < Game.Instance.PLayerList.Count; i++)
+                                        {
+                                            
+                                                if (!game.powerUpModificationList.ContainsKey(game.PLayerList[i].guid))
+                                                    game.powerUpModificationList.Add(game.PLayerList[i].guid, new List<PowerUpModifier>());
+
+                                                makePlayersBigModifier mPBM = new makePlayersBigModifier();
+                                                game.powerUpModificationList[player.guid].Add(mPBM);
+                                            
+                                        }
+                                    
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.iGoThroughWalls:
@@ -150,6 +162,18 @@ namespace Akanonda.GameLibrary
 
                                     iGoThroughWallsModifier iGTW = new iGoThroughWallsModifier();
                                     game.powerUpModificationList[player.guid].Add(iGTW);
+                                    deletePowerUpList.Add(power.guid);
+                                    break;
+                                case PowerUp.PowerUpKind.deleteAllSnakes:
+                                    foreach (Player playerToDelete in game.PLayerList)
+                                    {
+                                        if (playerToDelete.guid != player.guid)
+                                            playerToDelete.playerbody.RemoveRange(0, playerToDelete.playerbody.Count - 2);
+                                    }
+                                    deletePowerUpList.Add(power.guid);
+                                    break;
+                                case PowerUp.PowerUpKind.openWalls:
+                                    game.powerUpCounters[Game.openWalls] += 100;
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.closingWalls:
@@ -263,20 +287,22 @@ namespace Akanonda.GameLibrary
                             array = otherPlayer.playerbody[i];
                             if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with own tail
                             {
-                                // Collision!
-                                if (PowerUp.checkIfPlayerHasModification(new rabiesModifier().GetType(), player.guid) == -1)
-                                {
-                                    Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
-                                    if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
-                                        collisions.Add(player.guid, CollisionType.ToSelf);
-                                }
-                                else
-                                {
-                                    if (player.playerbody.Count > i)
-                                        player.playerbody.RemoveRange(0, i);
-                                    player.score -= i;
-                                    break;
-                                }
+                             // Collision!
+
+                             if (PowerUp.checkIfPlayerHasModification(new rabiesModifier().GetType(), player.guid) == -1)
+                             {
+                                 Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
+                                 if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
+                                     collisions.Add(player.guid, CollisionType.ToSelf);
+                             }
+                             else
+                             {
+                                 if (player.playerbody.Count > i)
+                                     player.playerbody.RemoveRange(0, i);
+                                 player.score -= i;
+                                 break;
+                             }
+                             
                             }
                         }
                     }

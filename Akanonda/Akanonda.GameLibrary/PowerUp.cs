@@ -29,6 +29,8 @@ namespace Akanonda.GameLibrary
             morePowerUps = 32,
             goldenApple = 33, //gives the player 20 extra snake pieces
             rabies = 37,
+            deleteAllSnakes = 89,
+            makePlayersBig = 16,
             
         }
 

@@ -165,5 +165,24 @@ namespace Akanonda.GameLibrary
                 _counter--;
             }
         }
+
+    [Serializable()]
+    public class makePlayersBigModifier : PowerUpModifier
+    {
+        private int _counter = 1000;
+        public int getCount()
+        {
+            return _counter;
+        }
+        public void setCount(int counter)
+        {
+            _counter = counter;
+        }
+        public void reduceCounterBy1()
+        {
+            if (_counter > 0)
+                _counter--;
+        }
+    }
     
 }
