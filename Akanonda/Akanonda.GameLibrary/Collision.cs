@@ -48,7 +48,7 @@ namespace Akanonda.GameLibrary
                 {
                     foreach (int[] array in power.PowerUpLocation)
                     {
-                        if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with PowerUp
+                        if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1] || PowerUp.checkIfPlayerHasModification(new makePlayersBigModifier().GetType(), player.guid) > -1 ? headCoordinates[0] - 1 == array[0] || headCoordinates[0] + 1 == array[0] : 1 != 1 ) // current head collides with PowerUp
                         {
                             switch(power.kind){
                                 
