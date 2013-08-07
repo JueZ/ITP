@@ -21,20 +21,7 @@ namespace Akanonda.GameLibrary
         private int _ticksUntilAdd;
         private int _tickCounter;
         private Dictionary<Guid, CollisionType> _collisionList;
-
-
-        
-        //Powerup thingies---> Ne idee wie man das in eine Liste oder Dict zusammenfassen könnte?
-        private Dictionary<Guid, int> _goldenAppleDict = new Dictionary<Guid, int>();
-        private Dictionary<Guid, int> _redAppleDict = new Dictionary<Guid, int>();
-        private Dictionary<Guid, int> _rabiesDict = new Dictionary<Guid, int>();
-        private Dictionary<Guid, int> _othersGoSlowDict = new Dictionary<Guid, int>();
-        private Dictionary<Guid, int> _othersGoFastDict = new Dictionary<Guid, int>();
-        private Dictionary<Guid, int> _iGoFastDict = new Dictionary<Guid, int>();
-        private Dictionary<Guid, int> _iGoSlowDict = new Dictionary<Guid, int>();
-        private Dictionary<Guid, int> _iGoThroughWallsDict = new Dictionary<Guid, int>();
-
-        private Dictionary<Guid, List<PowerUpModificator>> _powerUpModificationList = new Dictionary<Guid, List<PowerUpModificator>>();
+        private Dictionary<Guid, List<PowerUpModifier>> _powerUpModificationList = new Dictionary<Guid, List<PowerUpModifier>>();
         private int[] _powerUpCounters = new int[4];
         public const int moveAllPowerUps = 0;
         public const int openWalls = 1;
@@ -72,9 +59,6 @@ namespace Akanonda.GameLibrary
 
         }
 
-
-       
-
         public List<Player> PLayerList { get { return _playerList; } }
         public List<Player> LobbyList { get { return _lobbyList; } }
         public List<Player> DeadList { get { return _deadList; } }
@@ -87,6 +71,7 @@ namespace Akanonda.GameLibrary
         }
 
         //PowerUp get set --------------------
+        public Dictionary<Guid, List<PowerUpModifier>> powerUpModificationList { get { return _powerUpModificationList; } set { _powerUpModificationList = value; } }
         public int[] powerUpCounters { get { return _powerUpCounters; } set { _powerUpCounters = value; } }
         public int PowerUpPopUpRate
         {
@@ -96,22 +81,7 @@ namespace Akanonda.GameLibrary
                     _powerUpPopUpRate = value;
             }
         }
-        public Dictionary<Guid, List<PowerUpModificator>> powerUpModificationList { get { return _powerUpModificationList; } set { _powerUpModificationList = value; } }
-
-        public Dictionary<Guid, int> othersGoSlowDict { get { return _othersGoSlowDict; } }
-        public Dictionary<Guid, int> goldenAppleDict { get { return _goldenAppleDict; } set { _goldenAppleDict = value; } }
-        public Dictionary<Guid, int> redAppleDict { get { return _redAppleDict; } set { _redAppleDict = value; } }
-        public Dictionary<Guid, int> rabiesDict { get { return _rabiesDict; } set { _rabiesDict = value; } }
-        public Dictionary<Guid, int> othersGoFastDict { get { return _othersGoFastDict; } }
-        public Dictionary<Guid, int> iGoFastDict { get { return _iGoFastDict; } }
-        public Dictionary<Guid, int> iGoSlowDict { get { return _iGoSlowDict; } }
-        public Dictionary<Guid, int> iGoThroughWallsDict { get { return _iGoThroughWallsDict; } }
-        //PowerUp get set --------------------END
-
-
-
-
-
+        
         public Guid LocalPlayerGuid
         {
             set { _localplayer = value; }
@@ -122,162 +92,92 @@ namespace Akanonda.GameLibrary
         {
             set
             {
-                for (int i = 0; i < _playerList.Count; i++)
-                {
-                    if (_playerList[i].guid.Equals(_localplayer))
-                    {
-                        _playerList[i].playersteering = value;
-                        break;
-                    }
-                }
+                Player playerToFind =_playerList.Find(item => item.guid == _localplayer);
+                if(playerToFind != null)
+                    playerToFind.playersteering = value;
             }
             get
             {
-                for (int i = 0; i < _playerList.Count; i++)
-                {
-                    if (_playerList[i].guid.Equals(_localplayer))
-                    {
-                        return _playerList[i].playersteering;
-                    }
-                }
+                Player playerToFind = _playerList.Find(item => item.guid == _localplayer);
+                if(playerToFind != null)
+                    return playerToFind.playersteering;
+                else
                 throw new Exception("No localplayer found");
             }
         }
 
         public void setsteering(Guid playerguid, PlayerSteering playersteering)
         {
-            for (int i = 0; i < _playerList.Count; i++)
-            {
-                if (_playerList[i].guid.Equals(playerguid))
-                {
-                    _playerList[i].playersteering = playersteering;
-                    break;
-                }
-            }
+            Player playerToFind = _playerList.Find(item => item.guid == playerguid);
+            if(playerToFind != null)
+                playerToFind.playersteering = playersteering;
         }
 
         public void addPlayer(string name, Color color, Guid guid)
         {
             int setScore = 0;
-            for (int i = 0; i < _lobbyList.Count; i++)
-            {
-                if (_lobbyList[i].guid.Equals(guid))
-                {
-                    setScore = _lobbyList[i].score;
-                    break;
-                }
-            }
-
+            Player playerToFind = _lobbyList.Find(item => item.guid == guid);
+            if(playerToFind != null)
+                setScore = playerToFind.score;
             _playerList.Add(new Player(name, color, guid, setScore));
         }
 
         public void addDeadRemoveLivingPlayer(Guid guid)
         {
-            for (int i = 0; i < _playerList.Count; i++)
+            Player playerToRemove = _playerList.Find(item => item.guid == guid);
+            if (playerToRemove != null)
             {
-                if (_playerList[i].guid.Equals(guid))
-                {
-                    _playerList[i].guid = Guid.NewGuid();
-                    _deadList.Add(_playerList[i]);
-                    _playerList.RemoveAt(i);
-                    break;
-                }
+                _playerList.Remove(playerToRemove);
+                playerToRemove.guid = Guid.NewGuid();
+                _deadList.Add(playerToRemove);
             }
         }
 
         public string getPlayerName(Guid guid)
         {
-
             string name = "";
-            foreach (Player pl in _playerList)
-            {
-                if (pl.guid == guid)
-                {
-                    name = pl.name;
-                    break;
-                }
-            }
-
+            Player playerToFind = _playerList.Find(item => item.guid == guid);
+            if (playerToFind != null)
+                name = playerToFind.name;
             return name;
         }
 
         public Color getPlayerColor(Guid guid)
         {
-
             Color color = Color.FromName("Black");
-            foreach (Player pl in _playerList)
-            {
-                if (pl.guid == guid)
-                {
-                    color = pl.color;
-                    return color;
-                }
-            }
-
+            Player playerToFind = _playerList.Find(item => item.guid == guid);
+            if(playerToFind != null)
+                color = playerToFind.color;
             return color;
         }
-
 
         public void setScoreToLobbyPlayer(Guid guid)
         {
             int setScore = 0;
-
-            for (int i = 0; i < _playerList.Count; i++)
-            {
-                if (_playerList[i].guid.Equals(guid))
-                {
-                    setScore = _playerList[i].score;
-                    break;
-                }
-            }
-
-            for (int i = 0; i < _lobbyList.Count; i++)
-            {
-                if (_lobbyList[i].guid.Equals(guid))
-                {
-                    _lobbyList[i].score = setScore;
-                    break;
-                }
-            }
-
+            Player playerToFind = _playerList.Find(item => item.guid == guid);
+            if(playerToFind != null)
+                setScore = playerToFind.score;
+            playerToFind = _lobbyList.Find(item => item.guid == guid);
+            if(playerToFind != null)
+                playerToFind.score = setScore;
         }
 
         public void updateScore(Guid guid)
         {
-            for (int i = 0; i < _playerList.Count; i++)
-            {
-                if (_playerList[i].guid.Equals(guid))
-                {
-                    int addScore = _playerList[i].playerbody.Count / 2;
-                    addScore += _playerList[i].SurvivalTime % 60;
-                    _playerList[i].score = addScore;
-                    break;
-                }
-            }
+            Player playerToBeUpdated = _playerList.Find(item => item.guid == guid);
+            int addScore = playerToBeUpdated.playerbody.Count / 2;
+            addScore += playerToBeUpdated.SurvivalTime % 60;
+            playerToBeUpdated.score = addScore;
         }
 
         public void removePlayer(Guid guid)
         {
-            for (int i = 0; i < _playerList.Count; i++)
-            {
-                if (_playerList[i].guid.Equals(guid))
-                {
-                    _playerList.RemoveAt(i);
-                    break;
-                }
-            }
+            _playerList.Remove(_playerList.Find(item => item.guid == guid));
         }
 
         public void removeDeadPlayer(Guid guid)
         {
-            for (int i = 0; i < _deadList.Count; i++)
-            {
-                if (_deadList[i].guid.Equals(guid))
-                {
-                    _deadList.RemoveAt(i);
-                    break;
-                }
-            }
+            _deadList.Remove(_deadList.Find(item => item.guid == guid));
         }
 
         public void gametick()
@@ -286,6 +186,7 @@ namespace Akanonda.GameLibrary
             handlePowerUpTicks();
             movePlayersandAddScore();
             checkIfPowerUpsShouldBeAddedRelativeToFieldsize();
+            DetectCollision();
         }
 
         private void handlePowerUpTicks()
@@ -293,7 +194,7 @@ namespace Akanonda.GameLibrary
             checkOpenWallCounter();
             checkMovePowerUpsCounter();
             checkIfWallsShouldGetSmallerOrBigger();
-            remove1EveryTick();
+            remove1ModificationCountEveryTick();
             setPopUpRateToNormal();
         }
 
@@ -376,9 +277,9 @@ namespace Akanonda.GameLibrary
 
             for (int i = 0; i < _playerList.Count; i++)
             {
-                if (othersGoSlowDict.ContainsKey(_playerList[i].guid) || iGoSlowDict.ContainsKey(_playerList[i].guid))
+                if ( PowerUp.checkIfPlayerHasModification(new othersGoSlowModifier().GetType(), _playerList[i].guid) > -1 || PowerUp.checkIfPlayerHasModification(new iGoSlowModifier().GetType(), _playerList[i].guid) > -1)
                 {
-                    substrateTickfromSlowDict(i);
+                    //substrateTickfromSlowDict(i);
                     if (tickCounter % 2 == 0)
                         _playerList[i].playerMove(grow);
                 }
@@ -391,36 +292,26 @@ namespace Akanonda.GameLibrary
 
             }
         }
-        private void substrateTickfromSlowDict(int i)
+
+        private void remove1ModificationCountEveryTick()
         {
-            if (othersGoSlowDict.ContainsKey(_playerList[i].guid))
+            List<PowerUpModifier> deleteModification = new List<PowerUpModifier>();
+            foreach (KeyValuePair<Guid, List<PowerUpModifier>> pair in powerUpModificationList)
             {
-                if (Game.Instance.othersGoSlowDict[_playerList[i].guid] - 1 > 0)
-                    Game.Instance.othersGoSlowDict[_playerList[i].guid]--;
-                else
-                    Game.Instance.othersGoSlowDict.Remove(_playerList[i].guid);
-            }
-
-            if (iGoSlowDict.ContainsKey(_playerList[i].guid))
-            {
-                if (Game.Instance.iGoSlowDict[_playerList[i].guid] - 1 > 0)
-                    Game.Instance.iGoSlowDict[_playerList[i].guid]--;
-                else
-                    Game.Instance.iGoSlowDict.Remove(_playerList[i].guid);
-
-            }
-        }
-
-        private void remove1EveryTick()
-        {
-            foreach (KeyValuePair<Guid, List<PowerUpModificator>> pair in powerUpModificationList)
-            {
-                foreach (PowerUpModificator pUM in pair.Value)
+                foreach (PowerUpModifier pUM in pair.Value)
                 {
-                    pUM.reduceCounterBy1();   
+                    pUM.reduceCounterBy1();
+                    if (pUM.getCount() == 0)
+                        deleteModification.Add(pUM);
                 }
+                foreach (PowerUpModifier pM in deleteModification)
+                {
+                    pair.Value.Remove(pM);
+                }
+                deleteModification.Clear();
             }
 
+            
 
         }
 
@@ -767,53 +658,30 @@ namespace Akanonda.GameLibrary
 
         public void RemoveLobbyPlayer(Guid guid)
         {
-            for (int i = 0; i < _lobbyList.Count; i++)
-            {
-                if (_lobbyList[i].guid.Equals(guid))
-                {
-                    _lobbyList.RemoveAt(i);
-                    break;
-                }
-            }
+            _lobbyList.Remove(_lobbyList.Find(item => item.guid == guid));
         }
 
         public int getPlayerLength(Guid guid)
         {
-            foreach (Player p in _playerList)
-            {
-                if (p.guid.Equals(guid))
-                {
-                    return p.playerbody.Count;
-                }
-            }
-            return 0;
+            Player playerToFind = _playerList.Find(item => item.guid == guid);
+            if (playerToFind != null)
+                return playerToFind.playerbody.Count;
+            else
+                return 0;
         }
 
         public void RemovePowerUp(Guid guid)
         {
-            for (int i = 0; i < _powerupList.Count; i++)
-            {
-                if (_powerupList[i].guid.Equals(guid))
-                {
-                    _powerupList.RemoveAt(i);
-                    break;
-                }
-            }
+            _powerupList.Remove(_powerupList.Find(item => item.guid == guid));
         }
 
         public string getLobbyPlayerName(Guid guid)
         {
 
             string name = "";
-            foreach (Player pl in _lobbyList)
-            {
-                if (pl.guid == guid)
-                {
-                    name = pl.name;
-                    break;
-                }
-            }
-
+            Player playerToFind = _lobbyList.Find(item => item.guid == guid);
+            if(playerToFind != null)
+                name = playerToFind.name;
             return name;
         }
 

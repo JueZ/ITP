@@ -149,34 +149,6 @@ namespace Akanonda.GameLibrary
             }
         }
 
-        public static bool playerAteGoldenApple(Guid guid)
-        {
-            if (Game.Instance.goldenAppleDict.ContainsKey(guid))
-            {
-                if (Game.Instance.goldenAppleDict[guid] - 1 > 0)
-                    Game.Instance.goldenAppleDict[guid]--;
-                else
-                    Game.Instance.goldenAppleDict.Remove(guid);
-                return true;
-            }
-
-            return false;
-        }
-
-        public static bool playerAteRedApple(Guid guid)
-        {
-            if (Game.Instance.redAppleDict.ContainsKey(guid))
-            {
-                if (Game.Instance.redAppleDict[guid] - 1 > 0)
-                    Game.Instance.redAppleDict[guid]--;
-                else
-                    Game.Instance.redAppleDict.Remove(guid);
-                return true;
-            }
-
-            return false;
-        }
-
         public static void resetPowerUpMovingDirection()
         {
              foreach (PowerUp power in Game.Instance.PowerUpList)
@@ -321,8 +293,11 @@ namespace Akanonda.GameLibrary
             }
         }
 
-        public static int checkIfPlayerhas(Object a, List<PowerUpModificator> list)
+        public static int checkIfPlayerHasModification(Object a, Guid playerGuid)
         {
+            List<PowerUpModifier> list = new List<PowerUpModifier>();
+            if (!Game.Instance.powerUpModificationList.TryGetValue(playerGuid, out list))
+                return -1;
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].GetType().Equals(a))
@@ -330,6 +305,7 @@ namespace Akanonda.GameLibrary
             }
             return -1;
         }
+
 
 
 

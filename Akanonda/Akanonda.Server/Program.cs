@@ -185,7 +185,6 @@ namespace Akanonda
         static void gameSpeedTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             game.gametick();
-            game.DetectCollision();
             UpdateLobbyLists();
             foreach (KeyValuePair<Guid, CollisionType> key in game.CollisionList)
             {
@@ -202,30 +201,8 @@ namespace Akanonda
                     else
                     {
                         removeDeadList.Add(player.guid);
-                      
-                        if(game.goldenAppleDict.ContainsKey(player.guid))
-                            game.goldenAppleDict.Remove(player.guid);
-
-                        if (game.redAppleDict.ContainsKey(player.guid))
-                            game.redAppleDict.Remove(player.guid);
-
-                        if (game.iGoFastDict.ContainsKey(player.guid))
-                            game.iGoFastDict.Remove(player.guid);
-
-                        if (game.iGoSlowDict.ContainsKey(player.guid))
-                            game.iGoSlowDict.Remove(player.guid);
-
-                        if (game.othersGoFastDict.ContainsKey(player.guid))
-                            game.othersGoFastDict.Remove(player.guid);
-
-                        if (game.othersGoSlowDict.ContainsKey(player.guid))
-                            game.othersGoSlowDict.Remove(player.guid);
-
-                        if (game.rabiesDict.ContainsKey(player.guid))
-                            game.rabiesDict.Remove(player.guid);
-
-                        if (game.iGoThroughWallsDict.ContainsKey(player.guid))
-                            game.iGoThroughWallsDict.Remove(player.guid);
+                        if(game.powerUpModificationList.ContainsKey(player.guid))
+                            game.powerUpModificationList.Remove(player.guid);
                     }
                 }
 
@@ -233,6 +210,7 @@ namespace Akanonda
             {
                 game.removeDeadPlayer(guid);
             }
+            removeDeadList.Clear();
             
             byte[] gamebyte = SerializeHelper.ObjectToByteArray(game);
             
@@ -266,23 +244,24 @@ namespace Akanonda
                             if (remotehailmessagearray[3] == "playing")
                             {
                                 game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-                                game.AddPowerUp(PowerUp.PowerUpKind.movePowerUps); // For testing
-                                game.AddPowerUp(PowerUp.PowerUpKind.openWalls); // For testing
-                                game.AddPowerUp(PowerUp.PowerUpKind.iGoThroughWalls); // For testing
+                                foreach (PowerUp.PowerUpKind kind in Enum.GetValues(typeof(PowerUp.PowerUpKind)))
+                                    game.AddPowerUp(kind);
+                                
+                                game.AddPowerUp(PowerUp.PowerUpKind.goldenApple); // For testing
+                                //game.AddPowerUp(PowerUp.PowerUpKind.openWalls); // For testing
+                                //game.AddPowerUp(PowerUp.PowerUpKind.iGoFast); // For testing
                                 Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
                             }
                             else if (remotehailmessagearray[3] == "justWatching")
                             {
-                                game.removePlayer(Guid.Parse(remotehailmessagearray[0]));
+                                //game.removePlayer(Guid.Parse(remotehailmessagearray[0]));
                                 Console.WriteLine("[Game]Player connected <watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
                             }
                             else if (remotehailmessagearray[3] == "dead")
                             {
-                                game.addDeadRemoveLivingPlayer(Guid.Parse(remotehailmessagearray[0]));
                                 Console.WriteLine("[Game]Player died <now watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
-
                             }
                         }
 
@@ -290,7 +269,8 @@ namespace Akanonda
                         {
                             if (reason != "Connection timed out" && Guid.Parse(reason) != null) //fix for server crashes
                             {
-                                game.removePlayer(Guid.Parse(reason));
+                                //game.removePlayer(Guid.Parse(reason));
+                                game.addDeadRemoveLivingPlayer(Guid.Parse(reason));
                                 game.RemoveLobbyPlayer(Guid.Parse(reason));
                                 Console.WriteLine("[Game]Player disconnected! \t GUID: " + Guid.Parse(reason));
                             }

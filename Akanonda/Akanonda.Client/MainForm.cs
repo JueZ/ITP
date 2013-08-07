@@ -13,7 +13,6 @@ namespace Akanonda
     /// 
     public partial class MainForm : Form
     {
-        //private static Game game;
         public static FormConnector mainConnector;
         public static MainForm M_Form;
         public MainForm()
@@ -124,10 +123,6 @@ namespace Akanonda
 
         public void showOverlay(int minutes, int seconds, string deadMessage, int length)
         {
-            //overlay.Size = this.Size;
-            //overlay.Visible = true;
-            //overlay.BringToFront();
-            
             if (minutes == 0)
             {
                 SurvivalTimeBox.Text = seconds > 1 ? "\nGAME OVER!\n" + deadMessage + "\nYou survived " + seconds + " seconds!\nCongratulations " + LobbyForm.L_form.name + "!!\nYour Snake grew by " + length + " snake pieces!" : "\nGAME OVER!\n" + deadMessage + "\nYou survived one second!\nCongratulations " + LobbyForm.L_form.name + "!!\nYour Snake grew by " + length + " snake pieces!";
@@ -136,28 +131,18 @@ namespace Akanonda
             {
                 SurvivalTimeBox.Text = minutes > 1 ? "\nGAME OVER!\n" + deadMessage + "\nYou survived " + minutes + " minutes and " + seconds + " seconds!\nCongratulations " + LobbyForm.L_form.name + "!!\nYour Snake grew by " + length + " snake pieces!" : "\nGAME OVER!\n" + deadMessage + "\nYou survived " + minutes + " minute and " + seconds + " seconds !\nCongratulations " + LobbyForm.L_form.name + "!!\nYour Snake grew by " + length + " snake pieces!";
             }
-
             overlayGroupBox.Left = (this.ClientSize.Width - overlayGroupBox.Width) / 2;
             overlayGroupBox.Top = (this.ClientSize.Height - overlayGroupBox.Height) / 2;
             M_Form.BackColor = Color.Gray;
             SurvivalTimeBox.SelectAll();
             SurvivalTimeBox.SelectionAlignment = HorizontalAlignment.Center;
             overlayGroupBox.Visible = true;
-            //overlay.SendToBack();
-            //overlay.Visible = false;
-
         }
 
         public void closeOverlay()
         {
-
-            //overlay.Size = this.Size;
             M_Form.BackColor = Color.White;
             overlayGroupBox.Visible = false;
-
-            //overlay.SendToBack();
-            //overlay.Visible = false;
-
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -169,6 +154,7 @@ namespace Akanonda
 
             while (Program.netclient.Status != NetPeerStatus.NotRunning || Program.s_client.Status != NetPeerStatus.NotRunning)
                 System.Threading.Thread.Sleep(10);
+
             this.Dispose();
             Environment.Exit(0);
         }

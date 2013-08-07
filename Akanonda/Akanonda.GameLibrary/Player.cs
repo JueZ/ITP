@@ -192,31 +192,13 @@ namespace Akanonda.GameLibrary
         private bool playerGoesFast(int x, int y)
         {
 
-            if (Game.Instance.othersGoFastDict.ContainsKey(this._guid) || Game.Instance.iGoFastDict.ContainsKey(this._guid))
+            if (PowerUp.checkIfPlayerHasModification(new othersGoFastModifier().GetType(), this.guid) > -1 || PowerUp.checkIfPlayerHasModification(new iGoFastModifier().GetType(), this.guid) > -1)
             {
                 this._playerbody.Add(new int[2] { x, y });
-                remove1TickFromDict();
+                //remove1TickFromDict();
                 return true;
             }
             return false;
-        }
-
-        private void remove1TickFromDict()
-        {
-            if (Game.Instance.othersGoFastDict.ContainsKey(this._guid))
-            {
-                if (Game.Instance.othersGoFastDict[this.guid] - 1 > 0)
-                    Game.Instance.othersGoFastDict[this.guid]--;
-                else
-                    Game.Instance.othersGoFastDict.Remove(this.guid);
-            }
-            if (Game.Instance.iGoFastDict.ContainsKey(this._guid))
-            {
-                if (Game.Instance.iGoFastDict[this.guid] - 1 > 0)
-                    Game.Instance.iGoFastDict[this.guid]--;
-                else
-                    Game.Instance.iGoFastDict.Remove(this.guid);
-            }
         }
 
         private void makeSnakeHoles()
@@ -228,22 +210,9 @@ namespace Akanonda.GameLibrary
             }
         }
 
-        //private void reduceiGoThroughWallCounterEveryTick()
-        //{
-        //    int powerUpModificator = PowerUp.checkIfPlayerhas(new iGoThroughWallsModificator().GetType(), Game.Instance.powerUpModificationList[this.guid]);
-        //    if (powerUpModificator > -1)
-        //    {
-        //        int iGoThrouWallCounter = Game.Instance.powerUpModificationList[this.guid][powerUpModificator].getCount();
-        //        if (iGoThrouWallCounter - 1 > 0)
-        //            Game.Instance.powerUpModificationList[this.guid][powerUpModificator].setCount(iGoThrouWallCounter -1);
-        //        else
-        //            Game.Instance.powerUpModificationList[this.guid].RemoveAt(powerUpModificator);
-        //    }
-        //}
-
         private void makeSnakeSmallerIfOtherPlayerAteRedApple()
         {
-            if (PowerUp.playerAteRedApple(this._guid))
+            if (PowerUp.checkIfPlayerHasModification(new redAppleModifier().GetType(), this._guid) > -1)
             {
                 if (playerbody.Count - 1 > 1)
                     this._playerbody.RemoveAt(0);
@@ -252,7 +221,7 @@ namespace Akanonda.GameLibrary
 
         private void checkIfPlayerShouldGrowThenGivePoint(bool grow)
         {
-            if (PowerUp.playerAteGoldenApple(this._guid))
+            if (PowerUp.checkIfPlayerHasModification(new goldenAppleModifier().GetType(), this._guid) > -1)
                 grow = true;
 
             if (!grow)

@@ -5,18 +5,19 @@ using System.Text;
 
 namespace Akanonda.GameLibrary
 {
-
-        public interface PowerUpModificator
+        public interface PowerUpModifier
         {
             int getCount();
             void setCount(int counter);
             void reduceCounterBy1();
         }
 
+        
+
     [Serializable()]
-        public class othersGoSlowModificator : PowerUpModificator
+        public class othersGoSlowModifier : PowerUpModifier
         {
-            private int _counter = 0;
+            private int _counter = 100;
             public int getCount()
             {
                 return _counter;
@@ -33,102 +34,7 @@ namespace Akanonda.GameLibrary
         }
 
     [Serializable()]
-        public class iGoSlowModificator : PowerUpModificator
-        {
-            private int _counter = 0;
-            public int getCount()
-            {
-                return _counter;
-            }
-            public void setCount(int counter)
-            {
-                _counter = counter;
-            }
-            public void reduceCounterBy1()
-            {
-                if (_counter > 0)
-                _counter--;
-            }
-        }
-
-    [Serializable()]
-        public class othersGoFastModificator : PowerUpModificator
-        {
-            private int _counter = 0;
-            public int getCount()
-            {
-                return _counter;
-            }
-            public void setCount(int counter)
-            {
-                _counter = counter;
-            }
-            public void reduceCounterBy1()
-            {
-                if (_counter > 0)
-                _counter--;
-            }
-        }
-
-    [Serializable()]
-        public class iGoFastModificator : PowerUpModificator
-        {
-            private int _counter = 0;
-            public int getCount()
-            {
-                return _counter;
-            }
-            public void setCount(int counter)
-            {
-                _counter = counter;
-            }
-            public void reduceCounterBy1()
-            {
-                if (_counter > 0)
-                _counter--;
-            }
-        }
-
-    [Serializable()]
-        public class goldenAppleModificator : PowerUpModificator
-        {
-            private int _counter = 0;
-            public int getCount()
-            {
-                return _counter;
-            }
-            public void setCount(int counter)
-            {
-                _counter = counter;
-            }
-            public void reduceCounterBy1()
-            {
-                if (_counter > 0)
-                _counter--;
-            }
-        }
-
-    [Serializable()]
-        public class redAppleModificator : PowerUpModificator
-        {
-            private int _counter = 0;
-            public int getCount()
-            {
-                return _counter;
-            }
-            public void setCount(int counter)
-            {
-                _counter = counter;
-            }
-            public void reduceCounterBy1()
-            {
-                if (_counter > 0)
-                _counter--;
-            }
-        }
-
-    [Serializable()]
-        public class iGoThroughWallsModificator : PowerUpModificator
+        public class iGoSlowModifier : PowerUpModifier
         {
             private int _counter = 100;
             public int getCount()
@@ -147,9 +53,104 @@ namespace Akanonda.GameLibrary
         }
 
     [Serializable()]
-        public class rabiesModificator : PowerUpModificator
+        public class othersGoFastModifier : PowerUpModifier
         {
-            private int _counter = 0;
+            private int _counter = 100;
+            public int getCount()
+            {
+                return _counter;
+            }
+            public void setCount(int counter)
+            {
+                _counter = counter;
+            }
+            public void reduceCounterBy1()
+            {
+                if (_counter > 0)
+                _counter--;
+            }
+        }
+
+    [Serializable()]
+        public class iGoFastModifier : PowerUpModifier
+        {
+            private int _counter = 100;
+            public int getCount()
+            {
+                return _counter;
+            }
+            public void setCount(int counter)
+            {
+                _counter = counter;
+            }
+            public void reduceCounterBy1()
+            {
+                if (_counter > 0)
+                _counter--;
+            }
+        }
+
+    [Serializable()]
+        public class goldenAppleModifier : PowerUpModifier
+        {
+            private int _counter = 20;
+            public int getCount()
+            {
+                return _counter;
+            }
+            public void setCount(int counter)
+            {
+                _counter = counter;
+            }
+            public void reduceCounterBy1()
+            {
+                if (_counter > 0)
+                _counter--;
+            }
+        }
+
+    [Serializable()]
+        public class redAppleModifier : PowerUpModifier
+        {
+            private int _counter = 20;
+            public int getCount()
+            {
+                return _counter;
+            }
+            public void setCount(int counter)
+            {
+                _counter = counter;
+            }
+            public void reduceCounterBy1()
+            {
+                if (_counter > 0)
+                _counter--;
+            }
+        }
+
+    [Serializable()]
+        public class iGoThroughWallsModifier : PowerUpModifier
+        {
+            private int _counter = 100;
+            public int getCount()
+            {
+                return _counter;
+            }
+            public void setCount(int counter)
+            {
+                _counter = counter;
+            }
+            public void reduceCounterBy1()
+            {
+                if (_counter > 0)
+                _counter--;
+            }
+        }
+
+    [Serializable()]
+        public class rabiesModifier : PowerUpModifier
+        {
+            private int _counter = 50;
             public int getCount()
             {
                 return _counter;
