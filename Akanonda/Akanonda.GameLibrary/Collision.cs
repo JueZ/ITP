@@ -178,7 +178,7 @@ namespace Akanonda.GameLibrary
                                                 {
                                                     makePlayersBigModifier howBig = (makePlayersBigModifier)game.powerUpModificationList[game.PLayerList[i].guid][bigModifierIndex];
                                                     howBig.makeBiggerByOne();
-                                                    howBig.setCount(1000);
+                                                    howBig.setCount(100);
                                                 }
                                                 else
                                                 {

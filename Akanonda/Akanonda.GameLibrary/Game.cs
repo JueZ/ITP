@@ -243,6 +243,7 @@ namespace Akanonda.GameLibrary
 
         private void setPopUpRateToNormal()
         {
+            if (getRandomNumber(0, PowerUpPopUpRate) % (PowerUpPopUpRate / 2) == 0)
             PowerUpPopUpRate++;
         }
 

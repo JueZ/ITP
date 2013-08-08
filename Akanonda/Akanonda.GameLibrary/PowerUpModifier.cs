@@ -189,7 +189,7 @@ namespace Akanonda.GameLibrary
     [Serializable()]
     public class makePlayersBigModifier : PowerUpModifierWithSize
     {
-        private int _counter = 10000;
+        private int _counter = 100;
         private int _howBig = 2;
 
         public int getCount()
