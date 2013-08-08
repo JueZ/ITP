@@ -33,37 +33,57 @@ namespace Akanonda.GameLibrary
             _y = y;
         }
 
-        public Dictionary<Guid, CollisionType> DetectCollision(List<Player> playerList)
+        public Dictionary<Guid, CollisionType> DetectCollision()
         {
             game = Game.Instance;
             Dictionary<Guid, CollisionType> collisions = new Dictionary<Guid, CollisionType>();
             
-            foreach (Player player in playerList) // current player to check head
+            foreach (Player player in game.PLayerList) // current player to check head
             {
+                List<int[]> coordinatesToCheckList = new List<int[]>();
                 int[] headCoordinates = player.playerbody[player.playerbody.Count-1];
-
+                coordinatesToCheckList.Add(headCoordinates);
+                bool collisionHappened = false;
                 List<Guid> deletePowerUpList = new List<Guid>();
                 //check for PowerUp Collision
                 foreach (PowerUp power in Game.Instance.PowerUpList)
                 {
-                    foreach (int[] array in power.PowerUpLocation)
+                    foreach (int[] powerUpLocation in power.PowerUpLocation)
                     {
-                        if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1] || PowerUp.checkIfPlayerHasModification(new makePlayersBigModifier().GetType(), player.guid) > -1 ? headCoordinates[0] - 1 == array[0] || headCoordinates[0] + 1 == array[0] : 1 != 1 ) // current head collides with PowerUp
+                        int checkForBigPlayerAndGetModifierIndex = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, player.guid);
+                        
+                        if ( checkForBigPlayerAndGetModifierIndex > -1)
+                        {
+                            makePlayersBigModifier howBig = (makePlayersBigModifier)game.powerUpModificationList[player.guid][checkForBigPlayerAndGetModifierIndex];
+                            for (int i = 1; i < howBig.getSize(); i++)
+                            {
+                                if (player.playersteering == PlayerSteering.Left || player.playersteering == PlayerSteering.Right)
+                                {
+                                    coordinatesToCheckList.Add(new int[] { headCoordinates[0], headCoordinates[1] + i });
+                                }
+                                else
+                                {
+                                    coordinatesToCheckList.Add(new int[] { headCoordinates[0] + i, headCoordinates[1] });
+                                }
+                            }
+                        }
+
+                        if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, powerUpLocation)) // current head collides with PowerUp
                         {
                             switch(power.kind){
                                 
                                 case PowerUp.PowerUpKind.othersGoFast:
-                                    if (Game.Instance.PLayerList.Count > 1)
+                                    if (game.PLayerList.Count > 1)
                                     {
-                                        for (int i = 0; i < Game.Instance.PLayerList.Count; i++)
+                                        for (int i = 0; i < game.PLayerList.Count; i++)
                                         {
-                                            if (!Game.Instance.PLayerList[i].guid.Equals(player.guid))
+                                            if (!game.PLayerList[i].guid.Equals(player.guid))
                                             {
-                                                if (!game.powerUpModificationList.ContainsKey(player.guid))
-                                                    game.powerUpModificationList.Add(player.guid, new List<PowerUpModifier>());
+                                                if (!game.powerUpModificationList.ContainsKey(game.PLayerList[i].guid))
+                                                    game.powerUpModificationList.Add(game.PLayerList[i].guid, new List<PowerUpModifier>());
 
                                                 othersGoFastModifier oGFM = new othersGoFastModifier();
-                                                game.powerUpModificationList[playerList[i].guid].Add(oGFM);
+                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(oGFM);
                                             }
                                         }
                                     }
@@ -95,17 +115,17 @@ namespace Akanonda.GameLibrary
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.redApple:
-                                    if (Game.Instance.PLayerList.Count > 1)
+                                    if (game.PLayerList.Count > 1)
                                     {
-                                        for (int i = 0; i < Game.Instance.PLayerList.Count; i++)
+                                        for (int i = 0; i < game.PLayerList.Count; i++)
                                         {
-                                            if (!Game.Instance.PLayerList[i].guid.Equals(player.guid))
+                                            if (!game.PLayerList[i].guid.Equals(player.guid))
                                             {
-                                                if (!game.powerUpModificationList.ContainsKey(player.guid))
-                                                    game.powerUpModificationList.Add(player.guid, new List<PowerUpModifier>());
+                                                if (!game.powerUpModificationList.ContainsKey(game.PLayerList[i].guid))
+                                                    game.powerUpModificationList.Add(game.PLayerList[i].guid, new List<PowerUpModifier>());
 
                                                 redAppleModifier rAM = new redAppleModifier();
-                                                game.powerUpModificationList[playerList[i].guid].Add(rAM);
+                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(rAM);
                                             }
                                         }
                                     }
@@ -125,11 +145,11 @@ namespace Akanonda.GameLibrary
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.othersGoSlow:
-                                    if (Game.Instance.PLayerList.Count > 1)
+                                    if (game.PLayerList.Count > 1)
                                     {
-                                        for (int i = 0; i < Game.Instance.PLayerList.Count; i++)
+                                        for (int i = 0; i < game.PLayerList.Count; i++)
                                         {
-                                            if (!Game.Instance.PLayerList[i].guid.Equals(game.PLayerList[i].guid))
+                                            if (!game.PLayerList[i].guid.Equals(player.guid))
                                             {
                                                 if (!game.powerUpModificationList.ContainsKey(game.PLayerList[i].guid))
                                                     game.powerUpModificationList.Add(game.PLayerList[i].guid, new List<PowerUpModifier>());
@@ -142,19 +162,36 @@ namespace Akanonda.GameLibrary
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.makePlayersBig:
-                                    
-                                        for (int i = 0; i < Game.Instance.PLayerList.Count; i++)
-                                        {
-                                            
-                                                if (!game.powerUpModificationList.ContainsKey(game.PLayerList[i].guid))
-                                                    game.powerUpModificationList.Add(game.PLayerList[i].guid, new List<PowerUpModifier>());
 
+                                    for (int i = 0; i < game.PLayerList.Count; i++)
+                                        {
+                                            if (!game.powerUpModificationList.ContainsKey(game.PLayerList[i].guid))
+                                            {
+                                                game.powerUpModificationList.Add(game.PLayerList[i].guid, new List<PowerUpModifier>());
                                                 makePlayersBigModifier mPBM = new makePlayersBigModifier();
-                                                game.powerUpModificationList[player.guid].Add(mPBM);
+                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(mPBM);
+                                            }
+                                            else
+                                            {
+                                                int bigModifierIndex = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, game.PLayerList[i].guid);
+                                                if (bigModifierIndex > -1)
+                                                {
+                                                    makePlayersBigModifier howBig = (makePlayersBigModifier)game.powerUpModificationList[game.PLayerList[i].guid][bigModifierIndex];
+                                                    howBig.makeBiggerByOne();
+                                                    howBig.setCount(1000);
+                                                }
+                                                else
+                                                {
+                                                    makePlayersBigModifier mPBM = new makePlayersBigModifier();
+                                                    game.powerUpModificationList[game.PLayerList[i].guid].Add(mPBM);
+                                                }
+                                            }
                                             
+
+                                            
+                                                
                                         }
-                                    
-                                    deletePowerUpList.Add(power.guid);
+                                        deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.iGoThroughWalls:
                                     if (!game.powerUpModificationList.ContainsKey(player.guid))
@@ -202,12 +239,21 @@ namespace Akanonda.GameLibrary
                     Game.Instance.RemovePowerUp(guid);
                 }
 
-                
+
+                foreach (int[] allHeadCoordinates in coordinatesToCheckList)
+                {
+                    if (allHeadCoordinates[0] < 0 || allHeadCoordinates[0] > _x -1 || allHeadCoordinates[1] < 0 || allHeadCoordinates[1] > _y -1)
+                    {
+                        collisionHappened = true;
+                        break;
+                    }
+                }
+
                 // collision with head to wall
-                if (headCoordinates[0] < 0 || headCoordinates[0] > _x - 1 || headCoordinates[1] < 0 || headCoordinates[1] > _y - 1)
+                if (collisionHappened)
                 {
                     List<PowerUpModifier> list = new List<PowerUpModifier>();
-                    if (game.powerUpCounters[Game.openWalls] > 0 || PowerUp.checkIfPlayerHasModification(new iGoThroughWallsModifier().GetType(), player.guid) > -1)
+                    if (game.powerUpCounters[Game.openWalls] > 0 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoThroughWallsModifier, player.guid) > -1)
                     {
                         PowerUp.openTheWalls(headCoordinates);
                     }
@@ -216,20 +262,22 @@ namespace Akanonda.GameLibrary
                         if (!collisions.ContainsKey(player.guid))
                             collisions.Add(player.guid, CollisionType.ToWall);
                     }
+                    collisionHappened = false;
                 }
 
 
                 foreach (Player deadPlayer in Game.Instance.DeadList) // player with which current head is checked against (can be same as above)
                 {
                     int size = deadPlayer.playerbody.Count;
-                    int[] array;
+                    int[] deadPlayerBody;
 
                     for (int i = 0; i < size - 1; i++) // skip head, otherwise loop would always find a collision
                     {
-                        array = deadPlayer.playerbody[i];
-                        if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with own tail
+                        deadPlayerBody = deadPlayer.playerbody[i];
+
+                        if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, deadPlayerBody)) // current head collides with own tail
                         {
-                            if (PowerUp.checkIfPlayerHasModification(new rabiesModifier().GetType(), player.guid) == -1)
+                            if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.rabiesModifier, player.guid) == -1)
                             {
                                 Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
                                 if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
@@ -247,18 +295,18 @@ namespace Akanonda.GameLibrary
 
 
 
-                foreach (Player otherPlayer in playerList) // player with which current head is checked against
+                foreach (Player otherPlayer in game.PLayerList) // player with which current head is checked against
                 {
                     if (player.guid != otherPlayer.guid) // check against other players
                     {
                         int x = 0;
-                        foreach (int[] array in otherPlayer.playerbody)
+                        foreach (int[] otherPlayerCoordinates in otherPlayer.playerbody)
                         {
                             x++;
-                            if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with other player
+                            if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, otherPlayerCoordinates)) // current head collides with other player
                             {
                                 // Collision!
-                                if (PowerUp.checkIfPlayerHasModification(new rabiesModifier().GetType(), player.guid) == -1)
+                                if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.rabiesModifier, player.guid) == -1)
                                 {
                                     Console.WriteLine("Player " + player.guid.ToString() + " collides with another player!");
                                     if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
@@ -280,16 +328,16 @@ namespace Akanonda.GameLibrary
                     else // check against player itself
                     {
                         int size = otherPlayer.playerbody.Count;
-                        int[] array;
+                        int[] ownPlayerBody;
 
                         for (int i = 0; i < size-1; i++) // skip head, otherwise loop would always find a collision
                         {
-                            array = otherPlayer.playerbody[i];
-                            if (headCoordinates[0] == array[0] && headCoordinates[1] == array[1]) // current head collides with own tail
+                            ownPlayerBody = otherPlayer.playerbody[i];
+                            if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, ownPlayerBody)) // current head collides with own tail
                             {
                              // Collision!
 
-                             if (PowerUp.checkIfPlayerHasModification(new rabiesModifier().GetType(), player.guid) == -1)
+                             if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.rabiesModifier, player.guid) == -1)
                              {
                                  Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
                                  if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
@@ -312,5 +360,21 @@ namespace Akanonda.GameLibrary
 
             return collisions;
         }
+
+
+        private bool checkCollisionToPlayerOrPowerUp(List<int[]> allHeadCoordinates, int[] coordinatesToCheck)
+        {
+
+            foreach (int[] headCoordinates in allHeadCoordinates)
+            {
+                if (headCoordinates[0] == coordinatesToCheck[0] && headCoordinates[1] == coordinatesToCheck[1])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
     }
 }

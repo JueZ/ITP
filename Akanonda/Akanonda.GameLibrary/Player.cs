@@ -143,20 +143,7 @@ namespace Akanonda.GameLibrary
 
         public void playerMove(bool grow)
         {
-            bool bigSnake = false;
             List<int[]> checkHead = new List<int[]>();
-            if (PowerUp.checkIfPlayerHasModification(new makePlayersBigModifier().GetType(), this.guid) > -1)
-                bigSnake = true;
-
-            if (bigSnake)
-            {
-                for (int i = playerbody.Count - 1; i > playerbody.Count - 7; i--)
-                {
-                    checkHead.Add(playerbody[i]);
-                }
-
-            }
-
             int x = _playerbody[_playerbody.Count - 1][0];
             int y = _playerbody[_playerbody.Count - 1][1];
 
@@ -171,13 +158,6 @@ namespace Akanonda.GameLibrary
                         y--;
                         this._playerbody.RemoveAt(0);
                     }
-                    if (bigSnake)
-                    {
-                        if (!checkHead.Exists(item => item[0] == x - 1 && item[1] == y))
-                            this._playerbody.Add(new int[2] { x - 1, y });
-                        if (!checkHead.Exists(item => item[0] == x + 1 && item[1] == y))
-                            this._playerbody.Add(new int[2] { x + 1, y });
-                    }
                     break;
                 case PlayerSteering.Down:
                     y++;
@@ -185,13 +165,6 @@ namespace Akanonda.GameLibrary
                     {
                         y++;
                         this._playerbody.RemoveAt(0);
-                    }
-                    if (bigSnake)
-                    {
-                        if (!checkHead.Exists(item => item[0] == x - 1 && item[1] == y))
-                            this._playerbody.Add(new int[2] { x - 1, y });
-                        if (!checkHead.Exists(item => item[0] == x + 1 && item[1] == y))
-                            this._playerbody.Add(new int[2] { x + 1, y });
                     }
                     break;
                 case PlayerSteering.Left:
@@ -201,13 +174,6 @@ namespace Akanonda.GameLibrary
                         x--;
                         this._playerbody.RemoveAt(0);
                     }
-                    if (bigSnake)
-                    {
-                        if (!checkHead.Exists(item => item[0] == x && item[1] == y - 1))
-                            this._playerbody.Add(new int[2] { x, y - 1 });
-                        if (!checkHead.Exists(item => item[0] == x && item[1] == y + 1))
-                            this._playerbody.Add(new int[2] { x, y + 1 });
-                    }
                     break;
                 case PlayerSteering.Right:
                     x++;
@@ -216,19 +182,10 @@ namespace Akanonda.GameLibrary
                         x++;
                         this._playerbody.RemoveAt(0);
                     }
-                    if (bigSnake)
-                    {
-                        if (!checkHead.Exists(item => item[0] == x && item[1] == y - 1))
-                            this._playerbody.Add(new int[2] { x, y - 1 });
-                        if (!checkHead.Exists(item => item[0] == x && item[1] == y + 1))
-                            this._playerbody.Add(new int[2] { x, y + 1 });
-                    }
                     break;
             }
             makeSnakeHoles();
-            if (!checkHead.Exists(item => item[0] == x && item[1] == y))
-                this._playerbody.Add(new int[2] { x, y });
-
+            this._playerbody.Add(new int[2] { x, y });
             makeSnakeSmallerIfOtherPlayerAteRedApple();
             checkIfPlayerShouldGrowThenGivePoint(grow);
 
@@ -238,7 +195,7 @@ namespace Akanonda.GameLibrary
         private bool playerGoesFast(int x, int y)
         {
 
-            if (PowerUp.checkIfPlayerHasModification(new othersGoFastModifier().GetType(), this.guid) > -1 || PowerUp.checkIfPlayerHasModification(new iGoFastModifier().GetType(), this.guid) > -1)
+            if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoFastModifier, this.guid) > -1 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoFastModifier, this.guid) > -1)
             {
                 this._playerbody.Add(new int[2] { x, y });
                 return true;
@@ -250,32 +207,14 @@ namespace Akanonda.GameLibrary
         {
             if (Game.getRandomNumber(0, 20) % 20 == 0)
             {
-                if (PowerUp.checkIfPlayerHasModification(new makePlayersBigModifier().GetType(), this.guid) > -1)
-                {
-                    _playerbody[_playerbody.Count - 3][0] = -40;
-                    _playerbody[_playerbody.Count - 3][1] = -40;
-                    _playerbody[_playerbody.Count - 4][0] = -40;
-                    _playerbody[_playerbody.Count - 4][1] = -40;
-                    _playerbody[_playerbody.Count - 5][0] = -40;
-                    _playerbody[_playerbody.Count - 5][1] = -40;
-                    _playerbody[_playerbody.Count - 6][0] = -40;
-                    _playerbody[_playerbody.Count - 6][1] = -40;
-                    _playerbody[_playerbody.Count - 7][0] = -40;
-                    _playerbody[_playerbody.Count - 7][1] = -40;
-                    _playerbody[_playerbody.Count - 8][0] = -40;
-                    _playerbody[_playerbody.Count - 8][1] = -40;
-                }
-                else
-                {
                     _playerbody[_playerbody.Count - 1][0] = -40;
                     _playerbody[_playerbody.Count - 1][1] = -40;
-                }
             }
         }
 
         private void makeSnakeSmallerIfOtherPlayerAteRedApple()
         {
-            if (PowerUp.checkIfPlayerHasModification(new redAppleModifier().GetType(), this._guid) > -1)
+            if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.redAppleModifier, this._guid) > -1)
             {
                 if (playerbody.Count - 1 > 1)
                     this._playerbody.RemoveAt(0);
@@ -284,17 +223,12 @@ namespace Akanonda.GameLibrary
 
         private void checkIfPlayerShouldGrowThenGivePoint(bool grow)
         {
-            if (PowerUp.checkIfPlayerHasModification(new goldenAppleModifier().GetType(), this._guid) > -1)
+            if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goldenAppleModifier, this._guid) > -1)
                 grow = true;
 
             if (!grow)
             {
                 this._playerbody.RemoveAt(0);
-                if (PowerUp.checkIfPlayerHasModification(new makePlayersBigModifier().GetType(), this.guid) > -1)
-                {
-                    this._playerbody.RemoveAt(0);
-                    this._playerbody.RemoveAt(0);
-                }
             }
             else
             {

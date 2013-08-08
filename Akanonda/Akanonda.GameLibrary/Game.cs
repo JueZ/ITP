@@ -22,11 +22,12 @@ namespace Akanonda.GameLibrary
         private int _tickCounter;
         private Dictionary<Guid, CollisionType> _collisionList;
         private Dictionary<Guid, List<PowerUpModifier>> _powerUpModificationList = new Dictionary<Guid, List<PowerUpModifier>>();
-        private int[] _powerUpCounters = new int[4];
+        private int[] _powerUpCounters = new int[5];
         public const int moveAllPowerUps = 0;
         public const int openWalls = 1;
         public const int closingWalls = 2;
         public const int biggerWalls = 3;
+        public const int biggerPlayers = 4;
         private int _powerUpPopUpRate = 150;
 
         public static Game Instance
@@ -56,6 +57,7 @@ namespace Akanonda.GameLibrary
             _powerUpCounters[openWalls] = 0;
             _powerUpCounters[closingWalls] = 0;
             _powerUpCounters[biggerWalls] = 0;
+            _powerUpCounters[biggerPlayers] = 1;
 
         }
 
@@ -133,6 +135,10 @@ namespace Akanonda.GameLibrary
             }
         }
 
+        public void clearModificationListOnDead(Guid guid){
+                _powerUpModificationList.Remove(guid);
+        }
+
         public string getPlayerName(Guid guid)
         {
             string name = "";
@@ -172,12 +178,16 @@ namespace Akanonda.GameLibrary
 
         public void removePlayer(Guid guid)
         {
-            _playerList.Remove(_playerList.Find(item => item.guid == guid));
+            Player playerToFind = _playerList.Find(item => item.guid == guid);
+            if(playerToFind != null)
+                _playerList.Remove(playerToFind);
         }
 
         public void removeDeadPlayer(Guid guid)
         {
-            _deadList.Remove(_deadList.Find(item => item.guid == guid));
+            Player deadToFind = _deadList.Find(item => item.guid == guid);
+            if(deadToFind != null)
+                _deadList.Remove(deadToFind);
         }
 
         public void gametick()
@@ -186,7 +196,7 @@ namespace Akanonda.GameLibrary
             handlePowerUpTicks();
             movePlayersandAddScore();
             checkIfPowerUpsShouldBeAddedRelativeToFieldsize();
-            DetectCollision();
+            detectCollision();
         }
 
         private void handlePowerUpTicks()
@@ -277,9 +287,8 @@ namespace Akanonda.GameLibrary
 
             for (int i = 0; i < _playerList.Count; i++)
             {
-                if ( PowerUp.checkIfPlayerHasModification(new othersGoSlowModifier().GetType(), _playerList[i].guid) > -1 || PowerUp.checkIfPlayerHasModification(new iGoSlowModifier().GetType(), _playerList[i].guid) > -1)
+                if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoSlowModifier, _playerList[i].guid) > -1 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoSlowModifier, _playerList[i].guid) > -1)
                 {
-                    //substrateTickfromSlowDict(i);
                     if (tickCounter % 2 == 0)
                         _playerList[i].playerMove(grow);
                 }
@@ -348,9 +357,9 @@ namespace Akanonda.GameLibrary
             return V;
         }
 
-        public void DetectCollision()
+        public void detectCollision()
         {
-            _collisionList = _collision.DetectCollision(_playerList);
+            _collisionList = _collision.DetectCollision();
 
         }
 
@@ -392,7 +401,7 @@ namespace Akanonda.GameLibrary
                     break;
                 case PowerUp.PowerUpKind.iGoSlow:
                 case PowerUp.PowerUpKind.othersGoSlow:
-                    paintiGoSlowAandothersGoSlow(power, g);
+                    paintiGoSlowAndothersGoSlow(power, g);
                     break;
                 case PowerUp.PowerUpKind.biggerWalls:
                     paintPowerUpBiggerWalls(power, g);
@@ -517,7 +526,7 @@ namespace Akanonda.GameLibrary
             }
         }
 
-        private void paintiGoSlowAandothersGoSlow(PowerUp power, Graphics g)
+        private void paintiGoSlowAndothersGoSlow(PowerUp power, Graphics g)
         {
             int lowestX = 9999;
             int lowestY = 9999;
@@ -615,12 +624,21 @@ namespace Akanonda.GameLibrary
 
         private void paintAlivePlayers(Graphics g)
         {
-            foreach (Player player in _playerList)
+            foreach (Player player in PLayerList)
             {
+                int playerIsBig = checkIfPlayerBigAndGetModifierIndex(player);
+                makePlayersBigModifier howBig = null;
+                if (playerIsBig > -1)
+                {
+                    howBig = (makePlayersBigModifier)_powerUpModificationList[player.guid][playerIsBig];
+                }
                 foreach (int[] playerbody in player.playerbody)
                 {
                     if (playerbody[0] > -1 && playerbody[0] < getFieldX() && playerbody[1] > -1 && playerbody[1] < getFieldY())
-                        g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + playerbody[0] * _field.Scale), (_field.offsetNorth + playerbody[1] * _field.Scale), _field.Scale, _field.Scale);
+                        g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + playerbody[0] * _field.Scale),
+                        (_field.offsetNorth + playerbody[1] * _field.Scale),
+                        playerIsBig > -1 ? _field.Scale * howBig.getSize() : _field.Scale,
+                        playerIsBig > -1 ? _field.Scale * howBig.getSize() : _field.Scale);
                 }
             }
         }
@@ -630,10 +648,21 @@ namespace Akanonda.GameLibrary
         {
             foreach (Player player in _deadList)
             {
+                int playerIsBig = checkIfPlayerBigAndGetModifierIndex(player);
+                makePlayersBigModifier howBig = null;
+                if (playerIsBig > -1)
+                {
+                    howBig = (makePlayersBigModifier)_powerUpModificationList[player.guid][playerIsBig];
+                }
+
                 foreach (int[] playerbody in player.playerbody)
                 {
                     if (playerbody[0] > -1 && playerbody[0] < getFieldX() && playerbody[1] > -1 && playerbody[1] < getFieldY())
-                        g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + playerbody[0] * _field.Scale), (_field.offsetNorth + playerbody[1] * _field.Scale), _field.Scale, _field.Scale);
+                        g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + playerbody[0] * _field.Scale),
+                        (_field.offsetNorth + playerbody[1] * _field.Scale),
+                        playerIsBig > -1 ? _field.Scale * howBig.getSize() : _field.Scale,
+                        playerIsBig > -1 ? _field.Scale * howBig.getSize() : _field.Scale);
+                        
                 }
             }
         }
@@ -658,6 +687,20 @@ namespace Akanonda.GameLibrary
             g.FillRectangles(brush, border);
         }
 
+        private int checkIfPlayerBigAndGetModifierIndex(Player player)
+        {
+            if (_powerUpModificationList.ContainsKey(player.guid))
+            {
+                List<PowerUpModifier> list = _powerUpModificationList[player.guid];
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].GetType().Name == PowerUpModifierKind.makePlayersBigModifier.ToString())
+                        return i;
+                }
+            }
+            return -1;
+        }
+
 
         public void AddPowerUp(PowerUp.PowerUpKind kind)
         {
@@ -672,7 +715,9 @@ namespace Akanonda.GameLibrary
 
         public void RemoveLobbyPlayer(Guid guid)
         {
-            _lobbyList.Remove(_lobbyList.Find(item => item.guid == guid));
+            Player playerToFind = _lobbyList.Find(item => item.guid == guid);
+            if(playerToFind != null)
+                _lobbyList.Remove(playerToFind);
         }
 
         public int getPlayerLength(Guid guid)
@@ -686,7 +731,9 @@ namespace Akanonda.GameLibrary
 
         public void RemovePowerUp(Guid guid)
         {
-            _powerupList.Remove(_powerupList.Find(item => item.guid == guid));
+            PowerUp powerUpToFind = _powerupList.Find(item => item.guid == guid);
+            if(powerUpToFind != null)
+                _powerupList.Remove(powerUpToFind);
         }
 
         public string getLobbyPlayerName(Guid guid)

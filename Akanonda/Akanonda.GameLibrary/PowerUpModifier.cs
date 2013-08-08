@@ -5,6 +5,20 @@ using System.Text;
 
 namespace Akanonda.GameLibrary
 {
+
+    public enum PowerUpModifierKind
+    {
+        othersGoSlowModifier,
+        iGoSlowModifier,
+        othersGoFastModifier,
+        iGoFastModifier,
+        goldenAppleModifier,
+        redAppleModifier,
+        iGoThroughWallsModifier,
+        rabiesModifier,
+        makePlayersBigModifier
+    }
+        
         public interface PowerUpModifier
         {
             int getCount();
@@ -12,6 +26,12 @@ namespace Akanonda.GameLibrary
             void reduceCounterBy1();
         }
 
+        public interface PowerUpModifierWithSize : PowerUpModifier
+        {
+            int getSize();
+            void makeBiggerByOne();
+            void makeSmallerByOne();
+        }
         
 
     [Serializable()]
@@ -167,9 +187,11 @@ namespace Akanonda.GameLibrary
         }
 
     [Serializable()]
-    public class makePlayersBigModifier : PowerUpModifier
+    public class makePlayersBigModifier : PowerUpModifierWithSize
     {
-        private int _counter = 100;
+        private int _counter = 10000;
+        private int _howBig = 2;
+
         public int getCount()
         {
             return _counter;
@@ -183,6 +205,22 @@ namespace Akanonda.GameLibrary
             if (_counter > 0)
                 _counter--;
         }
+
+
+        public void makeBiggerByOne()
+        {
+            _howBig++;
+        }
+        public void makeSmallerByOne()
+        {
+            if(_howBig -1 > 0)
+            _howBig--;
+        }
+        public int getSize()
+        {
+            return _howBig;
+        }
+        
     }
     
 }

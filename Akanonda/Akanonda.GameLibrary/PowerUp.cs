@@ -295,20 +295,37 @@ namespace Akanonda.GameLibrary
             }
         }
 
-        public static int checkIfPlayerHasModification(Object a, Guid playerGuid)
+        public static int checkIfPlayerHasModification(PowerUpModifierKind a, Guid playerGuid)
         {
             List<PowerUpModifier> list = new List<PowerUpModifier>();
             if (!Game.Instance.powerUpModificationList.TryGetValue(playerGuid, out list))
                 return -1;
             for (int i = 0; i < list.Count; i++)
             {
-                if (list[i].GetType().Equals(a))
+                if (list[i].GetType().Name.Equals(a.ToString()))
                     return i;
             }
             return -1;
         }
 
+        public static bool checkThisShit(PowerUpModifierKind a, Guid guid)
+        {
 
+            if (Game.Instance.powerUpModificationList.ContainsKey(guid))
+            {
+                List<PowerUpModifier> list = Game.Instance.powerUpModificationList[guid];
+                foreach (PowerUpModifier mod in list)
+                {
+                    if (mod.GetType().Name == PowerUpModifierKind.makePlayersBigModifier.ToString())
+                        return true;
+                }
+
+                //    playerIsBig = true;
+            }
+            return false;
+
+
+        }
 
 
 

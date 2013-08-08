@@ -185,10 +185,11 @@ namespace Akanonda
         static void gameSpeedTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             game.gametick();
-            UpdateLobbyLists();
+            
             foreach (KeyValuePair<Guid, CollisionType> key in game.CollisionList)
             {
                 Game.Instance.setScoreToLobbyPlayer(key.Key);
+                Game.Instance.clearModificationListOnDead(key.Key);
                 Game.Instance.addDeadRemoveLivingPlayer(key.Key);
             }
 
@@ -211,7 +212,7 @@ namespace Akanonda
                 game.removeDeadPlayer(guid);
             }
             removeDeadList.Clear();
-            
+            UpdateLobbyLists();
             byte[] gamebyte = SerializeHelper.ObjectToByteArray(game);
             
             NetOutgoingMessage sendMsg = netserver.CreateMessage();
@@ -247,9 +248,9 @@ namespace Akanonda
                                 //foreach (PowerUp.PowerUpKind kind in Enum.GetValues(typeof(PowerUp.PowerUpKind)))
                                 //    game.AddPowerUp(kind);
                                 
-                                //game.AddPowerUp(PowerUp.PowerUpKind.makePlayersBig); // For testing
-                                //game.AddPowerUp(PowerUp.PowerUpKind.openWalls); // For testing
-                                //game.AddPowerUp(PowerUp.PowerUpKind.iGoFast); // For testing
+                                game.AddPowerUp(PowerUp.PowerUpKind.makePlayersBig); // For testing
+                                //game.AddPowerUp(PowerUp.PowerUpKind.iGoSlow); // For testing
+                                //game.AddPowerUp(PowerUp.PowerUpKind.goldenApple); // For testing
                                 Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
                             }
@@ -271,7 +272,7 @@ namespace Akanonda
                             {
                                 //game.removePlayer(Guid.Parse(reason));
                                 game.addDeadRemoveLivingPlayer(Guid.Parse(reason));
-                                game.RemoveLobbyPlayer(Guid.Parse(reason));
+                                //game.RemoveLobbyPlayer(Guid.Parse(reason));
                                 Console.WriteLine("[Game]Player disconnected! \t GUID: " + Guid.Parse(reason));
                             }
                         }
