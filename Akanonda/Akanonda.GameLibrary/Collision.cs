@@ -45,6 +45,8 @@ namespace Akanonda.GameLibrary
                 coordinatesToCheckList.Add(headCoordinates);
                 bool collisionHappened = false;
                 List<Guid> deletePowerUpList = new List<Guid>();
+
+
                 //check for PowerUp Collision
                 foreach (PowerUp power in Game.Instance.PowerUpList)
                 {
@@ -52,7 +54,7 @@ namespace Akanonda.GameLibrary
                     {
                         int checkForBigPlayerAndGetModifierIndex = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, player.guid);
                         
-                        if ( checkForBigPlayerAndGetModifierIndex > -1)
+                        if ( checkForBigPlayerAndGetModifierIndex > -1 && game.powerUpModificationList[player.guid][checkForBigPlayerAndGetModifierIndex].getCount() > 0)
                         {
                             makePlayersBigModifier howBig = (makePlayersBigModifier)game.powerUpModificationList[player.guid][checkForBigPlayerAndGetModifierIndex];
                             for (int i = 1; i < howBig.getSize(); i++)

@@ -44,6 +44,7 @@ namespace Akanonda.GameLibrary
             _deadList = new List<Player>();
             _lobbyList = new List<Player>();
             _powerupList = new List<PowerUp>();
+            
 
             _field.setSize(120, 120); // testhalber, derzeit wird neuer user auf 105x105 oder so gesetzt
             _field.Scale = 5;
@@ -66,6 +67,7 @@ namespace Akanonda.GameLibrary
         public List<Player> DeadList { get { return _deadList; } }
         public List<PowerUp> PowerUpList { get { return _powerupList; } }
         public int tickCounter { get { return _tickCounter; } }
+        
 
         public void setFieldSize(int x, int y)
         {
@@ -311,7 +313,9 @@ namespace Akanonda.GameLibrary
                 foreach (PowerUpModifier pUM in pair.Value)
                 {
                     pUM.reduceCounterBy1();
-                    if (pUM.getCount() == 0)
+                    if (pUM.getCount() == 0 && pUM.GetType() != typeof(makePlayersBigModifier))
+                        deleteModification.Add(pUM);
+                    if (pUM.GetType() == typeof(makePlayersBigModifier) && pUM.getCount() == -1)
                         deleteModification.Add(pUM);
                 }
                 foreach (PowerUpModifier pM in deleteModification)
@@ -628,18 +632,41 @@ namespace Akanonda.GameLibrary
             foreach (Player player in PLayerList)
             {
                 int playerIsBig = checkIfPlayerBigAndGetModifierIndex(player);
-                makePlayersBigModifier howBig = null;
                 if (playerIsBig > -1)
                 {
-                    howBig = (makePlayersBigModifier)_powerUpModificationList[player.guid][playerIsBig];
+                    
                 }
-                foreach (int[] playerbody in player.playerbody)
+                for(int i = 0; i < player.playerbody.Count; i++)
                 {
-                    if (playerbody[0] > -1 && playerbody[0] < getFieldX() && playerbody[1] > -1 && playerbody[1] < getFieldY())
-                        g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + playerbody[0] * _field.Scale),
-                        (_field.offsetNorth + playerbody[1] * _field.Scale),
-                        playerIsBig > -1 ? _field.Scale * howBig.getSize() : _field.Scale,
-                        playerIsBig > -1 ? _field.Scale * howBig.getSize() : _field.Scale);
+                    int x = i+1;
+                    if (x == player.playerbody.Count)
+                        x--;
+                    bool test = false;
+                    foreach (int[] checkLocation in player.bigPlayerLocation)
+                    {
+                        if (player.playerbody[i][0] == checkLocation[0] && player.playerbody[i][1] == checkLocation[1])
+                        {
+                            test = true;
+                            break;
+                        }
+
+                    }
+                    
+                    if (player.playerbody[i][0] > -1 && player.playerbody[i][0] < getFieldX() && player.playerbody[i][1] > -1 && player.playerbody[i][1] < getFieldY())
+                        if (test)
+                        {
+                        makePlayersBigModifier howBig = (makePlayersBigModifier)_powerUpModificationList[player.guid][playerIsBig];
+                        g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + player.playerbody[i][0] * _field.Scale),
+                        (_field.offsetNorth + player.playerbody[i][1] * _field.Scale),
+                        player.playerbody[x][0] == player.playerbody[i][0] ? _field.Scale * howBig.getSize() : _field.Scale,
+                        player.playerbody[x][1] == player.playerbody[i][1] ? _field.Scale * howBig.getSize() : _field.Scale);
+                        }
+                        else
+                        {
+                            g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + player.playerbody[i][0] * _field.Scale),
+                            (_field.offsetNorth + player.playerbody[i][1] * _field.Scale),
+                            _field.Scale,_field.Scale);
+                        }
                 }
             }
         }

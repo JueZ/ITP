@@ -13,6 +13,7 @@ namespace Akanonda.GameLibrary
         private Color _color;
         private Guid _guid;
         private List<int[]> _playerbody;
+        private List<int[]> _bigPlayerLocation;
         private PlayerStatus _playerstatus;
         private PlayerSteering _playersteering;
         int startX, startY;
@@ -65,10 +66,12 @@ namespace Akanonda.GameLibrary
             get { return _playerbody; }
         }
 
+        public List<int[]> bigPlayerLocation { get { return _bigPlayerLocation; } set { _bigPlayerLocation = value; } }
+
         public Player(string name, Color color, Guid guid = new Guid(), int score = 0)
         {
             this._playerbody = new List<int[]>();
-
+            this._bigPlayerLocation = new List<int[]>();
             startX = Game.getRandomNumber(20, Game.Instance.getFieldX() - 20);
             startY = Game.getRandomNumber(20, Game.Instance.getFieldY() - 20);
 
@@ -143,7 +146,7 @@ namespace Akanonda.GameLibrary
 
         public void playerMove(bool grow)
         {
-            List<int[]> checkHead = new List<int[]>();
+            // not used List<int[]> checkHead = new List<int[]>();
             int x = _playerbody[_playerbody.Count - 1][0];
             int y = _playerbody[_playerbody.Count - 1][1];
 
@@ -185,6 +188,13 @@ namespace Akanonda.GameLibrary
                     break;
             }
             makeSnakeHoles();
+            int index =PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, this.guid);
+            if (index > -1)
+            {
+                if (Game.Instance.powerUpModificationList[this.guid][index].getCount() > 0)
+                this._bigPlayerLocation.Add(new int[2] { x, y });
+            }
+
             this._playerbody.Add(new int[2] { x, y });
             makeSnakeSmallerIfOtherPlayerAteRedApple();
             checkIfPlayerShouldGrowThenGivePoint(grow);
@@ -209,6 +219,12 @@ namespace Akanonda.GameLibrary
             {
                     _playerbody[_playerbody.Count - 1][0] = -40;
                     _playerbody[_playerbody.Count - 1][1] = -40;
+                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, this._guid) > -1)
+                    {
+                        _playerbody[_playerbody.Count - 2][0] = -40;
+                        _playerbody[_playerbody.Count - 2][1] = -40;
+                    }
+
             }
         }
 
@@ -223,12 +239,49 @@ namespace Akanonda.GameLibrary
 
         private void checkIfPlayerShouldGrowThenGivePoint(bool grow)
         {
+            
             if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goldenAppleModifier, this._guid) > -1)
                 grow = true;
 
             if (!grow)
             {
+                //this._bigPlayerLocation.Remove(playerbody[0]);
                 this._playerbody.RemoveAt(0);
+
+                if (this._bigPlayerLocation.Count > 0)
+                {
+                    List<int> deleteLocation = new List<int>();
+                    for (int i = 0; i < this._bigPlayerLocation.Count; i++)
+                    {
+                        bool stillInPlayerBody = false;
+
+                        foreach (int[] checkPlayerLocation in this.playerbody)
+                        {
+                            if (checkPlayerLocation[0] == this._bigPlayerLocation[i][0] && checkPlayerLocation[1] == this._bigPlayerLocation[i][1])
+                            {
+                                stillInPlayerBody = true;
+                                break;
+                            }
+
+                        }
+                        if (!stillInPlayerBody)
+                            deleteLocation.Add(i);
+                    }
+
+                    for (int i = deleteLocation.Count - 1; i >= 0; i--)
+                    {
+                        this._bigPlayerLocation.RemoveAt(deleteLocation[i]);
+                    }
+                }
+                else
+                {
+                    int modificationIndex = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, this._guid);
+                    if(modificationIndex > -1)
+                    Game.Instance.powerUpModificationList[this.guid][modificationIndex].setCount(-1);
+                }
+
+
+
             }
             else
             {
