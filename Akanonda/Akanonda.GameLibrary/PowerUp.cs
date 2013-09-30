@@ -308,6 +308,20 @@ namespace Akanonda.GameLibrary
             return -1;
         }
 
+        public static int countBigModifiers(Guid playerGuid)
+        {
+            List<PowerUpModifier> list = new List<PowerUpModifier>();
+            int x = 1;
+            if (!Game.Instance.powerUpModificationList.TryGetValue(playerGuid, out list))
+                return -1;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].GetType().Name.Equals(PowerUpModifierKind.makePlayersBigModifier.ToString()))
+                    x++;
+            }
+            return x;
+        }
+
         public static bool checkThisShit(PowerUpModifierKind a, Guid guid)
         {
 

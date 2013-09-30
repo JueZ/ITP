@@ -313,11 +313,9 @@ namespace Akanonda.GameLibrary
                 foreach (PowerUpModifier pUM in pair.Value)
                 {
                     pUM.reduceCounterBy1();
-                    if (pUM.getCount() == 0 && pUM.GetType() != typeof(makePlayersBigModifier))
+                    if (pUM.getCount() == 0)
                         deleteModification.Add(pUM);
-                    if (pUM.GetType() == typeof(makePlayersBigModifier) && pUM.getCount() == -1)
-                        deleteModification.Add(pUM);
-                }
+                    }
                 foreach (PowerUpModifier pM in deleteModification)
                 {
                     pair.Value.Remove(pM);
@@ -641,25 +639,27 @@ namespace Akanonda.GameLibrary
                     int x = i+1;
                     if (x == player.playerbody.Count)
                         x--;
-                    bool test = false;
-                    foreach (int[] checkLocation in player.bigPlayerLocation)
+                    bool snakepartIsBig = false;
+                    int howBig = 1;
+                    foreach (KeyValuePair<int, int[]> checkLocation in player.bigPlayerLocation)
                     {
-                        if (player.playerbody[i][0] == checkLocation[0] && player.playerbody[i][1] == checkLocation[1])
+                        if (player.playerbody[i][0] == checkLocation.Value[0] && player.playerbody[i][1] == checkLocation.Value[1])
                         {
-                            test = true;
+                            snakepartIsBig = true;
+                            howBig = checkLocation.Key;
                             break;
                         }
 
                     }
                     
                     if (player.playerbody[i][0] > -1 && player.playerbody[i][0] < getFieldX() && player.playerbody[i][1] > -1 && player.playerbody[i][1] < getFieldY())
-                        if (test)
+                        if (snakepartIsBig)
                         {
-                        makePlayersBigModifier howBig = (makePlayersBigModifier)_powerUpModificationList[player.guid][playerIsBig];
+                        //makePlayersBigModifier howBig = (makePlayersBigModifier)_powerUpModificationList[player.guid][playerIsBig];
                         g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + player.playerbody[i][0] * _field.Scale),
                         (_field.offsetNorth + player.playerbody[i][1] * _field.Scale),
-                        player.playerbody[x][0] == player.playerbody[i][0] ? _field.Scale * howBig.getSize() : _field.Scale,
-                        player.playerbody[x][1] == player.playerbody[i][1] ? _field.Scale * howBig.getSize() : _field.Scale);
+                        player.playerbody[x][0] == player.playerbody[i][0] ? _field.Scale * howBig : _field.Scale,
+                        player.playerbody[x][1] == player.playerbody[i][1] ? _field.Scale * howBig : _field.Scale);
                         }
                         else
                         {

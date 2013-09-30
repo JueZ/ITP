@@ -13,7 +13,8 @@ namespace Akanonda.GameLibrary
         private Color _color;
         private Guid _guid;
         private List<int[]> _playerbody;
-        private List<int[]> _bigPlayerLocation;
+        List<KeyValuePair<int, int[]>> _bigPlayerLocation;
+        //private List<int, int[]> _bigPlayerLocation;
         private PlayerStatus _playerstatus;
         private PlayerSteering _playersteering;
         int startX, startY;
@@ -66,12 +67,12 @@ namespace Akanonda.GameLibrary
             get { return _playerbody; }
         }
 
-        public List<int[]> bigPlayerLocation { get { return _bigPlayerLocation; } set { _bigPlayerLocation = value; } }
+        public List<KeyValuePair<int, int[]>> bigPlayerLocation { get { return _bigPlayerLocation; } set { _bigPlayerLocation = value; } }
 
         public Player(string name, Color color, Guid guid = new Guid(), int score = 0)
         {
             this._playerbody = new List<int[]>();
-            this._bigPlayerLocation = new List<int[]>();
+            this._bigPlayerLocation = new List<KeyValuePair<int, int[]>>();
             startX = Game.getRandomNumber(20, Game.Instance.getFieldX() - 20);
             startY = Game.getRandomNumber(20, Game.Instance.getFieldY() - 20);
 
@@ -192,7 +193,7 @@ namespace Akanonda.GameLibrary
             if (index > -1)
             {
                 if (Game.Instance.powerUpModificationList[this.guid][index].getCount() > 0)
-                this._bigPlayerLocation.Add(new int[2] { x, y });
+                this._bigPlayerLocation.Add(new KeyValuePair<int, int[]>(PowerUp.countBigModifiers(this.guid),new int[2] { x, y }));
             }
 
             this._playerbody.Add(new int[2] { x, y });
@@ -257,7 +258,7 @@ namespace Akanonda.GameLibrary
 
                         foreach (int[] checkPlayerLocation in this.playerbody)
                         {
-                            if (checkPlayerLocation[0] == this._bigPlayerLocation[i][0] && checkPlayerLocation[1] == this._bigPlayerLocation[i][1])
+                            if (checkPlayerLocation[0] == this._bigPlayerLocation[i].Value[0] && checkPlayerLocation[1] == this._bigPlayerLocation[i].Value[1])
                             {
                                 stillInPlayerBody = true;
                                 break;
@@ -288,5 +289,17 @@ namespace Akanonda.GameLibrary
                 this._score++;
             }
         }
+
+        public int getPlayerLocationSize(int[] playerLocation){
+            foreach(KeyValuePair<int, int[]> bigPartLocation in this._bigPlayerLocation)
+                    {
+                        if (playerLocation[0] == bigPartLocation.Value[0] && playerLocation[1] == bigPartLocation.Value[1])
+                            {
+                                return bigPartLocation.Key;
+                            }
+                    }
+            return 1;
+        }
+
     }
 }

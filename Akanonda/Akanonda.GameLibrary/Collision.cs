@@ -174,20 +174,20 @@ namespace Akanonda.GameLibrary
                                                 game.powerUpModificationList[game.PLayerList[i].guid].Add(mPBM);
                                             }
                                             else
+                                            //{
+                                            //    int bigModifierIndex = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, game.PLayerList[i].guid);
+                                            //    if (bigModifierIndex > -1)
+                                            //    {
+                                            //        makePlayersBigModifier howBig = (makePlayersBigModifier)game.powerUpModificationList[game.PLayerList[i].guid][bigModifierIndex];
+                                            //        howBig.makeBiggerByOne();
+                                            //        howBig.setCount(100);
+                                            //    }
+                                            //    else
                                             {
-                                                int bigModifierIndex = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, game.PLayerList[i].guid);
-                                                if (bigModifierIndex > -1)
-                                                {
-                                                    makePlayersBigModifier howBig = (makePlayersBigModifier)game.powerUpModificationList[game.PLayerList[i].guid][bigModifierIndex];
-                                                    howBig.makeBiggerByOne();
-                                                    howBig.setCount(100);
-                                                }
-                                                else
-                                                {
-                                                    makePlayersBigModifier mPBM = new makePlayersBigModifier();
-                                                    game.powerUpModificationList[game.PLayerList[i].guid].Add(mPBM);
-                                                }
+                                                makePlayersBigModifier mPBM = new makePlayersBigModifier();
+                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(mPBM);
                                             }
+                                            //}
                                             
 
                                             
