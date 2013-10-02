@@ -8,9 +8,9 @@ namespace Akanonda.GameLibrary
     [Serializable]
     public enum PlayerSteering
     {
-        Up,
-        Down,
-        Left,
-        Right
+        Up = 1,
+        Down = 3,
+        Left = 4,
+        Right = 2
     }
 }

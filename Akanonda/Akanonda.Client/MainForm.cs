@@ -58,7 +58,6 @@ namespace Akanonda
         void MainFormKeyDown(object sender, KeyEventArgs e)
         {
             NetOutgoingMessage sendMsg;
-            
             switch (e.KeyCode) 
             {
                 case Keys.Right:

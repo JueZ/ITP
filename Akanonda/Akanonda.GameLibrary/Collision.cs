@@ -37,7 +37,8 @@ namespace Akanonda.GameLibrary
         {
             game = Game.Instance;
             Dictionary<Guid, CollisionType> collisions = new Dictionary<Guid, CollisionType>();
-            
+            int playerIndex = 0;
+            List<int> removePlayerList = new List<int>();
             foreach (Player player in game.PLayerList) // current player to check head
             {
                 List<int[]> coordinatesToCheckList = new List<int[]>();
@@ -45,30 +46,50 @@ namespace Akanonda.GameLibrary
                 coordinatesToCheckList.Add(headCoordinates);
                 bool collisionHappened = false;
                 List<Guid> deletePowerUpList = new List<Guid>();
+                List<Player> duplicateCount = game.PLayerList.FindAll(x => x.guid == player.guid);
+                int playerhasRabies = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.rabiesModifier, player.guid);
 
+                foreach (KeyValuePair<int[], int[]> bigLocation in player.bigPlayerLocation)
+                {
+                    if (bigLocation.Value[0] == headCoordinates[0] && bigLocation.Value[1] == headCoordinates[1])
+                    {
+
+                        for (int i = 1; i < bigLocation.Key[0]; i++)
+                        {
+                            if (player.playersteering == PlayerSteering.Left || player.playersteering == PlayerSteering.Right)
+                            {
+                                coordinatesToCheckList.Add(new int[] { headCoordinates[0], headCoordinates[1] + i });
+                            }
+                            else
+                            {
+                                coordinatesToCheckList.Add(new int[] { headCoordinates[0] + i, headCoordinates[1] });
+                            }
+                        }
+                    }
+                }
 
                 //check for PowerUp Collision
                 foreach (PowerUp power in Game.Instance.PowerUpList)
                 {
                     foreach (int[] powerUpLocation in power.PowerUpLocation)
                     {
-                        int checkForBigPlayerAndGetModifierIndex = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, player.guid);
+                        //int checkForBigPlayerAndGetModifierIndex = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, player.guid);
                         
-                        if ( checkForBigPlayerAndGetModifierIndex > -1 && game.powerUpModificationList[player.guid][checkForBigPlayerAndGetModifierIndex].getCount() > 0)
-                        {
-                            makePlayersBigModifier howBig = (makePlayersBigModifier)game.powerUpModificationList[player.guid][checkForBigPlayerAndGetModifierIndex];
-                            for (int i = 1; i < howBig.getSize(); i++)
-                            {
-                                if (player.playersteering == PlayerSteering.Left || player.playersteering == PlayerSteering.Right)
-                                {
-                                    coordinatesToCheckList.Add(new int[] { headCoordinates[0], headCoordinates[1] + i });
-                                }
-                                else
-                                {
-                                    coordinatesToCheckList.Add(new int[] { headCoordinates[0] + i, headCoordinates[1] });
-                                }
-                            }
-                        }
+                        //if ( checkForBigPlayerAndGetModifierIndex > -1 && game.powerUpModificationList[player.guid][checkForBigPlayerAndGetModifierIndex].getCount() > 0)
+                        //{
+                        //    makePlayersBigModifier howBig = (makePlayersBigModifier)game.powerUpModificationList[player.guid][checkForBigPlayerAndGetModifierIndex];
+                        //    for (int i = 1; i < howBig.getSize(); i++)
+                        //    {
+                        //        if (player.playersteering == PlayerSteering.Left || player.playersteering == PlayerSteering.Right)
+                        //        {
+                        //            coordinatesToCheckList.Add(new int[] { headCoordinates[0], headCoordinates[1] + i });
+                        //        }
+                        //        else
+                        //        {
+                        //            coordinatesToCheckList.Add(new int[] { headCoordinates[0] + i, headCoordinates[1] });
+                        //        }
+                        //    }
+                        //}
 
                         if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, powerUpLocation)) // current head collides with PowerUp
                         {
@@ -231,6 +252,13 @@ namespace Akanonda.GameLibrary
                                     game.powerUpCounters[Game.moveAllPowerUps] += 100;
                                     deletePowerUpList.Add(power.guid);
                                     break;
+                                case PowerUp.PowerUpKind.getMoreSnakes:
+                                    game.addPlayer(player.name, player.color, player.guid);
+                                    game.addPlayer(player.name, player.color, player.guid);
+                                    game.addPlayer(player.name, player.color, player.guid);
+                                    game.addPlayer(player.name, player.color, player.guid);
+                                    deletePowerUpList.Add(power.guid);
+                                    break;
                             }
                         }
                     }
@@ -261,8 +289,15 @@ namespace Akanonda.GameLibrary
                     }
                     else
                     {
-                        if (!collisions.ContainsKey(player.guid))
-                            collisions.Add(player.guid, CollisionType.ToWall);
+                        if (duplicateCount.Count == 1)
+                        {
+                            if (!collisions.ContainsKey(player.guid))
+                                collisions.Add(player.guid, CollisionType.ToWall);
+                        }
+                        else
+                        {
+                            removePlayerList.Add(playerIndex);
+                        }
                     }
                     collisionHappened = false;
                 }
@@ -279,17 +314,22 @@ namespace Akanonda.GameLibrary
 
                         if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, deadPlayerBody)) // current head collides with own tail
                         {
-                            if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.rabiesModifier, player.guid) == -1)
+
+                            if (playerhasRabies == -1 && duplicateCount.Count == 1)
                             {
                                 Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
                                 if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
                                     collisions.Add(player.guid, CollisionType.ToDead);
                             }
-                            else
+                            if (playerhasRabies > -1)
                             {
                                 if (deadPlayer.playerbody.Count > i)
                                     deadPlayer.playerbody.RemoveRange(0, i);
                                 break;
+                            }
+                            else if (duplicateCount.Count > 1)
+                            {
+                                removePlayerList.Add(playerIndex);
                             }
                         }
                     }
@@ -304,17 +344,84 @@ namespace Akanonda.GameLibrary
                         int x = 0;
                         foreach (int[] otherPlayerCoordinates in otherPlayer.playerbody)
                         {
+                            List<int[]> checkOtherPlayerCoordinates = new List<int[]>();
+                            
+                            foreach (KeyValuePair<int[], int[]> bigLocation in otherPlayer.bigPlayerLocation)
+                            {
+                                if (bigLocation.Value[0] == headCoordinates[0] && bigLocation.Value[1] == headCoordinates[1])
+                                {
+
+                                    for (int i = 1; i < bigLocation.Key[0]; i++)
+                                    {
+                                        if (bigLocation.Key[1] == 4 || bigLocation.Key[1] == 2)
+                                        {
+                                            if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, new int[] { headCoordinates[0], headCoordinates[1] + i}))
+                                            {
+
+                                                if (playerhasRabies == -1 && duplicateCount.Count == 1)
+                                                {
+                                                    Console.WriteLine("Player " + player.guid.ToString() + " collides with another player!");
+                                                    if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
+                                                        collisions.Add(player.guid, CollisionType.ToPlayer);
+                                                }
+                                                if (playerhasRabies > -1)
+                                                {
+                                                    if (otherPlayer.playerbody.Count > x)
+                                                    {
+                                                        otherPlayer.playerbody.RemoveRange(0, x);
+                                                        otherPlayer.score -= x;
+                                                    }
+                                                    break;
+                                                }
+                                                else if (duplicateCount.Count > 1)
+                                                {
+                                                    removePlayerList.Add(playerIndex);
+                                                }
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, new int[] { headCoordinates[0] + i, headCoordinates[1] }))
+                                            {
+
+                                                if (playerhasRabies == -1 && duplicateCount.Count == 1)
+                                                {
+                                                    Console.WriteLine("Player " + player.guid.ToString() + " collides with another player!");
+                                                    if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
+                                                        collisions.Add(player.guid, CollisionType.ToPlayer);
+                                                }
+                                                if (playerhasRabies > -1)
+                                                {
+                                                    if (otherPlayer.playerbody.Count > x)
+                                                    {
+                                                        otherPlayer.playerbody.RemoveRange(0, x);
+                                                        otherPlayer.score -= x;
+                                                    }
+                                                    break;
+                                                }
+                                                else if (duplicateCount.Count > 1)
+                                                {
+                                                    removePlayerList.Add(playerIndex);
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             x++;
                             if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, otherPlayerCoordinates)) // current head collides with other player
                             {
+                            
                                 // Collision!
-                                if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.rabiesModifier, player.guid) == -1)
+                                if (playerhasRabies == -1 && duplicateCount.Count == 1)
                                 {
                                     Console.WriteLine("Player " + player.guid.ToString() + " collides with another player!");
                                     if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
                                         collisions.Add(player.guid, CollisionType.ToPlayer);
                                 }
-                                else
+                                if (playerhasRabies > -1)
                                 {
                                     if (otherPlayer.playerbody.Count > x)
                                     {
@@ -323,6 +430,11 @@ namespace Akanonda.GameLibrary
                                     }
                                     break;
                                 }
+                                else if (duplicateCount.Count > 1)
+                                {
+                                    removePlayerList.Add(playerIndex);
+                                }
+
                             }
                             
                         }
@@ -334,30 +446,42 @@ namespace Akanonda.GameLibrary
 
                         for (int i = 0; i < size-1; i++) // skip head, otherwise loop would always find a collision
                         {
+                            
                             ownPlayerBody = otherPlayer.playerbody[i];
-                            if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, ownPlayerBody)) // current head collides with own tail
-                            {
+                            List<int[]> onlyHead = new List<int[]>();
+                            onlyHead.Add(headCoordinates);
+                            if (checkCollisionToPlayerOrPowerUp(onlyHead, ownPlayerBody)) // current head collides with own tail
+                            {                                   //coordinatesToCheckList makes player always crash when big
                              // Collision!
-
-                             if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.rabiesModifier, player.guid) == -1)
+                             if (playerhasRabies == -1 && duplicateCount.Count == 1)
                              {
                                  Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
                                  if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
                                      collisions.Add(player.guid, CollisionType.ToSelf);
                              }
-                             else
+                             if (playerhasRabies > -1)
                              {
                                  if (player.playerbody.Count > i)
                                      player.playerbody.RemoveRange(0, i);
                                  player.score -= i;
                                  break;
                              }
-                             
+                             else if (duplicateCount.Count > 1)
+                             {
+                                 removePlayerList.Add(playerIndex);
+                             }
                             }
                         }
                     }
                 }
-                
+                playerIndex++;
+            }
+
+            foreach (int removePlayerIndex in removePlayerList)
+            {
+                game.PLayerList[removePlayerIndex].guid = Guid.NewGuid();
+                game.DeadList.Add(game.PLayerList[removePlayerIndex]);
+                game.PLayerList.RemoveAt(removePlayerIndex);
             }
 
             return collisions;
@@ -376,7 +500,6 @@ namespace Akanonda.GameLibrary
             }
             return false;
         }
-
 
     }
 }

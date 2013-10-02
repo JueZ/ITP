@@ -188,9 +188,10 @@ namespace Akanonda
             
             foreach (KeyValuePair<Guid, CollisionType> key in game.CollisionList)
             {
-                Game.Instance.setScoreToLobbyPlayer(key.Key);
+                
                 Game.Instance.clearModificationListOnDead(key.Key);
                 Game.Instance.addDeadRemoveLivingPlayer(key.Key);
+                Game.Instance.setScoreToLobbyPlayer(key.Key);
             }
 
             List<Guid> removeDeadList = new List<Guid>();
@@ -245,12 +246,13 @@ namespace Akanonda
                             if (remotehailmessagearray[3] == "playing")
                             {
                                 game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
+                                
                                 //foreach (PowerUp.PowerUpKind kind in Enum.GetValues(typeof(PowerUp.PowerUpKind)))
                                 //    game.AddPowerUp(kind);
                                 
                                 game.AddPowerUp(PowerUp.PowerUpKind.makePlayersBig); // For testing
                                 game.AddPowerUp(PowerUp.PowerUpKind.makePlayersBig); // For testing
-                                game.AddPowerUp(PowerUp.PowerUpKind.goldenApple); // For testing
+                                game.AddPowerUp(PowerUp.PowerUpKind.getMoreSnakes); // For testing
                                 Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
                             }

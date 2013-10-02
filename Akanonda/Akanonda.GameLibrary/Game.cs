@@ -28,7 +28,7 @@ namespace Akanonda.GameLibrary
         public const int closingWalls = 2;
         public const int biggerWalls = 3;
         public const int biggerPlayers = 4;
-        private int _powerUpPopUpRate = 150;
+        private int _powerUpPopUpRate = 50;
 
         public static Game Instance
         {
@@ -81,7 +81,7 @@ namespace Akanonda.GameLibrary
         {
             get { return _powerUpPopUpRate; }
             set {
-                if (value >= 40 && value <= 150)
+                if (value >= 40 && value <= 100)
                     _powerUpPopUpRate = value;
             }
         }
@@ -112,9 +112,37 @@ namespace Akanonda.GameLibrary
 
         public void setsteering(Guid playerguid, PlayerSteering playersteering)
         {
-            Player playerToFind = _playerList.Find(item => item.guid == playerguid);
-            if(playerToFind != null)
-                playerToFind.playersteering = playersteering;
+            foreach (Player player in _playerList)
+            {
+                if (player.guid == playerguid)
+                {
+                    switch (playersteering)
+                    {
+                        case PlayerSteering.Up:
+                            if(player.playersteering != PlayerSteering.Down)
+                                player.playersteering = playersteering;
+                            break;
+                        case PlayerSteering.Right:
+                            if (player.playersteering != PlayerSteering.Left)
+                                player.playersteering = playersteering;
+                            break;
+                        case PlayerSteering.Down:
+                            if (player.playersteering != PlayerSteering.Up)
+                                player.playersteering = playersteering;
+                            break;
+                        case PlayerSteering.Left:
+                            if (player.playersteering != PlayerSteering.Right)
+                                player.playersteering = playersteering;
+                            break;
+                    }
+                    
+                }
+            }
+
+            //old - doesn't set steering for all snakes of one player
+            //Player playerToFind = _playerList.Find(item => item.guid == playerguid);
+            //if(playerToFind != null)
+            //    playerToFind.playersteering = playersteering;
         }
 
         public void addPlayer(string name, Color color, Guid guid)
@@ -413,6 +441,7 @@ namespace Akanonda.GameLibrary
                     paintPowerUpClosingWalls(power, g);
                     break;
                 case PowerUp.PowerUpKind.morePowerUps:
+                case PowerUp.PowerUpKind.getMoreSnakes:
                     paintPowerUpmorePowerUps(power, g);
                     break;
                 case PowerUp.PowerUpKind.deleteAllSnakes:
@@ -641,12 +670,12 @@ namespace Akanonda.GameLibrary
                         x--;
                     bool snakepartIsBig = false;
                     int howBig = 1;
-                    foreach (KeyValuePair<int, int[]> checkLocation in player.bigPlayerLocation)
+                    foreach (KeyValuePair<int[], int[]> checkLocation in player.bigPlayerLocation)
                     {
                         if (player.playerbody[i][0] == checkLocation.Value[0] && player.playerbody[i][1] == checkLocation.Value[1])
                         {
                             snakepartIsBig = true;
-                            howBig = checkLocation.Key;
+                            howBig = checkLocation.Key[0];
                             break;
                         }
 

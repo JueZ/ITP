@@ -13,7 +13,7 @@ namespace Akanonda.GameLibrary
         private Color _color;
         private Guid _guid;
         private List<int[]> _playerbody;
-        List<KeyValuePair<int, int[]>> _bigPlayerLocation;
+        List<KeyValuePair<int[], int[]>> _bigPlayerLocation;
         //private List<int, int[]> _bigPlayerLocation;
         private PlayerStatus _playerstatus;
         private PlayerSteering _playersteering;
@@ -67,12 +67,12 @@ namespace Akanonda.GameLibrary
             get { return _playerbody; }
         }
 
-        public List<KeyValuePair<int, int[]>> bigPlayerLocation { get { return _bigPlayerLocation; } set { _bigPlayerLocation = value; } }
+        public List<KeyValuePair<int[], int[]>> bigPlayerLocation { get { return _bigPlayerLocation; } set { _bigPlayerLocation = value; } }
 
         public Player(string name, Color color, Guid guid = new Guid(), int score = 0)
         {
             this._playerbody = new List<int[]>();
-            this._bigPlayerLocation = new List<KeyValuePair<int, int[]>>();
+            this._bigPlayerLocation = new List<KeyValuePair<int[], int[]>>();
             startX = Game.getRandomNumber(20, Game.Instance.getFieldX() - 20);
             startY = Game.getRandomNumber(20, Game.Instance.getFieldY() - 20);
 
@@ -89,46 +89,84 @@ namespace Akanonda.GameLibrary
 
             this._playerstatus = PlayerStatus.None;
 
-
-            int direction = Game.getRandomNumber(0, 4);
-            switch (direction)
+            List<Player> duplicateCount = Game.Instance.PLayerList.FindAll(x => x.guid == this.guid);
+            if (duplicateCount.Count == 0 || duplicateCount.Count > 4)
             {
-                case 0:
-                    this._playerbody.Add(new int[2] { startX, startY });
-                    this._playerbody.Add(new int[2] { startX, startY - 1 });
-                    this._playerbody.Add(new int[2] { startX, startY - 2 });
-                    this._playerbody.Add(new int[2] { startX, startY - 3 });
-                    this._playerbody.Add(new int[2] { startX, startY - 4 });
-                    this._playerbody.Add(new int[2] { startX, startY - 5 });
-                    this._playersteering = PlayerSteering.Up;
-                    break;
-                case 1:
-                    this._playerbody.Add(new int[2] { startX, startY });
-                    this._playerbody.Add(new int[2] { startX + 1, startY });
-                    this._playerbody.Add(new int[2] { startX + 2, startY });
-                    this._playerbody.Add(new int[2] { startX + 3, startY });
-                    this._playerbody.Add(new int[2] { startX + 4, startY });
-                    this._playerbody.Add(new int[2] { startX + 5, startY });
-                    this._playersteering = PlayerSteering.Right;
-                    break;
-                case 2:
-                    this._playerbody.Add(new int[2] { startX, startY });
-                    this._playerbody.Add(new int[2] { startX, startY + 1 });
-                    this._playerbody.Add(new int[2] { startX, startY + 2 });
-                    this._playerbody.Add(new int[2] { startX, startY + 3 });
-                    this._playerbody.Add(new int[2] { startX, startY + 4 });
-                    this._playerbody.Add(new int[2] { startX, startY + 5 });
-                    this._playersteering = PlayerSteering.Down;
-                    break;
-                case 3:
-                    this._playerbody.Add(new int[2] { startX, startY });
-                    this._playerbody.Add(new int[2] { startX - 1, startY });
-                    this._playerbody.Add(new int[2] { startX - 2, startY });
-                    this._playerbody.Add(new int[2] { startX - 3, startY });
-                    this._playerbody.Add(new int[2] { startX - 4, startY });
-                    this._playerbody.Add(new int[2] { startX - 5, startY });
-                    this._playersteering = PlayerSteering.Left;
-                    break;
+                switch (Game.getRandomNumber(0, 4))
+                {
+                    case 0:
+                        this._playerbody.Add(new int[2] { startX, startY });
+                        this._playerbody.Add(new int[2] { startX, startY - 1 });
+                        this._playerbody.Add(new int[2] { startX, startY - 2 });
+                        this._playerbody.Add(new int[2] { startX, startY - 3 });
+                        this._playerbody.Add(new int[2] { startX, startY - 4 });
+                        this._playerbody.Add(new int[2] { startX, startY - 5 });
+                        this._playersteering = PlayerSteering.Up;
+                        break;
+                    case 1:
+                        this._playerbody.Add(new int[2] { startX, startY });
+                        this._playerbody.Add(new int[2] { startX + 1, startY });
+                        this._playerbody.Add(new int[2] { startX + 2, startY });
+                        this._playerbody.Add(new int[2] { startX + 3, startY });
+                        this._playerbody.Add(new int[2] { startX + 4, startY });
+                        this._playerbody.Add(new int[2] { startX + 5, startY });
+                        this._playersteering = PlayerSteering.Right;
+                        break;
+                    case 2:
+                        this._playerbody.Add(new int[2] { startX, startY });
+                        this._playerbody.Add(new int[2] { startX, startY + 1 });
+                        this._playerbody.Add(new int[2] { startX, startY + 2 });
+                        this._playerbody.Add(new int[2] { startX, startY + 3 });
+                        this._playerbody.Add(new int[2] { startX, startY + 4 });
+                        this._playerbody.Add(new int[2] { startX, startY + 5 });
+                        this._playersteering = PlayerSteering.Down;
+                        break;
+                    case 3:
+                        this._playerbody.Add(new int[2] { startX, startY });
+                        this._playerbody.Add(new int[2] { startX - 1, startY });
+                        this._playerbody.Add(new int[2] { startX - 2, startY });
+                        this._playerbody.Add(new int[2] { startX - 3, startY });
+                        this._playerbody.Add(new int[2] { startX - 4, startY });
+                        this._playerbody.Add(new int[2] { startX - 5, startY });
+                        this._playersteering = PlayerSteering.Left;
+                        break;
+                }
+            }
+            else if(duplicateCount.Count == 1)
+            {
+                Player playerToFind = Game.Instance.PLayerList.Find(item => item.guid == this.guid);
+                int[] headCoordinates = playerToFind.playerbody[playerToFind.playerbody.Count-1];
+
+                this._playerbody.Add(new int[2] { headCoordinates[0] - 1, headCoordinates[1] });
+                this._playerbody.Add(new int[2] { headCoordinates[0] - 2, headCoordinates[1] });
+                this._playersteering = PlayerSteering.Left;
+            }
+            else if (duplicateCount.Count == 2)
+            {
+                Player playerToFind = Game.Instance.PLayerList.Find(item => item.guid == this.guid);
+                int[] headCoordinates = playerToFind.playerbody[playerToFind.playerbody.Count - 1];
+
+                this._playerbody.Add(new int[2] { headCoordinates[0] + 1, headCoordinates[1] });
+                this._playerbody.Add(new int[2] { headCoordinates[0] + 2, headCoordinates[1] });
+                this._playersteering = PlayerSteering.Right;
+            }
+            else if (duplicateCount.Count == 3)
+            {
+                Player playerToFind = Game.Instance.PLayerList.Find(item => item.guid == this.guid);
+                int[] headCoordinates = playerToFind.playerbody[playerToFind.playerbody.Count - 1];
+
+                this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] + 1 });
+                this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] + 2 });
+                this._playersteering = PlayerSteering.Down;
+            }
+            else if (duplicateCount.Count == 4)
+            {
+                Player playerToFind = Game.Instance.PLayerList.Find(item => item.guid == this.guid);
+                int[] headCoordinates = playerToFind.playerbody[playerToFind.playerbody.Count - 1];
+
+                this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] - 1 });
+                this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] - 2 });
+                this._playersteering = PlayerSteering.Up;
             }
 
 
@@ -193,7 +231,7 @@ namespace Akanonda.GameLibrary
             if (index > -1)
             {
                 if (Game.Instance.powerUpModificationList[this.guid][index].getCount() > 0)
-                this._bigPlayerLocation.Add(new KeyValuePair<int, int[]>(PowerUp.countBigModifiers(this.guid),new int[2] { x, y }));
+                this._bigPlayerLocation.Add(new KeyValuePair<int[], int[]>(new int[2] { PowerUp.countBigModifiers(this.guid), (int)this._playersteering},new int[2] { x, y }));
             }
 
             this._playerbody.Add(new int[2] { x, y });
@@ -291,11 +329,11 @@ namespace Akanonda.GameLibrary
         }
 
         public int getPlayerLocationSize(int[] playerLocation){
-            foreach(KeyValuePair<int, int[]> bigPartLocation in this._bigPlayerLocation)
+            foreach(KeyValuePair<int[], int[]> bigPartLocation in this._bigPlayerLocation)
                     {
                         if (playerLocation[0] == bigPartLocation.Value[0] && playerLocation[1] == bigPartLocation.Value[1])
                             {
-                                return bigPartLocation.Key;
+                                return bigPartLocation.Key[0];
                             }
                     }
             return 1;

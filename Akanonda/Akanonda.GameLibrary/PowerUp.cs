@@ -31,6 +31,7 @@ namespace Akanonda.GameLibrary
             rabies = 37,
             deleteAllSnakes = 89,
             makePlayersBig = 16,
+            getMoreSnakes = 11,
             
         }
 
