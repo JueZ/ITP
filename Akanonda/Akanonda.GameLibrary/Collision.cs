@@ -255,8 +255,6 @@ namespace Akanonda.GameLibrary
                                 case PowerUp.PowerUpKind.getMoreSnakes:
                                     game.addPlayer(player.name, player.color, player.guid);
                                     game.addPlayer(player.name, player.color, player.guid);
-                                    game.addPlayer(player.name, player.color, player.guid);
-                                    game.addPlayer(player.name, player.color, player.guid);
                                     deletePowerUpList.Add(power.guid);
                                     break;
                             }

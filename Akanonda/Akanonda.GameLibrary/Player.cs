@@ -90,7 +90,7 @@ namespace Akanonda.GameLibrary
             this._playerstatus = PlayerStatus.None;
 
             List<Player> duplicateCount = Game.Instance.PLayerList.FindAll(x => x.guid == this.guid);
-            if (duplicateCount.Count == 0 || duplicateCount.Count > 4)
+            if (duplicateCount.Count == 0 || duplicateCount.Count > 2)
             {
                 switch (Game.getRandomNumber(0, 4))
                 {
@@ -132,50 +132,42 @@ namespace Akanonda.GameLibrary
                         break;
                 }
             }
-            else if(duplicateCount.Count == 1)
+            else
             {
-                Player getFirstPlayer = Game.Instance.PLayerList.Find(x => x.guid == this.guid);
-                switch(getFirstPlayer.playersteering){
+                Player playerToFind = Game.Instance.PLayerList.Find(item => item.guid == this.guid);
+                int[] headCoordinates = playerToFind.playerbody[playerToFind.playerbody.Count - 1];
+                switch (playerToFind.playersteering)
+                {
+                    case PlayerSteering.Up:
                     case PlayerSteering.Down:
-                        Player playerToFind = Game.Instance.PLayerList.Find(item => item.guid == this.guid);
-                        int[] headCoordinates = playerToFind.playerbody[playerToFind.playerbody.Count-1];
-
-                        this._playerbody.Add(new int[2] { headCoordinates[0] - 1, headCoordinates[1] });
-                        this._playerbody.Add(new int[2] { headCoordinates[0] - 2, headCoordinates[1] });
-                        this._playersteering = PlayerSteering.Left;
+                        if (duplicateCount.Count == 2)
+                        {
+                            this._playerbody.Add(new int[2] { headCoordinates[0] - 1, headCoordinates[1] });
+                            this._playerbody.Add(new int[2] { headCoordinates[0] - 2, headCoordinates[1] });
+                        }
+                        else
+                        {
+                            this._playerbody.Add(new int[2] { headCoordinates[0] + 1, headCoordinates[1] });
+                            this._playerbody.Add(new int[2] { headCoordinates[0] + 2, headCoordinates[1] });
+                        }
+                        this._playersteering = duplicateCount.Count == 2 ? PlayerSteering.Left : PlayerSteering.Right;
+                        break;
+                    case PlayerSteering.Right:
+                    case PlayerSteering.Left:
+                        if (duplicateCount.Count == 2)
+                        {
+                            this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] - 1 });
+                            this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] - 2 });
+                        }
+                        else
+                        {
+                            this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] + 1 });
+                            this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] + 2 });
+                        }
+                        this._playersteering = duplicateCount.Count == 2 ? PlayerSteering.Up : PlayerSteering.Down;
                         break;
                 }
             }
-            else if (duplicateCount.Count == 2)
-            {
-                Player playerToFind = Game.Instance.PLayerList.Find(item => item.guid == this.guid);
-                int[] headCoordinates = playerToFind.playerbody[playerToFind.playerbody.Count - 1];
-
-                this._playerbody.Add(new int[2] { headCoordinates[0] + 1, headCoordinates[1] });
-                this._playerbody.Add(new int[2] { headCoordinates[0] + 2, headCoordinates[1] });
-                this._playersteering = PlayerSteering.Right;
-            }
-            else if (duplicateCount.Count == 3)
-            {
-                Player playerToFind = Game.Instance.PLayerList.Find(item => item.guid == this.guid);
-                int[] headCoordinates = playerToFind.playerbody[playerToFind.playerbody.Count - 1];
-
-                this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] + 1 });
-                this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] + 2 });
-                this._playersteering = PlayerSteering.Down;
-            }
-            else if (duplicateCount.Count == 4)
-            {
-                Player playerToFind = Game.Instance.PLayerList.Find(item => item.guid == this.guid);
-                int[] headCoordinates = playerToFind.playerbody[playerToFind.playerbody.Count - 1];
-
-                this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] - 1 });
-                this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] - 2 });
-                this._playersteering = PlayerSteering.Up;
-            }
-
-
-
         }
 
         public Guid initPlayer(string name, Color color)
