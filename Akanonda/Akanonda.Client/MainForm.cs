@@ -57,65 +57,96 @@ namespace Akanonda
         
         void MainFormKeyDown(object sender, KeyEventArgs e)
         {
+            List<Player> duplicateCount = Program.game.PLayerList.FindAll(x => x.guid == Program.game.LocalPlayerGuid);
+
             NetOutgoingMessage sendMsg;
-            switch (e.KeyCode) 
+            if (duplicateCount.Count <= 1)
             {
-                case Keys.Right:
-                    if (Program.game.LocalSteering != GameLibrary.PlayerSteering.Left)
-                    {
-                        Program.game.LocalSteering = GameLibrary.PlayerSteering.Right;
+                switch (e.KeyCode)
+                {
+                    case Keys.Right:
+                        if (Program.game.LocalSteering != GameLibrary.PlayerSteering.Left)
+                        {
+                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Right;
 
-                        sendMsg = Program.netclient.CreateMessage();
+                            sendMsg = Program.netclient.CreateMessage();
 
-                        sendMsg.Write(Program.guid.ToString());
-                        sendMsg.Write((Int32)PlayerSteering.Right);
+                            sendMsg.Write(Program.guid.ToString());
+                            sendMsg.Write((Int32)PlayerSteering.Right);
 
-                        Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
-                    }
-                    
-                    break;
-                case Keys.Left:
-                    if (Program.game.LocalSteering != GameLibrary.PlayerSteering.Right)
-                    {
-                        Program.game.LocalSteering = GameLibrary.PlayerSteering.Left;
+                            Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
+                        }
 
-                        sendMsg = Program.netclient.CreateMessage();
+                        break;
+                    case Keys.Left:
+                        if (Program.game.LocalSteering != GameLibrary.PlayerSteering.Right)
+                        {
+                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Left;
 
-                        sendMsg.Write(Program.guid.ToString());
-                        sendMsg.Write((Int32)PlayerSteering.Left);
+                            sendMsg = Program.netclient.CreateMessage();
 
-                        Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
-                    }
-                    
-                    break;
-                case Keys.Up:
-                    if (Program.game.LocalSteering != GameLibrary.PlayerSteering.Down)
-                    {
-                        Program.game.LocalSteering = GameLibrary.PlayerSteering.Up;
+                            sendMsg.Write(Program.guid.ToString());
+                            sendMsg.Write((Int32)PlayerSteering.Left);
 
-                        sendMsg = Program.netclient.CreateMessage();
+                            Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
+                        }
 
-                        sendMsg.Write(Program.guid.ToString());
-                        sendMsg.Write((Int32)PlayerSteering.Up);
+                        break;
+                    case Keys.Up:
+                        if (Program.game.LocalSteering != GameLibrary.PlayerSteering.Down)
+                        {
+                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Up;
 
-                        Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
-                    }
+                            sendMsg = Program.netclient.CreateMessage();
 
-                    break;
-                case Keys.Down:
-                    if (Program.game.LocalSteering != GameLibrary.PlayerSteering.Up)
-                    {
-                        Program.game.LocalSteering = GameLibrary.PlayerSteering.Down;
+                            sendMsg.Write(Program.guid.ToString());
+                            sendMsg.Write((Int32)PlayerSteering.Up);
 
-                        sendMsg = Program.netclient.CreateMessage();
+                            Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
+                        }
 
-                        sendMsg.Write(Program.guid.ToString());
-                        sendMsg.Write((Int32)PlayerSteering.Down);
+                        break;
+                    case Keys.Down:
+                        if (Program.game.LocalSteering != GameLibrary.PlayerSteering.Up)
+                        {
+                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Down;
 
-                        Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
+                            sendMsg = Program.netclient.CreateMessage();
 
-                    }
-                    break;
+                            sendMsg.Write(Program.guid.ToString());
+                            sendMsg.Write((Int32)PlayerSteering.Down);
+
+                            Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
+
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Right:
+                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Right;
+                            break;
+                    case Keys.Left:
+                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Left;
+                            break;
+                    case Keys.Down:
+                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Down;
+                            break;
+                    case Keys.Up:
+                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Up;
+                            break;
+                }
+
+                sendMsg = Program.netclient.CreateMessage();
+
+                sendMsg.Write(Program.guid.ToString());
+                sendMsg.Write((Int32)Program.game.LocalSteering);
+
+                Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
+
             }
         }
 

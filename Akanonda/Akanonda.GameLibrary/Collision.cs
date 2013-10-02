@@ -253,11 +253,11 @@ namespace Akanonda.GameLibrary
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.getMoreSnakes:
-                                    for (int i = 0; i < duplicateCount.Count; i++)
-                                    {
-                                        game.addDuplicatePlayer(player.name, player.color, player.guid, i);
-                                        game.addDuplicatePlayer(player.name, player.color, player.guid, i);
-                                    }
+                                    int Index = game.PLayerList.FindIndex(x => x.guid == player.guid && x.name == player.name);
+                                    
+                                        game.addDuplicatePlayer(player.name, player.color, player.guid, Index);
+                                        game.addDuplicatePlayer(player.name, player.color, player.guid, Index);
+                                    
                                     deletePowerUpList.Add(power.guid);
                                     break;
                             }

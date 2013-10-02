@@ -136,6 +136,7 @@ namespace Akanonda.GameLibrary
             {
                 List<Player> playerToFind = Game.Instance.PLayerList.FindAll(item => item.guid == this.guid);
                 int[] headCoordinates = playerToFind[duplicateIndex].playerbody[playerToFind[duplicateIndex].playerbody.Count - 1];
+                this._name += duplicateCount.Count;
                 switch (playerToFind[duplicateIndex].playersteering)
                 {
                     case PlayerSteering.Up:
