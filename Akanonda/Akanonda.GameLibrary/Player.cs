@@ -69,7 +69,7 @@ namespace Akanonda.GameLibrary
 
         public List<KeyValuePair<int[], int[]>> bigPlayerLocation { get { return _bigPlayerLocation; } set { _bigPlayerLocation = value; } }
 
-        public Player(string name, Color color, Guid guid = new Guid(), int score = 0)
+        public Player(string name, Color color, Guid guid = new Guid(), int score = 0, int duplicateIndex = 0)
         {
             this._playerbody = new List<int[]>();
             this._bigPlayerLocation = new List<KeyValuePair<int[], int[]>>();
@@ -90,7 +90,7 @@ namespace Akanonda.GameLibrary
             this._playerstatus = PlayerStatus.None;
 
             List<Player> duplicateCount = Game.Instance.PLayerList.FindAll(x => x.guid == this.guid);
-            if (duplicateCount.Count == 0 || duplicateCount.Count > 2)
+            if (duplicateCount.Count == 0)
             {
                 switch (Game.getRandomNumber(0, 4))
                 {
@@ -134,13 +134,13 @@ namespace Akanonda.GameLibrary
             }
             else
             {
-                Player playerToFind = Game.Instance.PLayerList.Find(item => item.guid == this.guid);
-                int[] headCoordinates = playerToFind.playerbody[playerToFind.playerbody.Count - 1];
-                switch (playerToFind.playersteering)
+                List<Player> playerToFind = Game.Instance.PLayerList.FindAll(item => item.guid == this.guid);
+                int[] headCoordinates = playerToFind[duplicateIndex].playerbody[playerToFind[duplicateIndex].playerbody.Count - 1];
+                switch (playerToFind[duplicateIndex].playersteering)
                 {
                     case PlayerSteering.Up:
                     case PlayerSteering.Down:
-                        if (duplicateCount.Count == 2)
+                        if (duplicateCount.Count % 2 == 0)
                         {
                             this._playerbody.Add(new int[2] { headCoordinates[0] - 1, headCoordinates[1] });
                             this._playerbody.Add(new int[2] { headCoordinates[0] - 2, headCoordinates[1] });
@@ -154,7 +154,7 @@ namespace Akanonda.GameLibrary
                         break;
                     case PlayerSteering.Right:
                     case PlayerSteering.Left:
-                        if (duplicateCount.Count == 2)
+                        if (duplicateCount.Count % 2 != 0)
                         {
                             this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] - 1 });
                             this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] - 2 });

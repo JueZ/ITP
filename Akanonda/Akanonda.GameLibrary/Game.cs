@@ -154,6 +154,11 @@ namespace Akanonda.GameLibrary
             _playerList.Add(new Player(name, color, guid, setScore));
         }
 
+        public void addDuplicatePlayer(string name, Color color, Guid guid, int duplicateIndex)
+        {
+            _playerList.Add(new Player(name, color, guid, 0, duplicateIndex));
+        }
+
         public void addDeadRemoveLivingPlayer(Guid guid)
         {
             Player playerToRemove = _playerList.Find(item => item.guid == guid);

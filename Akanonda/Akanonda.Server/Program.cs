@@ -251,7 +251,7 @@ namespace Akanonda
                                 //    game.AddPowerUp(kind);
                                 
                                 //game.AddPowerUp(PowerUp.PowerUpKind.deleteAllSnakes); // For testing
-                                //game.AddPowerUp(PowerUp.PowerUpKind.redApple); // For testing
+                                game.AddPowerUp(PowerUp.PowerUpKind.getMoreSnakes); // For testing
                                 game.AddPowerUp(PowerUp.PowerUpKind.getMoreSnakes); // For testing
                                 Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
@@ -320,9 +320,12 @@ namespace Akanonda
                         inLobby += p.name + "-" + getColorFormARGB(p.color) + "-" + p.score + ";";
 
                 }
+                List<Guid> noDuplicatesList = new List<Guid>();
                 foreach (GameLibrary.Player p in game.PLayerList)
                 {
+                    if(!noDuplicatesList.Contains(p.guid))
                     inGame += p.name + "-" + getColorFormARGB(p.color) + "-" + p.score + ";";
+                    noDuplicatesList.Add(p.guid);
                 }
                 inGame = inGame.Remove(inGame.Length - 1);
                 inLobby = inLobby.Remove(inLobby.Length - 1);
