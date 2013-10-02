@@ -134,12 +134,17 @@ namespace Akanonda.GameLibrary
             }
             else if(duplicateCount.Count == 1)
             {
-                Player playerToFind = Game.Instance.PLayerList.Find(item => item.guid == this.guid);
-                int[] headCoordinates = playerToFind.playerbody[playerToFind.playerbody.Count-1];
+                Player getFirstPlayer = Game.Instance.PLayerList.Find(x => x.guid == this.guid);
+                switch(getFirstPlayer.playersteering){
+                    case PlayerSteering.Down:
+                        Player playerToFind = Game.Instance.PLayerList.Find(item => item.guid == this.guid);
+                        int[] headCoordinates = playerToFind.playerbody[playerToFind.playerbody.Count-1];
 
-                this._playerbody.Add(new int[2] { headCoordinates[0] - 1, headCoordinates[1] });
-                this._playerbody.Add(new int[2] { headCoordinates[0] - 2, headCoordinates[1] });
-                this._playersteering = PlayerSteering.Left;
+                        this._playerbody.Add(new int[2] { headCoordinates[0] - 1, headCoordinates[1] });
+                        this._playerbody.Add(new int[2] { headCoordinates[0] - 2, headCoordinates[1] });
+                        this._playersteering = PlayerSteering.Left;
+                        break;
+                }
             }
             else if (duplicateCount.Count == 2)
             {

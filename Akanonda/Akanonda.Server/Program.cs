@@ -250,8 +250,8 @@ namespace Akanonda
                                 //foreach (PowerUp.PowerUpKind kind in Enum.GetValues(typeof(PowerUp.PowerUpKind)))
                                 //    game.AddPowerUp(kind);
                                 
-                                game.AddPowerUp(PowerUp.PowerUpKind.makePlayersBig); // For testing
-                                game.AddPowerUp(PowerUp.PowerUpKind.makePlayersBig); // For testing
+                                //game.AddPowerUp(PowerUp.PowerUpKind.deleteAllSnakes); // For testing
+                                //game.AddPowerUp(PowerUp.PowerUpKind.redApple); // For testing
                                 game.AddPowerUp(PowerUp.PowerUpKind.getMoreSnakes); // For testing
                                 Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
