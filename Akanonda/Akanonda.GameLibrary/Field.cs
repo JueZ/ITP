@@ -26,9 +26,9 @@ namespace Akanonda.GameLibrary
         public void setSize(int x, int y)
         {
             if (x < 1)
-                throw new ArgumentOutOfRangeException("x","Gamefield must have a size greater than 0");
+                throw new ArgumentOutOfRangeException("x","Gamefield must be greater than 0");
             if (y < 1)
-                throw new ArgumentOutOfRangeException("y", "Gamefield must have a size greater than 0");
+                throw new ArgumentOutOfRangeException("y", "Gamefield must be greater than 0");
 
             this._x = x;
             this._y = y;

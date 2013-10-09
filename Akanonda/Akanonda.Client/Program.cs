@@ -142,6 +142,9 @@ namespace Akanonda
                         case CollisionType.ToDead:
                             text = "Your hit a dead Snake!";
                             break;
+                        case CollisionType.kicked:
+                            text = "You were kicked from the Admin!";
+                            break;
                         default:
                             text = "You crashed!";
                             break;

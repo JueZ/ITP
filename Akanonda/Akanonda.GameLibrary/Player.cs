@@ -165,7 +165,7 @@ namespace Akanonda.GameLibrary
                             this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] + 1 });
                             this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] + 2 });
                         }
-                        this._playersteering = duplicateCount.Count == 2 ? PlayerSteering.Up : PlayerSteering.Down;
+                        this._playersteering = duplicateCount.Count == 2 ? PlayerSteering.Down : PlayerSteering.Up;
                         break;
                 }
             }

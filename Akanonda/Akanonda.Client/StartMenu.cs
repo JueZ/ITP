@@ -56,7 +56,7 @@ namespace Akanonda
             Lobby.Show();
             
            //Lobby.SetDesktopLocation(Main.Location.X + Main.Size.Width, Main.Location.Y);
-            Lobby.Location = new Point(Main.Left + Main.Width, Main.Top);
+            Lobby.Location = new Point(Main.Left + Main.Width + 20, Main.Top);
             //this.Show();
             //this.Dispose();
         }

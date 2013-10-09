@@ -78,6 +78,15 @@ namespace Akanonda
                         StartChat();
                         Console.WriteLine("Chat started");
                         break;
+                    case "kick Player":
+                        Console.WriteLine("Enter Player name:");
+                        string playerToKick = Console.ReadLine();
+                        Player playerToFind = game.PLayerList.Find(item => item.name == playerToKick);
+                        if (playerToFind != null)
+                        {
+                            game.addDeadRemoveLivingPlayer(playerToFind.guid);
+                        }
+                        break;
                     default:
                         Console.WriteLine("Command not found.");
                         break;
@@ -138,14 +147,14 @@ namespace Akanonda
 
                                 game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
 
-                                Console.WriteLine("[Chat]Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
+                                //Console.WriteLine("[Chat]Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                             }
 
                             if (status == NetConnectionStatus.Disconnected)
                             {
                                 game.removePlayer(Guid.Parse(reason));
                                 game.RemoveLobbyPlayer(Guid.Parse(reason));
-                                Console.WriteLine("[Chat]Player disconnected! \t GUID: " + Guid.Parse(reason)); 
+                                //Console.WriteLine("[Chat]Player disconnected! \t GUID: " + Guid.Parse(reason)); 
                             }
                             break;
 
@@ -249,22 +258,19 @@ namespace Akanonda
                                 
                                 //foreach (PowerUp.PowerUpKind kind in Enum.GetValues(typeof(PowerUp.PowerUpKind)))
                                 //    game.AddPowerUp(kind);
-                                
-                                //game.AddPowerUp(PowerUp.PowerUpKind.deleteAllSnakes); // For testing
-                                game.AddPowerUp(PowerUp.PowerUpKind.getMoreSnakes); // For testing
-                                game.AddPowerUp(PowerUp.PowerUpKind.getMoreSnakes); // For testing
-                                Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
-
+                                //Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
+                                    game.powerUpCounters[Game.biggerWalls] += 10;
                             }
                             else if (remotehailmessagearray[3] == "justWatching")
                             {
                                 //game.removePlayer(Guid.Parse(remotehailmessagearray[0]));
-                                Console.WriteLine("[Game]Player connected <watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
+                                //Console.WriteLine("[Game]Player connected <watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
 
                             }
                             else if (remotehailmessagearray[3] == "dead")
                             {
-                                Console.WriteLine("[Game]Player died <now watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
+                                //Console.WriteLine("[Game]Player died <now watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
+                                game.powerUpCounters[Game.closingWalls] += 10;
                             }
                         }
 
@@ -275,7 +281,7 @@ namespace Akanonda
                                 //game.removePlayer(Guid.Parse(reason));
                                 game.addDeadRemoveLivingPlayer(Guid.Parse(reason));
                                 //game.RemoveLobbyPlayer(Guid.Parse(reason));
-                                Console.WriteLine("[Game]Player disconnected! \t GUID: " + Guid.Parse(reason));
+                                //Console.WriteLine("[Game]Player disconnected! \t GUID: " + Guid.Parse(reason));
                             }
                         }
 						break;
