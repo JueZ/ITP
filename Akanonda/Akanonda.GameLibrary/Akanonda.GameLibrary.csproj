@@ -51,7 +51,66 @@
     <Compile Include="PowerUp.cs" />
     <Compile Include="PowerUpModifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SerializeHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\biggerwallsico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bigico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blackappleico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\closingwallsico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\getmoreico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gofastico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\goldenappleico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\goslowico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gothroughwallsico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\morepowerupsico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\movepowerupsico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\othersgofastico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\othersgoslowico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\redappleico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shorterico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\openwallsico.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

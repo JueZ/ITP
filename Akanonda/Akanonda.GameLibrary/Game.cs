@@ -411,253 +411,79 @@ namespace Akanonda.GameLibrary
         {
             foreach (PowerUp power in _powerupList)
             {
-                choosePowerUpPaint(power, g);
+                choosePowerUpIcon(power, g);
             }
         }
 
-        private void choosePowerUpPaint(PowerUp power, Graphics g)
-        {
-            switch (power.kind)
-            {
-                case PowerUp.PowerUpKind.openWalls:
-                case PowerUp.PowerUpKind.iGoThroughWalls:
-                    paintPowerUpOpenWallsAndiGoThroughWalls(power, g);
-                    break;
-                case PowerUp.PowerUpKind.iGoFast:
-                case PowerUp.PowerUpKind.othersGoFast:
-                    paintPowerUpiGoFastAndOthersGoFast(power, g);
-                    break;
-                case PowerUp.PowerUpKind.redApple:
-                case PowerUp.PowerUpKind.goldenApple:
-                case PowerUp.PowerUpKind.rabies:
-                    paintPowerUpredAppleandgoldenAppleandRabies(power, g);
-                    break;
-                case PowerUp.PowerUpKind.movePowerUps:
-                    paintPowerUpMovePowerUps(power, g);
-                    break;
-                case PowerUp.PowerUpKind.iGoSlow:
-                case PowerUp.PowerUpKind.othersGoSlow:
-                    paintiGoSlowAndothersGoSlow(power, g);
-                    break;
-                case PowerUp.PowerUpKind.biggerWalls:
-                    paintPowerUpBiggerWalls(power, g);
-                    break;
-                case PowerUp.PowerUpKind.closingWalls:
-                    paintPowerUpClosingWalls(power, g);
-                    break;
-                case PowerUp.PowerUpKind.morePowerUps:
-                case PowerUp.PowerUpKind.getMoreSnakes:
-                    paintPowerUpmorePowerUps(power, g);
-                    break;
-                case PowerUp.PowerUpKind.deleteAllSnakes:
-                    foreach (int[] powerUpLocation in power.PowerUpLocation)
-                    {
-                        g.FillRectangle(new SolidBrush(Color.Red),
-                            (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                    }
-                    break;
-                case PowerUp.PowerUpKind.makePlayersBig:
-                    foreach (int[] powerUpLocation in power.PowerUpLocation)
-                    {
-                        g.FillRectangle(new SolidBrush(Color.Blue),
-                            (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                    }
-                    break;
-            }
-        }
-
-
-        private void paintPowerUpOpenWallsAndiGoThroughWalls(PowerUp power, Graphics g)
-        {
-            int idx = 0;
-            foreach (int[] powerUpLocation in power.PowerUpLocation)
-            {
-
-                if (idx > 15)
-                {
-                    g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.iGoThroughWalls ? Color.Green : Color.LightSkyBlue),
-                        (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                }
-                else
-                {
-                    if (_tickCounter % 10 > 5)
-                    {
-                        if (idx % 2 != 0)
-                            g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.iGoThroughWalls ? Color.Green : Color.LightSkyBlue),
-                                (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                        else
-                            g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                    }
-                    else
-                    {
-                        if (idx % 2 == 0)
-                            g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.iGoThroughWalls ? Color.Green : Color.LightSkyBlue),
-                                (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                        else
-                            g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-
-                    }
-                }
-
-                idx++;
-            }
-        }
-
-        private void paintPowerUpiGoFastAndOthersGoFast(PowerUp power, Graphics g)
+        private void choosePowerUpIcon(PowerUp power, Graphics g)
         {
             int lowestX = 9999;
             int lowestY = 9999;
+            Icon powerupIcon = null;
             
-            foreach (int[] powerUpLocation in power.PowerUpLocation)
-            {
-                
-                    lowestX = lowestX < (_field.offsetWest + powerUpLocation[0] * _field.Scale) ? lowestX : (_field.offsetWest + powerUpLocation[0] * _field.Scale);
-                    lowestY = lowestY < (_field.offsetNorth + powerUpLocation[1] * _field.Scale) ? lowestY : (_field.offsetNorth + powerUpLocation[1] * _field.Scale);
-                
-            }
-            if (power.kind == PowerUp.PowerUpKind.iGoFast)
-            {
-                Icon fastIcon = new Icon("iGoFast.ico");
-                Rectangle rect = new Rectangle(lowestX - 3, lowestY - 3, 31, 31);
-                g.DrawIcon(fastIcon, rect);
-            }
-            else
-            {
-                Icon fastIcon = new Icon("othersGoFast.ico");
-                Rectangle rect = new Rectangle(lowestX - 3, lowestY - 3, 31, 31);
-                g.DrawIcon(fastIcon, rect);
-            }
-        }
-
-        private void paintPowerUpredAppleandgoldenAppleandRabies(PowerUp power, Graphics g)
-        {
-            foreach (int[] powerUpLocation in power.PowerUpLocation)
-            {
-                g.FillRectangle(new SolidBrush(power.kind == PowerUp.PowerUpKind.goldenApple ? Color.Yellow : power.kind == PowerUp.PowerUpKind.rabies ? Color.Black : Color.Red),
-                    (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-            }
-        }
-
-        private void paintPowerUpMovePowerUps(PowerUp power, Graphics g)
-        {
-            int idx = 0;
-            foreach (int[] powerUpLocation in power.PowerUpLocation)
-            {
-                switch (idx)
-                {
-                    case 2:
-                    case 6:
-                    case 10:
-                    case 14:
-                    case 16:
-                    case 18:
-                    case 22:
-                    case 24:
-                        g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                        break;
-                    default:
-                        g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                        break;
-                }
-                idx++;
-            }
-        }
-
-        private void paintiGoSlowAndothersGoSlow(PowerUp power, Graphics g)
-        {
-            int lowestX = 9999;
-            int lowestY = 9999;
-
             foreach (int[] powerUpLocation in power.PowerUpLocation)
             {
 
                 lowestX = lowestX < (_field.offsetWest + powerUpLocation[0] * _field.Scale) ? lowestX : (_field.offsetWest + powerUpLocation[0] * _field.Scale);
                 lowestY = lowestY < (_field.offsetNorth + powerUpLocation[1] * _field.Scale) ? lowestY : (_field.offsetNorth + powerUpLocation[1] * _field.Scale);
+            }
 
-            }
-            if (power.kind == PowerUp.PowerUpKind.iGoSlow)
+            Rectangle rect = new Rectangle(lowestX - 3, lowestY - 3, 31, 31);
+
+            switch (power.kind)
             {
-                Icon slowIcon = new Icon("iGoSlow.ico");
-                Rectangle rect = new Rectangle(lowestX - 3, lowestY - 3, 31, 31);
-                g.DrawIcon(slowIcon, rect);
+                case PowerUp.PowerUpKind.openWalls:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.openWallsIco;
+                    break;
+                case PowerUp.PowerUpKind.iGoThroughWalls:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.goThroughWallsIco;
+                    break;
+                case PowerUp.PowerUpKind.iGoFast:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.goFastIco;
+                    break;
+                case PowerUp.PowerUpKind.othersGoFast:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.othersGoFastIco;
+                    break;
+                case PowerUp.PowerUpKind.redApple:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.shorterIco;
+                    break;
+                case PowerUp.PowerUpKind.goldenApple:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.goldenAppleIco;
+                    break;
+                case PowerUp.PowerUpKind.rabies:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.blackAppleIco;
+                    break;
+                case PowerUp.PowerUpKind.movePowerUps:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.movePowerupsIco;
+                    break;
+                case PowerUp.PowerUpKind.iGoSlow:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.goSlowIco;
+                    break;
+                case PowerUp.PowerUpKind.othersGoSlow:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.othersGoSlowIco;
+                    break;
+                case PowerUp.PowerUpKind.biggerWalls:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.biggerWallsIco;
+                    break;
+                case PowerUp.PowerUpKind.closingWalls:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.closingWallsIco;
+                    break;
+                case PowerUp.PowerUpKind.morePowerUps:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.morePowerupsIco;
+                    break;
+                case PowerUp.PowerUpKind.getMoreSnakes:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.getMoreIco;
+                    break;
+                case PowerUp.PowerUpKind.deleteAllSnakes:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.redAppleIco;
+                    break;
+                case PowerUp.PowerUpKind.makePlayersBig:
+                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.bigIco;
+                    break;
             }
-            else
-            {
-                Icon slowIcon = new Icon("othersGoSlow.ico");
-                Rectangle rect = new Rectangle(lowestX - 3, lowestY - 3, 31, 31);
-                g.DrawIcon(slowIcon, rect);
-            }
+            g.DrawIcon(powerupIcon, rect);
         }
 
-        private void paintPowerUpBiggerWalls(PowerUp power, Graphics g)
-        {
-            int idx = 0;
-            foreach (int[] powerUpLocation in power.PowerUpLocation)
-            {
-
-                if (idx > 15)
-                {
-                    g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                }
-                else
-                {
-                    g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                }
-
-                idx++;
-            }
-        }
-
-        private void paintPowerUpClosingWalls(PowerUp power, Graphics g)
-        {
-            int idx = 0;
-            foreach (int[] powerUpLocation in power.PowerUpLocation)
-            {
-                if (idx < 15)
-                {
-                    g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                }
-                else
-                {
-                    if (idx == 20 || idx == 15)
-                        g.FillRectangle(new SolidBrush(Color.LightSkyBlue), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                    else
-                        g.FillRectangle(new SolidBrush(Color.Black), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                }
-
-                idx++;
-            }
-        }
-
-        private void paintPowerUpmorePowerUps(PowerUp power, Graphics g)
-        {
-            int idx = 0;
-            Random randonGen = new Random();
-            Color randomColor = Color.White;
-            if (_tickCounter % 10 == 5 || _tickCounter % 5 == 2)
-                randomColor = Color.FromArgb(randonGen.Next(255), randonGen.Next(255), randonGen.Next(255));
-
-            foreach (int[] powerUpLocation in power.PowerUpLocation)
-            {
-                switch (idx)
-                {
-                    case 2:
-                    case 6:
-                    case 10:
-                    case 14:
-                    case 16:
-                    case 18:
-                    case 22:
-                    case 24:
-                        g.FillRectangle(new SolidBrush(Color.White), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                        break;
-                    default:
-                        g.FillRectangle(new SolidBrush(randomColor), (_field.offsetWest + powerUpLocation[0] * _field.Scale), (_field.offsetNorth + powerUpLocation[1] * _field.Scale), _field.Scale, _field.Scale);
-                        break;
-                }
-                idx++;
-            }
-        }
 
         private void paintAlivePlayers(Graphics g)
         {
