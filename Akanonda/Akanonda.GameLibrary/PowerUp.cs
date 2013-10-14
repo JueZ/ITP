@@ -65,6 +65,9 @@ namespace Akanonda.GameLibrary
             if (kind == PowerUpKind.goldenApple || kind == PowerUpKind.deleteAllSnakes || kind == PowerUpKind.rabies)
             {
                 this._PowerUpLocation.Add(new int[2] { startX, startY });
+                this._PowerUpLocation.Add(new int[2] { startX, startY + 1 });
+                this._PowerUpLocation.Add(new int[2] { startX + 1, startY +1 });
+                this._PowerUpLocation.Add(new int[2] { startX + 1, startY });
             }
             else
             {

@@ -255,22 +255,17 @@ namespace Akanonda
                             if (remotehailmessagearray[3] == "playing")
                             {
                                 game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-
+                                game.AddPowerUp(PowerUp.PowerUpKind.rabies);
+                                if(game.PLayerList.Count > 1)
+                                game.powerUpCounters[Game.biggerWalls] += 10;
                                 //foreach (PowerUp.PowerUpKind kind in Enum.GetValues(typeof(PowerUp.PowerUpKind)))
                                 //    game.AddPowerUp(kind);
                                 //Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
-                                game.AddPowerUp(PowerUp.PowerUpKind.openWalls);
-                                    game.powerUpCounters[Game.biggerWalls] += 10;
-                            }
-                            else if (remotehailmessagearray[3] == "justWatching")
-                            {
-                                //game.removePlayer(Guid.Parse(remotehailmessagearray[0]));
-                                //Console.WriteLine("[Game]Player connected <watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
-
                             }
                             else if (remotehailmessagearray[3] == "dead")
                             {
                                 //Console.WriteLine("[Game]Player died <now watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
+                                if (game.PLayerList.Count > 1)
                                 game.powerUpCounters[Game.closingWalls] += 10;
                             }
                         }
@@ -279,10 +274,7 @@ namespace Akanonda
                         {
                             if (reason != "Connection timed out" && Guid.Parse(reason) != null) //fix for server crashes
                             {
-                                //game.removePlayer(Guid.Parse(reason));
                                 game.addDeadRemoveLivingPlayer(Guid.Parse(reason));
-                                //game.RemoveLobbyPlayer(Guid.Parse(reason));
-                                //Console.WriteLine("[Game]Player disconnected! \t GUID: " + Guid.Parse(reason));
                             }
                         }
 						break;

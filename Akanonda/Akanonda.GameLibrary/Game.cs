@@ -428,11 +428,12 @@ namespace Akanonda.GameLibrary
                 lowestY = lowestY < (_field.offsetNorth + powerUpLocation[1] * _field.Scale) ? lowestY : (_field.offsetNorth + powerUpLocation[1] * _field.Scale);
             }
             Rectangle rect;
-            if(power.kind != PowerUp.PowerUpKind.rabies && power.kind != PowerUp.PowerUpKind.goldenApple && power.kind != PowerUp.PowerUpKind.deleteAllSnakes)
+            if (power.kind != PowerUp.PowerUpKind.rabies && power.kind != PowerUp.PowerUpKind.goldenApple && power.kind != PowerUp.PowerUpKind.deleteAllSnakes)
                 rect = new Rectangle(lowestX, lowestY, 26, 26);
             else
-                rect = new Rectangle(lowestX, lowestY, 10, 10);
-
+            {
+                rect = new Rectangle(lowestX - 2, lowestY - 2, 15, 15);
+            }
             switch (power.kind)
             {
                 case PowerUp.PowerUpKind.openWalls:
