@@ -204,6 +204,15 @@ namespace Akanonda
             //LobbyForm.L_form.Activate();
         }
 
+        public void focusReplay()
+        {
+            this.replay.Focus();
+        }
+
+        private void closeOverlayButton_Enter(object sender, EventArgs e)
+        {
+            focusReplay();
+        }
 
   }
 }

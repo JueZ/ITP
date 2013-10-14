@@ -28,7 +28,7 @@ namespace Akanonda.GameLibrary
         public const int closingWalls = 2;
         public const int biggerWalls = 3;
         public const int biggerPlayers = 4;
-        private int _powerUpPopUpRate = 50;
+        private int _powerUpPopUpRate = 65;
 
         public static Game Instance
         {
@@ -278,7 +278,7 @@ namespace Akanonda.GameLibrary
 
         private void setPopUpRateToNormal()
         {
-            if (getRandomNumber(0, PowerUpPopUpRate) % (PowerUpPopUpRate / 2) == 0)
+            if (getRandomNumber(0,100) % 99 == 0)
             PowerUpPopUpRate++;
         }
 
@@ -325,8 +325,15 @@ namespace Akanonda.GameLibrary
             {
                 if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoSlowModifier, _playerList[i].guid) > -1 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoSlowModifier, _playerList[i].guid) > -1)
                 {
-                    if (tickCounter % 2 == 0 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoFastModifier, _playerList[i].guid) < 0 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoFastModifier, _playerList[i].guid) < 0)
+                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoFastModifier, _playerList[i].guid) > -1 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoFastModifier, _playerList[i].guid) > -1)
+                    {
                         _playerList[i].playerMove(grow);
+                    }
+                    else
+                    {
+                        if (tickCounter % 2 == 0)
+                            _playerList[i].playerMove(grow);
+                    }
                 }
                 else
                 {

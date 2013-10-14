@@ -150,7 +150,8 @@ namespace Akanonda
 
                     MainForm.M_Form.showOverlay(SurvivalMinute, SurvivalSecond, text, length);
                     LobbyForm.L_form.StartGame_Enable();
-                    LobbyForm.L_form.Focus();
+                    MainForm.M_Form.focusReplay();
+                    //LobbyForm.L_form.Focus();
 
                 }
             }

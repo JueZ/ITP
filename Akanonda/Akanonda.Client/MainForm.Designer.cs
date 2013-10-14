@@ -101,6 +101,7 @@ namespace Akanonda
             this.closeOverlayButton.Text = "X";
             this.closeOverlayButton.UseVisualStyleBackColor = true;
             this.closeOverlayButton.Click += new System.EventHandler(this.closeOverlayButton_Click);
+            this.closeOverlayButton.Enter += new System.EventHandler(this.closeOverlayButton_Enter);
             // 
             // MainForm
             // 
