@@ -254,7 +254,7 @@ namespace Akanonda.GameLibrary
             if (powerUpCounters[moveAllPowerUps] > 0)
             {
                 if (_tickCounter % 2 == 0) //Powerup moving speed
-                    PowerUp.checkIfWallsAreOpenThenMovePowerUps();
+                    PowerUp.movePowerUpsButNotThroughWall();
 
                 powerUpCounters[moveAllPowerUps]--;
                 if (powerUpCounters[moveAllPowerUps] <= 0)
@@ -427,58 +427,61 @@ namespace Akanonda.GameLibrary
                 lowestX = lowestX < (_field.offsetWest + powerUpLocation[0] * _field.Scale) ? lowestX : (_field.offsetWest + powerUpLocation[0] * _field.Scale);
                 lowestY = lowestY < (_field.offsetNorth + powerUpLocation[1] * _field.Scale) ? lowestY : (_field.offsetNorth + powerUpLocation[1] * _field.Scale);
             }
-
-            Rectangle rect = new Rectangle(lowestX - 3, lowestY - 3, 31, 31);
+            Rectangle rect;
+            if(power.kind != PowerUp.PowerUpKind.rabies || power.kind != PowerUp.PowerUpKind.goldenApple || power.kind != PowerUp.PowerUpKind.deleteAllSnakes)
+                rect = new Rectangle(lowestX - 3, lowestY - 3, 31, 31);
+            else
+                rect = new Rectangle(lowestX - 3, lowestY - 3, 2, 2);
 
             switch (power.kind)
             {
                 case PowerUp.PowerUpKind.openWalls:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.openWallsIco;
+                    powerupIcon = new Icon("images/openwallsico.ico");
                     break;
                 case PowerUp.PowerUpKind.iGoThroughWalls:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.goThroughWallsIco;
+                    powerupIcon = new Icon("images/gothroughwallsico.ico");
                     break;
                 case PowerUp.PowerUpKind.iGoFast:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.goFastIco;
+                    powerupIcon = new Icon("images/gofastico.ico");
                     break;
                 case PowerUp.PowerUpKind.othersGoFast:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.othersGoFastIco;
+                    powerupIcon = new Icon("images/othersgofastico.ico");
                     break;
                 case PowerUp.PowerUpKind.redApple:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.shorterIco;
+                    powerupIcon = new Icon("images/shorterico.ico");
                     break;
                 case PowerUp.PowerUpKind.goldenApple:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.goldenAppleIco;
+                    powerupIcon = new Icon("images/goldenappleico.ico");
                     break;
                 case PowerUp.PowerUpKind.rabies:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.blackAppleIco;
+                    powerupIcon = new Icon("images/blackappleico.ico");
                     break;
                 case PowerUp.PowerUpKind.movePowerUps:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.movePowerupsIco;
+                    powerupIcon = new Icon("images/movepowerupsico.ico");
                     break;
                 case PowerUp.PowerUpKind.iGoSlow:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.goSlowIco;
+                    powerupIcon = new Icon("images/goslowico.ico");
                     break;
                 case PowerUp.PowerUpKind.othersGoSlow:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.othersGoSlowIco;
+                    powerupIcon = new Icon("images/othersgoslowico.ico");
                     break;
                 case PowerUp.PowerUpKind.biggerWalls:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.biggerWallsIco;
+                    powerupIcon = new Icon("images/biggerwallsico.ico");
                     break;
                 case PowerUp.PowerUpKind.closingWalls:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.closingWallsIco;
+                    powerupIcon = new Icon("images/closingwallsico.ico");
                     break;
                 case PowerUp.PowerUpKind.morePowerUps:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.morePowerupsIco;
+                    powerupIcon = new Icon("images/morepowerupsico.ico");
                     break;
                 case PowerUp.PowerUpKind.getMoreSnakes:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.getMoreIco;
+                    powerupIcon = new Icon("images/getmoreico.ico");
                     break;
                 case PowerUp.PowerUpKind.deleteAllSnakes:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.redAppleIco;
+                    powerupIcon = new Icon("images/redappleico.ico");
                     break;
                 case PowerUp.PowerUpKind.makePlayersBig:
-                    powerupIcon = Akanonda.GameLibrary.Properties.Resources.bigIco;
+                    powerupIcon = new Icon("images/bigico.ico");
                     break;
             }
             g.DrawIcon(powerupIcon, rect);

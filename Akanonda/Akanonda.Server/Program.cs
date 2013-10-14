@@ -256,8 +256,8 @@ namespace Akanonda
                             {
                                 game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                                 
-                                //foreach (PowerUp.PowerUpKind kind in Enum.GetValues(typeof(PowerUp.PowerUpKind)))
-                                //    game.AddPowerUp(kind);
+                                foreach (PowerUp.PowerUpKind kind in Enum.GetValues(typeof(PowerUp.PowerUpKind)))
+                                    game.AddPowerUp(kind);
                                 //Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                                 game.AddPowerUp(PowerUp.PowerUpKind.openWalls);
                                     game.powerUpCounters[Game.biggerWalls] += 10;
