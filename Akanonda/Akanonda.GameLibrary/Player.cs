@@ -244,8 +244,15 @@ namespace Akanonda.GameLibrary
 
             if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoFastModifier, this.guid) > -1 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoFastModifier, this.guid) > -1)
             {
-                this._playerbody.Add(new int[2] { x, y });
-                return true;
+                if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoSlowModifier, this.guid) > -1 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoSlowModifier, this.guid) > -1)
+                {
+                    return false;
+                }
+                else
+                {
+                    this._playerbody.Add(new int[2] { x, y });
+                    return true;
+                }
             }
             return false;
         }

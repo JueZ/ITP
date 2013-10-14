@@ -325,7 +325,7 @@ namespace Akanonda.GameLibrary
             {
                 if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoSlowModifier, _playerList[i].guid) > -1 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoSlowModifier, _playerList[i].guid) > -1)
                 {
-                    if (tickCounter % 2 == 0)
+                    if (tickCounter % 2 == 0 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoFastModifier, _playerList[i].guid) < 0 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoFastModifier, _playerList[i].guid) < 0)
                         _playerList[i].playerMove(grow);
                 }
                 else
@@ -428,10 +428,10 @@ namespace Akanonda.GameLibrary
                 lowestY = lowestY < (_field.offsetNorth + powerUpLocation[1] * _field.Scale) ? lowestY : (_field.offsetNorth + powerUpLocation[1] * _field.Scale);
             }
             Rectangle rect;
-            if(power.kind != PowerUp.PowerUpKind.rabies || power.kind != PowerUp.PowerUpKind.goldenApple || power.kind != PowerUp.PowerUpKind.deleteAllSnakes)
-                rect = new Rectangle(lowestX - 3, lowestY - 3, 31, 31);
+            if(power.kind != PowerUp.PowerUpKind.rabies && power.kind != PowerUp.PowerUpKind.goldenApple && power.kind != PowerUp.PowerUpKind.deleteAllSnakes)
+                rect = new Rectangle(lowestX, lowestY, 26, 26);
             else
-                rect = new Rectangle(lowestX - 3, lowestY - 3, 2, 2);
+                rect = new Rectangle(lowestX, lowestY, 10, 10);
 
             switch (power.kind)
             {

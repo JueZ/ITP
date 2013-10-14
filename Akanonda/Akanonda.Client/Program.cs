@@ -54,7 +54,7 @@ namespace Akanonda
             netclient.Start();
 
             NetOutgoingMessage message = netclient.CreateMessage(hailmessage);
-            netclient.Connect(settings.GameServer, settings.GamePort, message);
+            netclient.Connect(settings.ServerAdresse, settings.GamePort, message);
         }
 
         public static void ConnectPlayerToLobby(string playername, Color playercolor)
@@ -65,13 +65,11 @@ namespace Akanonda
 
             s_client.RegisterReceivedCallback(new SendOrPostCallback(LobbyForm.GotMessage));
 
-            int port;
             string hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb());
 
-            Int32.TryParse("1338", out port);
             s_client.Start();
             NetOutgoingMessage hail = s_client.CreateMessage(hailmessage);
-            s_client.Connect(settings.ChatServer, settings.ChatPort, hail);
+            s_client.Connect(settings.ServerAdresse, settings.ChatPort, hail);
             
         }
 

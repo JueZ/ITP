@@ -255,7 +255,9 @@ namespace Akanonda
                             if (remotehailmessagearray[3] == "playing")
                             {
                                 game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-                                
+
+                                game.AddPowerUp(PowerUp.PowerUpKind.rabies);
+
                                 foreach (PowerUp.PowerUpKind kind in Enum.GetValues(typeof(PowerUp.PowerUpKind)))
                                     game.AddPowerUp(kind);
                                 //Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));

@@ -62,7 +62,7 @@ namespace Akanonda.GameLibrary
             startX = Game.getRandomNumber(5, Game.Instance.getFieldX() - 5);
             startY = Game.getRandomNumber(5, Game.Instance.getFieldY() - 5);
 
-            if (kind == PowerUpKind.goldenApple || kind == PowerUpKind.redApple || kind == PowerUpKind.rabies)
+            if (kind == PowerUpKind.goldenApple || kind == PowerUpKind.deleteAllSnakes || kind == PowerUpKind.rabies)
             {
                 this._PowerUpLocation.Add(new int[2] { startX, startY });
             }
@@ -169,39 +169,17 @@ namespace Akanonda.GameLibrary
              }
         }
 
-
-        
-
-
-        public static void movePowerUpsThroughWall()
-        {
-              foreach (PowerUp power in Game.Instance.PowerUpList)
-              {
-                      foreach (int[] location in power.PowerUpLocation)
-                      {
-                          if (power.movePowerUpX)
-                              location[0]++;
-                          else
-                              location[0]--;
-
-                          if (power.movePowerUpY)
-                              location[1]++;
-                          else
-                              location[1]--;
-
-                          openTheWalls(location);
-                      }
-                }
-        }
-
         public static void movePowerUpsButNotThroughWall()
         {
-            int xPlusCounter = 0;
-            int xMinusCounter = 0;
-            int yPlusCounter = 0;
-            int yMinusCounter = 0;
+            
             foreach (PowerUp power in Game.Instance.PowerUpList)
             {
+
+                int xPlusCounter = 0;
+                int xMinusCounter = 0;
+                int yPlusCounter = 0;
+                int yMinusCounter = 0;
+
                 foreach (int[] location in power.PowerUpLocation)
                 {
                     if (location[0] + 1 > Game.Instance.getFieldX() - 1)
@@ -244,17 +222,6 @@ namespace Akanonda.GameLibrary
                     else
                         location[1]--;
                 }
-
-
-                xPlusCounter = 0;
-                power.movePowerUpX = false;
-                xMinusCounter = 0;
-                power.movePowerUpX = false;
-                yPlusCounter = 0;
-                power.movePowerUpY = false;
-                yMinusCounter = 0;
-                power.movePowerUpY = false;
-
             }
         }
 
