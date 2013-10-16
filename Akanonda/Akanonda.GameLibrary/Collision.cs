@@ -234,7 +234,7 @@ namespace Akanonda.GameLibrary
 
                 foreach (int[] allHeadCoordinates in coordinatesToCheckList)
                 {
-                    if (allHeadCoordinates[0] < 0 || allHeadCoordinates[0] > _x -1 || allHeadCoordinates[1] < 0 || allHeadCoordinates[1] > _y -1)
+                    if (allHeadCoordinates[0] < 0 || allHeadCoordinates[0] >= _x || allHeadCoordinates[1] < 0 || allHeadCoordinates[1] >= _y)
                     {
                         collisionHappened = true;
                         break;

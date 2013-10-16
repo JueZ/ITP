@@ -58,7 +58,8 @@ namespace Akanonda
         void MainFormKeyDown(object sender, KeyEventArgs e)
         {
             List<Player> duplicateCount = Program.game.PLayerList.FindAll(x => x.guid == Program.game.LocalPlayerGuid);
-
+            if (duplicateCount.Count > 0){
+                
             NetOutgoingMessage sendMsg;
             if (duplicateCount.Count <= 1)
             {
@@ -127,17 +128,17 @@ namespace Akanonda
                 switch (e.KeyCode)
                 {
                     case Keys.Right:
-                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Right;
-                            break;
+                        Program.game.LocalSteering = GameLibrary.PlayerSteering.Right;
+                        break;
                     case Keys.Left:
-                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Left;
-                            break;
+                        Program.game.LocalSteering = GameLibrary.PlayerSteering.Left;
+                        break;
                     case Keys.Down:
-                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Down;
-                            break;
+                        Program.game.LocalSteering = GameLibrary.PlayerSteering.Down;
+                        break;
                     case Keys.Up:
-                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Up;
-                            break;
+                        Program.game.LocalSteering = GameLibrary.PlayerSteering.Up;
+                        break;
                 }
 
                 sendMsg = Program.netclient.CreateMessage();
@@ -146,7 +147,7 @@ namespace Akanonda
                 sendMsg.Write((Int32)Program.game.LocalSteering);
 
                 Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
-
+            }
             }
         }
 
