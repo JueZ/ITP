@@ -193,7 +193,9 @@ namespace Akanonda
                                                 om.Write("Game allready started");
                                                 break;
                                             case "status":
-                                                om.Write(netserver.ConnectionsCount);
+                                                string ServerStatus = "Connected Players: " + netserver.ConnectionsCount.ToString();
+                                                ServerStatus += "\n Configuration: " + netserver.Configuration.ToString();
+                                                om.Write(ServerStatus);
                                                 break;
                                             case "exit":
                                                 netserver.Shutdown("Exit");
