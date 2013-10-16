@@ -19,7 +19,7 @@ namespace Akanonda
         private static volatile bool _chatStopped = false;
         private static Settings settings = new Settings();
         public static System.Timers.Timer SurvivalTimer;
-
+        private static List<NetConnection> adminList = new List<NetConnection>();
         static void Main(string[] args)
         {
             Console.WriteLine("Akanonda Server");
@@ -28,12 +28,12 @@ namespace Akanonda
             // NetServer START
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
             netconfig.MaximumConnections = settings.MaxConnections;
-			netconfig.Port = settings.LocalPort;
+			netconfig.Port = settings.GamePort;
 			netserver = new NetServer(netconfig);
 
             NetPeerConfiguration config = new NetPeerConfiguration("chat");
             config.MaximumConnections = 100;
-            config.Port = 1338;
+            config.Port = settings.ChatPort;
             chatServer = new NetServer(config);
 
             SurvivalTimer = new System.Timers.Timer();
@@ -163,12 +163,78 @@ namespace Akanonda
                             List<NetConnection> all = chatServer.Connections; // get copy
                             if (all.Count > 0)
                             {
+                                NetOutgoingMessage om = chatServer.CreateMessage();
                                 string chat = im.ReadString();
                                 string[] chatMessage = chat.Split(';');
-                                NetOutgoingMessage om = chatServer.CreateMessage();
-                                om.Write(game.getLobbyPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
-                                chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
-                                
+                                if (adminList.Contains(im.SenderConnection))
+                                {
+                                    if (chatMessage[1].StartsWith("kick"))
+                                    {
+                                        string[] playerToKick = chatMessage[1].Split(':');
+                                        Player playerToFind = game.PLayerList.Find(item => item.name == playerToKick[1]);
+                                        if (playerToFind != null)
+                                        {
+                                            game.addDeadRemoveLivingPlayer(playerToFind.guid);
+                                            NetOutgoingMessage om2 = chatServer.CreateMessage();
+                                            om2.Write(playerToKick[1] + " was kicked because of bad behaviour");
+                                            chatServer.SendMessage(om2, all, NetDeliveryMethod.ReliableOrdered, 0);
+                                            om.Write(playerToKick[1] + " was kicked successfully");
+                                        }
+                                        else
+                                        {
+                                            om.Write(playerToKick[1] + " was not kicked");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        switch (chatMessage[1])
+                                        {
+                                            case "start":
+                                                om.Write("Game allready started");
+                                                break;
+                                            case "status":
+                                                om.Write(netserver.ConnectionsCount);
+                                                break;
+                                            case "exit":
+                                                netserver.Shutdown("Exit");
+                                                Environment.Exit(0);
+                                                break;
+                                            case "stop Chat":
+                                                StopChat();
+                                                om.Write("Chat stopped");
+                                                break;
+                                            case "start Chat":
+                                                StartChat();
+                                                om.Write("Chat started");
+                                                break;
+                                            default:
+                                                //om.Write("Command not found");
+                                                break;
+                                        }
+                                    }
+                                    if(om.LengthBits != null && om.LengthBits != 0)
+                                    chatServer.SendMessage(om, im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
+                                    else
+                                    {
+                                        om.Write(game.getLobbyPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
+                                        chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
+                                    }
+                                }
+                                else
+                                {
+                                    if (chatMessage[1] == "LOGINAKANONDAADMIN")
+                                    {
+                                        adminList.Add(im.SenderConnection);
+                                        om.Write("You are now logged in as Admin");
+                                        chatServer.SendMessage(om, im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
+                                    }
+                                    else
+                                    {
+                                        
+                                        om.Write(game.getLobbyPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
+                                        chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
+                                    }
+                                }
                             }
                             break;
                         default:

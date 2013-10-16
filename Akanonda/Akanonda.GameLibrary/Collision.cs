@@ -40,6 +40,7 @@ namespace Akanonda.GameLibrary
             Dictionary<Guid, CollisionType> collisions = new Dictionary<Guid, CollisionType>();
             int playerIndex = 0;
             List<int> removePlayerList = new List<int>();
+            List<Player> addDuplicateList = new List<Player>();
             foreach (Player player in game.PLayerList) // current player to check head
             {
                 List<int[]> coordinatesToCheckList = new List<int[]>();
@@ -205,11 +206,7 @@ namespace Akanonda.GameLibrary
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.getMoreSnakes:
-                                    int Index = game.PLayerList.FindIndex(x => x.guid == player.guid && x.name == player.name);
-                                    
-                                        game.addDuplicatePlayer(player.name, player.color, player.guid, Index);
-                                        game.addDuplicatePlayer(player.name, player.color, player.guid, Index);
-                                    
+                                    addDuplicateList.Add(player);
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.changeColor:
@@ -472,6 +469,14 @@ namespace Akanonda.GameLibrary
                 game.PLayerList[removePlayerIndex].guid = Guid.NewGuid();
                 game.DeadList.Add(game.PLayerList[removePlayerIndex]);
                 game.PLayerList.RemoveAt(removePlayerIndex);
+            }
+
+            foreach (Player player in addDuplicateList)
+            {
+                int Index = game.PLayerList.FindIndex(x => x.guid == player.guid && x.name == player.name);
+
+                game.addDuplicatePlayer(player.name, player.color, player.guid, Index);
+                game.addDuplicatePlayer(player.name, player.color, player.guid, Index);
             }
 
             return collisions;
