@@ -27,14 +27,6 @@ namespace Akanonda.GameLibrary
             void reduceCounterBy1();
         }
 
-        public interface PowerUpModifierWithSize : PowerUpModifier
-        {
-            int getSize();
-            void makeBiggerByOne();
-            void makeSmallerByOne();
-        }
-        
-
     [Serializable()]
         public class othersGoSlowModifier : PowerUpModifier
         {
@@ -188,7 +180,7 @@ namespace Akanonda.GameLibrary
         }
 
     [Serializable()]
-    public class makePlayersBigModifier : PowerUpModifierWithSize
+    public class makePlayersBigModifier : PowerUpModifier
     {
         private int _counter = 100;
         private int _howBig = 2;
@@ -205,23 +197,7 @@ namespace Akanonda.GameLibrary
         {
             if (_counter > 0)
                 _counter--;
-        }
-
-
-        public void makeBiggerByOne()
-        {
-            _howBig++;
-        }
-        public void makeSmallerByOne()
-        {
-            if(_howBig -1 > 0)
-            _howBig--;
-        }
-        public int getSize()
-        {
-            return _howBig;
-        }
-        
+        }        
     }
 
     [Serializable()]

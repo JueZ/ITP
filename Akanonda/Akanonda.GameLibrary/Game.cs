@@ -21,13 +21,12 @@ namespace Akanonda.GameLibrary
         private int _ticksUntilAdd;
         private int _tickCounter;
         private Dictionary<Guid, CollisionType> _collisionList;
-        private Dictionary<Guid, List<PowerUpModifier>> _powerUpModificationList = new Dictionary<Guid, List<PowerUpModifier>>();
-        private int[] _powerUpCounters = new int[5];
+        private Dictionary<Guid, List<PowerUpModifier>> _powerUpModificationList;
+        private int[] _powerUpCounters = new int[4];
         public const int moveAllPowerUps = 0;
         public const int openWalls = 1;
         public const int closingWalls = 2;
         public const int biggerWalls = 3;
-        public const int biggerPlayers = 4;
         private int _powerUpPopUpRate = 65;
 
         public static Game Instance
@@ -44,7 +43,7 @@ namespace Akanonda.GameLibrary
             _deadList = new List<Player>();
             _lobbyList = new List<Player>();
             _powerupList = new List<PowerUp>();
-            
+            _powerUpModificationList = new Dictionary<Guid, List<PowerUpModifier>>();
 
             _field.setSize(120, 120); // testhalber, derzeit wird neuer user auf 105x105 oder so gesetzt
             _field.Scale = 5;
@@ -58,7 +57,6 @@ namespace Akanonda.GameLibrary
             _powerUpCounters[openWalls] = 0;
             _powerUpCounters[closingWalls] = 0;
             _powerUpCounters[biggerWalls] = 0;
-            _powerUpCounters[biggerPlayers] = 1;
 
         }
 
@@ -138,11 +136,6 @@ namespace Akanonda.GameLibrary
                     
                 }
             }
-
-            //old - doesn't set steering for all snakes of one player
-            //Player playerToFind = _playerList.Find(item => item.guid == playerguid);
-            //if(playerToFind != null)
-            //    playerToFind.playersteering = playersteering;
         }
 
         public void addPlayer(string name, Color color, Guid guid)
@@ -409,8 +402,8 @@ namespace Akanonda.GameLibrary
         public void gamepaint(Graphics g)
         {
             paintPowerUps(g);
-            paintAlivePlayers(g);
-            paintDeadPlayers(g);
+            paintPlayers(g, PLayerList);
+            paintPlayers(g, DeadList);
             paintGameBorderBlackOrGrayDependingOnOpenWalls(g);
         }
 
@@ -499,15 +492,10 @@ namespace Akanonda.GameLibrary
         }
 
 
-        private void paintAlivePlayers(Graphics g)
+        private void paintPlayers(Graphics g, List<Player> PlayersToPaint)
         {
-            foreach (Player player in PLayerList)
+            foreach (Player player in PlayersToPaint)
             {
-                int playerIsBig = checkIfPlayerBigAndGetModifierIndex(player);
-                if (playerIsBig > -1)
-                {
-                    
-                }
                 for(int i = 0; i < player.playerbody.Count; i++)
                 {
                     int x = i+1;
@@ -541,30 +529,6 @@ namespace Akanonda.GameLibrary
                             (_field.offsetNorth + player.playerbody[i][1] * _field.Scale),
                             _field.Scale,_field.Scale);
                         }
-                }
-            }
-        }
-
-
-        private void paintDeadPlayers(Graphics g)
-        {
-            foreach (Player player in _deadList)
-            {
-                int playerIsBig = checkIfPlayerBigAndGetModifierIndex(player);
-                makePlayersBigModifier howBig = null;
-                if (playerIsBig > -1)
-                {
-                    howBig = (makePlayersBigModifier)_powerUpModificationList[player.guid][playerIsBig];
-                }
-
-                foreach (int[] playerbody in player.playerbody)
-                {
-                    if (playerbody[0] > -1 && playerbody[0] < getFieldX() && playerbody[1] > -1 && playerbody[1] < getFieldY())
-                        g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + playerbody[0] * _field.Scale),
-                        (_field.offsetNorth + playerbody[1] * _field.Scale),
-                        playerIsBig > -1 ? _field.Scale * howBig.getSize() : _field.Scale,
-                        playerIsBig > -1 ? _field.Scale * howBig.getSize() : _field.Scale);
-                        
                 }
             }
         }

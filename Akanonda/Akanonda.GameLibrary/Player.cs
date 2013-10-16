@@ -14,7 +14,6 @@ namespace Akanonda.GameLibrary
         private Guid _guid;
         private List<int[]> _playerbody;
         List<KeyValuePair<int[], int[]>> _bigPlayerLocation;
-        //private List<int, int[]> _bigPlayerLocation;
         private PlayerStatus _playerstatus;
         private PlayerSteering _playersteering;
         int startX, startY;
@@ -171,16 +170,6 @@ namespace Akanonda.GameLibrary
             }
         }
 
-        public Guid initPlayer(string name, Color color)
-        {
-            this._name = name;
-            this._color = color;
-            this._guid = Guid.NewGuid();
-            this._playerstatus = PlayerStatus.None;
-
-            return this._guid;
-        }
-
         public void playerMove(bool grow)
         {
             // not used List<int[]> checkHead = new List<int[]>();
@@ -295,10 +284,9 @@ namespace Akanonda.GameLibrary
 
             if (!grow)
             {
-                //this._bigPlayerLocation.Remove(playerbody[0]);
                 this._playerbody.RemoveAt(0);
 
-                if (this._bigPlayerLocation.Count > 0)
+                if (this._bigPlayerLocation.Count > 0)//removes leftover BigPlayerParts
                 {
                     List<int> deleteLocation = new List<int>();
                     for (int i = 0; i < this._bigPlayerLocation.Count; i++)
@@ -329,26 +317,11 @@ namespace Akanonda.GameLibrary
                     if(modificationIndex > -1)
                     Game.Instance.powerUpModificationList[this.guid][modificationIndex].setCount(-1);
                 }
-
-
-
             }
             else
             {
                 this._score++;
             }
         }
-
-        public int getPlayerLocationSize(int[] playerLocation){
-            foreach(KeyValuePair<int[], int[]> bigPartLocation in this._bigPlayerLocation)
-                    {
-                        if (playerLocation[0] == bigPartLocation.Value[0] && playerLocation[1] == bigPartLocation.Value[1])
-                            {
-                                return bigPartLocation.Key[0];
-                            }
-                    }
-            return 1;
-        }
-
     }
 }
