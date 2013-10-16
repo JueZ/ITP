@@ -32,6 +32,7 @@ namespace Akanonda.GameLibrary
             deleteAllSnakes = 89,//-> redAppleIcon
             makePlayersBig = 16,
             getMoreSnakes = 11,
+            changeColor = 9
             
         }
 

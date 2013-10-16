@@ -491,6 +491,9 @@ namespace Akanonda.GameLibrary
                 case PowerUp.PowerUpKind.makePlayersBig:
                     powerupIcon = new Icon("images/bigico.ico");
                     break;
+                case PowerUp.PowerUpKind.changeColor:
+                    powerupIcon = new Icon("images/changeColerIco.ico");
+                    break;
             }
             g.DrawIcon(powerupIcon, rect);
         }

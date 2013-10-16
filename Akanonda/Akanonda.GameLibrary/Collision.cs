@@ -49,6 +49,9 @@ namespace Akanonda.GameLibrary
                 List<Guid> deletePowerUpList = new List<Guid>();
                 List<Player> duplicateCount = game.PLayerList.FindAll(x => x.guid == player.guid);
                 int playerhasRabies = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.rabiesModifier, player.guid);
+                int playerHasChangeColor = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.changeColorModifier, player.guid);
+
+
 
                 foreach (KeyValuePair<int[], int[]> bigLocation in player.bigPlayerLocation)
                 {
@@ -69,31 +72,24 @@ namespace Akanonda.GameLibrary
                     }
                 }
 
+
+                if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoFastModifier, player.guid) > -1 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoFastModifier, player.guid) > -1)
+                {
+                    if(player.playerbody[player.playerbody.Count - 2][0] != -40)
+                    coordinatesToCheckList.Add(player.playerbody[player.playerbody.Count - 2]);
+                }
+
                 //check for PowerUp Collision
                 foreach (PowerUp power in Game.Instance.PowerUpList)
                 {
                     foreach (int[] powerUpLocation in power.PowerUpLocation)
                     {
-                        //int checkForBigPlayerAndGetModifierIndex = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, player.guid);
-                        
-                        //if ( checkForBigPlayerAndGetModifierIndex > -1 && game.powerUpModificationList[player.guid][checkForBigPlayerAndGetModifierIndex].getCount() > 0)
-                        //{
-                        //    makePlayersBigModifier howBig = (makePlayersBigModifier)game.powerUpModificationList[player.guid][checkForBigPlayerAndGetModifierIndex];
-                        //    for (int i = 1; i < howBig.getSize(); i++)
-                        //    {
-                        //        if (player.playersteering == PlayerSteering.Left || player.playersteering == PlayerSteering.Right)
-                        //        {
-                        //            coordinatesToCheckList.Add(new int[] { headCoordinates[0], headCoordinates[1] + i });
-                        //        }
-                        //        else
-                        //        {
-                        //            coordinatesToCheckList.Add(new int[] { headCoordinates[0] + i, headCoordinates[1] });
-                        //        }
-                        //    }
-                        //}
-
                         if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, powerUpLocation)) // current head collides with PowerUp
                         {
+
+                            if (!game.powerUpModificationList.ContainsKey(player.guid))
+                                game.powerUpModificationList.Add(player.guid, new List<PowerUpModifier>());
+
                             switch(power.kind){
                                 
                                 case PowerUp.PowerUpKind.othersGoFast:
@@ -103,9 +99,6 @@ namespace Akanonda.GameLibrary
                                         {
                                             if (!game.PLayerList[i].guid.Equals(player.guid))
                                             {
-                                                if (!game.powerUpModificationList.ContainsKey(game.PLayerList[i].guid))
-                                                    game.powerUpModificationList.Add(game.PLayerList[i].guid, new List<PowerUpModifier>());
-
                                                 othersGoFastModifier oGFM = new othersGoFastModifier();
                                                 game.powerUpModificationList[game.PLayerList[i].guid].Add(oGFM);
                                             }
@@ -114,26 +107,17 @@ namespace Akanonda.GameLibrary
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.iGoFast:
-                                     if (!game.powerUpModificationList.ContainsKey(player.guid))
-                                         game.powerUpModificationList.Add(player.guid, new List<PowerUpModifier>());
-
                                     iGoFastModifier iGFM = new iGoFastModifier();
                                     game.powerUpModificationList[player.guid].Add(iGFM);
 
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.iGoSlow:
-                                    if (!game.powerUpModificationList.ContainsKey(player.guid))
-                                        game.powerUpModificationList.Add(player.guid, new List<PowerUpModifier>());
-
                                     iGoSlowModifier iGSM = new iGoSlowModifier();
                                     game.powerUpModificationList[player.guid].Add(iGSM);
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.goldenApple:
-                                    if (!game.powerUpModificationList.ContainsKey(player.guid))
-                                        game.powerUpModificationList.Add(player.guid, new List<PowerUpModifier>());
-
                                     goldenAppleModifier gAM = new goldenAppleModifier();
                                     game.powerUpModificationList[player.guid].Add(gAM);
                                     deletePowerUpList.Add(power.guid);
@@ -145,9 +129,6 @@ namespace Akanonda.GameLibrary
                                         {
                                             if (!game.PLayerList[i].guid.Equals(player.guid))
                                             {
-                                                if (!game.powerUpModificationList.ContainsKey(game.PLayerList[i].guid))
-                                                    game.powerUpModificationList.Add(game.PLayerList[i].guid, new List<PowerUpModifier>());
-
                                                 redAppleModifier rAM = new redAppleModifier();
                                                 game.powerUpModificationList[game.PLayerList[i].guid].Add(rAM);
                                             }
@@ -157,15 +138,11 @@ namespace Akanonda.GameLibrary
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.rabies:
-                                    if (!game.powerUpModificationList.ContainsKey(player.guid))
-                                        game.powerUpModificationList.Add(player.guid, new List<PowerUpModifier>());
-
                                     rabiesModifier rM = new rabiesModifier();
                                     iGoFastModifier iGFM2 = new iGoFastModifier();
                                     iGFM2.setCount(50);
                                     game.powerUpModificationList[player.guid].Add(rM);
                                     game.powerUpModificationList[player.guid].Add(iGFM2);
-
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.othersGoSlow:
@@ -175,9 +152,6 @@ namespace Akanonda.GameLibrary
                                         {
                                             if (!game.PLayerList[i].guid.Equals(player.guid))
                                             {
-                                                if (!game.powerUpModificationList.ContainsKey(game.PLayerList[i].guid))
-                                                    game.powerUpModificationList.Add(game.PLayerList[i].guid, new List<PowerUpModifier>());
-
                                                 othersGoSlowModifier oGSM = new othersGoSlowModifier();
                                                 game.powerUpModificationList[game.PLayerList[i].guid].Add(oGSM);
                                             }
@@ -185,42 +159,19 @@ namespace Akanonda.GameLibrary
                                     }
                                     deletePowerUpList.Add(power.guid);
                                     break;
-                                case PowerUp.PowerUpKind.makePlayersBig:
 
+                                case PowerUp.PowerUpKind.makePlayersBig:
                                     for (int i = 0; i < game.PLayerList.Count; i++)
                                         {
-                                            if (!game.powerUpModificationList.ContainsKey(game.PLayerList[i].guid))
+                                            if (!game.PLayerList[i].guid.Equals(player.guid))
                                             {
-                                                game.powerUpModificationList.Add(game.PLayerList[i].guid, new List<PowerUpModifier>());
-                                                makePlayersBigModifier mPBM = new makePlayersBigModifier();
-                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(mPBM);
-                                            }
-                                            else
-                                            //{
-                                            //    int bigModifierIndex = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, game.PLayerList[i].guid);
-                                            //    if (bigModifierIndex > -1)
-                                            //    {
-                                            //        makePlayersBigModifier howBig = (makePlayersBigModifier)game.powerUpModificationList[game.PLayerList[i].guid][bigModifierIndex];
-                                            //        howBig.makeBiggerByOne();
-                                            //        howBig.setCount(100);
-                                            //    }
-                                            //    else
-                                            {
-                                                makePlayersBigModifier mPBM = new makePlayersBigModifier();
-                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(mPBM);
-                                            }
-                                            //}
-                                            
-
-                                            
-                                                
+                                                    makePlayersBigModifier mPBM = new makePlayersBigModifier();
+                                                    game.powerUpModificationList[game.PLayerList[i].guid].Add(mPBM);
+                                            }                                                
                                         }
                                         deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.iGoThroughWalls:
-                                    if (!game.powerUpModificationList.ContainsKey(player.guid))
-                                        game.powerUpModificationList.Add(player.guid, new List<PowerUpModifier>());
-
                                     iGoThroughWallsModifier iGTW = new iGoThroughWallsModifier();
                                     game.powerUpModificationList[player.guid].Add(iGTW);
                                     deletePowerUpList.Add(power.guid);
@@ -259,6 +210,15 @@ namespace Akanonda.GameLibrary
                                         game.addDuplicatePlayer(player.name, player.color, player.guid, Index);
                                         game.addDuplicatePlayer(player.name, player.color, player.guid, Index);
                                     
+                                    deletePowerUpList.Add(power.guid);
+                                    break;
+                                case PowerUp.PowerUpKind.changeColor:
+                                    changeColorModifier cCM = new changeColorModifier();
+                                    iGoFastModifier iGFM3 = new iGoFastModifier();
+                                    iGFM3.setCount(50);
+                                    game.powerUpModificationList[player.guid].Add(cCM);
+                                    game.powerUpModificationList[player.guid].Add(iGFM3);
+
                                     deletePowerUpList.Add(power.guid);
                                     break;
                             }
@@ -317,7 +277,7 @@ namespace Akanonda.GameLibrary
                         if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, deadPlayerBody)) // current head collides with own tail
                         {
 
-                            if (playerhasRabies == -1 && duplicateCount.Count == 1)
+                            if (playerhasRabies == -1 && duplicateCount.Count == 1 && playerHasChangeColor == -1)
                             {
                                 //Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
                                 if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
@@ -332,6 +292,13 @@ namespace Akanonda.GameLibrary
                             else if (duplicateCount.Count > 1)
                             {
                                 removePlayerList.Add(playerIndex);
+                            }
+                            if (playerHasChangeColor > -1)
+                            {
+                                System.Drawing.Color ColorBuffer = deadPlayer.color;
+                                deadPlayer.color = player.color;
+                                player.color = ColorBuffer;
+
                             }
                         }
                     }
@@ -360,7 +327,7 @@ namespace Akanonda.GameLibrary
                                             if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, new int[] { headCoordinates[0], headCoordinates[1] + i}))
                                             {
 
-                                                if (playerhasRabies == -1 && duplicateCount.Count == 1)
+                                                if (playerhasRabies == -1 && duplicateCount.Count == 1 && playerHasChangeColor == -1)
                                                 {
                                                     //Console.WriteLine("Player " + player.guid.ToString() + " collides with another player!");
                                                     if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
@@ -379,7 +346,13 @@ namespace Akanonda.GameLibrary
                                                 {
                                                     removePlayerList.Add(playerIndex);
                                                 }
+                                                if (playerHasChangeColor > -1)
+                                                {
+                                                    System.Drawing.Color ColorBuffer = otherPlayer.color;
+                                                    otherPlayer.color = player.color;
+                                                    player.color = ColorBuffer;
 
+                                                }
                                             }
                                         }
                                         else
@@ -387,7 +360,7 @@ namespace Akanonda.GameLibrary
                                             if (checkCollisionToPlayerOrPowerUp(coordinatesToCheckList, new int[] { headCoordinates[0] + i, headCoordinates[1] }))
                                             {
 
-                                                if (playerhasRabies == -1 && duplicateCount.Count == 1)
+                                                if (playerhasRabies == -1 && duplicateCount.Count == 1 && playerHasChangeColor == -1)
                                                 {
                                                     //Console.WriteLine("Player " + player.guid.ToString() + " collides with another player!");
                                                     if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
@@ -405,6 +378,12 @@ namespace Akanonda.GameLibrary
                                                 else if (duplicateCount.Count > 1)
                                                 {
                                                     removePlayerList.Add(playerIndex);
+                                                }
+                                                if (playerHasChangeColor > -1)
+                                                {
+                                                    System.Drawing.Color ColorBuffer = otherPlayer.color;
+                                                    otherPlayer.color = player.color;
+                                                    player.color = ColorBuffer;
                                                 }
 
                                             }
@@ -417,7 +396,7 @@ namespace Akanonda.GameLibrary
                             {
                             
                                 // Collision!
-                                if (playerhasRabies == -1 && duplicateCount.Count == 1)
+                                if (playerhasRabies == -1 && duplicateCount.Count == 1 && playerHasChangeColor == -1)
                                 {
                                     //Console.WriteLine("Player " + player.guid.ToString() + " collides with another player!");
                                     if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
@@ -436,7 +415,12 @@ namespace Akanonda.GameLibrary
                                 {
                                     removePlayerList.Add(playerIndex);
                                 }
-
+                                if (playerHasChangeColor > -1)
+                                {
+                                    System.Drawing.Color ColorBuffer = otherPlayer.color;
+                                    otherPlayer.color = player.color;
+                                    player.color = ColorBuffer;
+                                }
                             }
                             
                         }
@@ -455,7 +439,7 @@ namespace Akanonda.GameLibrary
                             if (checkCollisionToPlayerOrPowerUp(onlyHead, ownPlayerBody)) // current head collides with own tail
                             {                                   //coordinatesToCheckList makes player always crash when big
                              // Collision!
-                             if (playerhasRabies == -1 && duplicateCount.Count == 1)
+                             if (playerhasRabies == -1 && duplicateCount.Count == 1 && playerHasChangeColor == -1)
                              {
                                  //Console.WriteLine("Player " + player.guid.ToString() + " collides with himself!");
                                  if (!collisions.ContainsKey(player.guid)) // player can only have 1 collision
@@ -471,6 +455,10 @@ namespace Akanonda.GameLibrary
                              else if (duplicateCount.Count > 1)
                              {
                                  removePlayerList.Add(playerIndex);
+                             }
+                             if (playerHasChangeColor > -1)
+                             {
+                                 player.color = System.Drawing.Color.Lavender;
                              }
                             }
                         }

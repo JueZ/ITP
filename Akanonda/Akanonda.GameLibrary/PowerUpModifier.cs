@@ -16,7 +16,8 @@ namespace Akanonda.GameLibrary
         redAppleModifier,
         iGoThroughWallsModifier,
         rabiesModifier,
-        makePlayersBigModifier
+        makePlayersBigModifier,
+        changeColorModifier
     }
         
         public interface PowerUpModifier
@@ -222,5 +223,26 @@ namespace Akanonda.GameLibrary
         }
         
     }
+
+    [Serializable()]
+    public class changeColorModifier : PowerUpModifier
+    {
+        private int _counter = 100;
+        public int getCount()
+        {
+            return _counter;
+        }
+        public void setCount(int counter)
+        {
+            _counter = counter;
+        }
+        public void reduceCounterBy1()
+        {
+            if (_counter > 0)
+                _counter--;
+        }
+    }
+
+
     
 }

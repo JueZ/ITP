@@ -250,6 +250,12 @@ namespace Akanonda.GameLibrary
                 }
                 else
                 {
+                    int index = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, this.guid);
+                    if (index > -1)
+                    {
+                        if (Game.Instance.powerUpModificationList[this.guid][index].getCount() > 0)
+                            this._bigPlayerLocation.Add(new KeyValuePair<int[], int[]>(new int[2] { PowerUp.countBigModifiers(this.guid), (int)this._playersteering }, new int[2] { x, y }));
+                    }
                     this._playerbody.Add(new int[2] { x, y });
                     return true;
                 }
