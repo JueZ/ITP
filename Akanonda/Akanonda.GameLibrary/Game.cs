@@ -355,9 +355,6 @@ namespace Akanonda.GameLibrary
                 }
                 deleteModification.Clear();
             }
-
-            
-
         }
 
         private void addScoreEvery30Seconds(int i)

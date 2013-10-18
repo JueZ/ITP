@@ -318,23 +318,7 @@ namespace Akanonda
                         string reason = im.ReadString();	
                         if(im.SenderConnection.RemoteHailMessage != null && status == NetConnectionStatus.Connected)
                         {
-                            string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
-                            string[] remotehailmessagearray = remotehailmessage.Split(';');
-                            if (remotehailmessagearray[3] == "playing")
-                            {
-                                game.addPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-                                if(game.PLayerList.Count > 1)
-                                game.powerUpCounters[Game.biggerWalls] += 10;
-                                //foreach (PowerUp.PowerUpKind kind in Enum.GetValues(typeof(PowerUp.PowerUpKind)))
-                                //    game.AddPowerUp(kind);
-                                //Console.WriteLine("[Game]Player <playing>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
-                            }
-                            else if (remotehailmessagearray[3] == "dead")
-                            {
-                                //Console.WriteLine("[Game]Player died <now watching>! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
-                                if (game.PLayerList.Count > 1)
-                                game.powerUpCounters[Game.closingWalls] += 10;
-                            }
+                            
                         }
 
                         if (status == NetConnectionStatus.Disconnected)
@@ -346,9 +330,17 @@ namespace Akanonda
                         }
 						break;
 					case NetIncomingMessageType.Data:
-                        Guid remoteplayer = new Guid(im.ReadString());
-                        PlayerSteering remoteplayersteering = (PlayerSteering)im.ReadInt32();
-                        game.setsteering(remoteplayer, remoteplayersteering);
+                        string firstIM = im.ReadString();
+                        if (firstIM == "ConnectToGame")
+                        {
+                            game.addPlayer(im.ReadString(), Color.FromArgb(Convert.ToInt32(im.ReadString())), Guid.Parse(im.ReadString()));
+                        }
+                        else
+                        {
+                            Guid remoteplayer = new Guid(firstIM);
+                            PlayerSteering remoteplayersteering = (PlayerSteering)im.ReadInt32();
+                            game.setsteering(remoteplayer, remoteplayersteering);
+                        }
 						break;
 					default:
 						Console.WriteLine("Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes " + im.DeliveryMethod + "|" + im.SequenceChannel);

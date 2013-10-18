@@ -18,7 +18,6 @@ namespace Akanonda
         public MainForm()
         {
             InitializeComponent();
-            
             mainConnector = new FormConnector(this);
             M_Form = this;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
@@ -26,7 +25,6 @@ namespace Akanonda
 
             Game game = Game.Instance;
             game.adjustGameFormSize(this);
-            //panel1.Size = this.Size;
             DrawTimer.Start();
         }
         
@@ -36,11 +34,8 @@ namespace Akanonda
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
             
             if(Program.game != null)
-                Program.game.gamepaint(g);
-
-            
+                Program.game.gamepaint(g);            
         }
-        
                 
         void DrawTimerTick(object sender, System.EventArgs e)
         {
@@ -198,11 +193,6 @@ namespace Akanonda
         private void closeOverlayButton_Click(object sender, EventArgs e)
         {
             M_Form.closeOverlay();
-        }
-
-        private void MainForm_Activated(object sender, EventArgs e)
-        {
-            //LobbyForm.L_form.Activate();
         }
 
         public void focusReplay()

@@ -37,8 +37,7 @@ namespace Akanonda
         }
 
 
-
-        public static void ConnectPlayerToGame(string playername, Color playercolor, string playOrWatch)
+        public static void ConnectToServer()
         {
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");
 
@@ -47,14 +46,25 @@ namespace Akanonda
             if (SynchronizationContext.Current == null)
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
 
-            string hailmessage;
-            hailmessage = guid.ToString() + ";" + playername + ";" + Convert.ToString(playercolor.ToArgb()) + ";"+playOrWatch;
-
+            
             netclient.RegisterReceivedCallback(new SendOrPostCallback(ReceivedData));
             netclient.Start();
 
-            NetOutgoingMessage message = netclient.CreateMessage(hailmessage);
+            NetOutgoingMessage message = netclient.CreateMessage("Connect");
             netclient.Connect(settings.ServerAdresse, settings.GamePort, message);
+
+        }
+
+        public static void ConnectPlayerToGame(string playername, Color playercolor, string playOrWatch)
+        {
+            NetOutgoingMessage sendMsg = netclient.CreateMessage();
+            sendMsg.Write("ConnectToGame");
+            sendMsg.Write(playername);
+            sendMsg.Write(Convert.ToString(playercolor.ToArgb()));
+            sendMsg.Write(guid.ToString());
+            
+            netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
+
         }
 
         public static void ConnectPlayerToLobby(string playername, Color playercolor)
@@ -124,7 +134,6 @@ namespace Akanonda
             {
                 if (key.Key == game.LocalPlayerGuid)
                 {
-                    ConnectPlayerToGame(game.getPlayerName(guid), game.getPlayerColor(guid), "dead");
                     string text;
                     switch (key.Value)
                     {
@@ -151,8 +160,6 @@ namespace Akanonda
                     MainForm.M_Form.showOverlay(SurvivalMinute, SurvivalSecond, text, length);
                     LobbyForm.L_form.StartGame_Enable();
                     MainForm.M_Form.focusReplay();
-                    //LobbyForm.L_form.Focus();
-
                 }
             }
         }
