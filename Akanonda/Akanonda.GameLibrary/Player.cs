@@ -263,8 +263,21 @@ namespace Akanonda.GameLibrary
                         _playerbody[_playerbody.Count - 2][0] = -40;
                         _playerbody[_playerbody.Count - 2][1] = -40;
                     }
-
             }
+            if (Game.Instance.powerUpCounters[Game.cheesySnakes] > 0)
+            {
+                if (Game.getRandomNumber(0, 20) % 5 == 0)
+                {
+                    _playerbody[_playerbody.Count - 1][0] = -40;
+                    _playerbody[_playerbody.Count - 1][1] = -40;
+                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, this._guid) > -1)
+                    {
+                        _playerbody[_playerbody.Count - 2][0] = -40;
+                        _playerbody[_playerbody.Count - 2][1] = -40;
+                    }
+                }
+            }
+
         }
 
         private void makeSnakeSmallerIfOtherPlayerAteRedApple()
