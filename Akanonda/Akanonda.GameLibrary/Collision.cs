@@ -218,10 +218,6 @@ namespace Akanonda.GameLibrary
 
                                     deletePowerUpList.Add(power.guid);
                                     break;
-                                case PowerUp.PowerUpKind.cheesySnakes:
-                                    game.powerUpCounters[Game.cheesySnakes] += 300;
-                                    deletePowerUpList.Add(power.guid);
-                                    break;
                             }
                         }
                     }
@@ -489,6 +485,7 @@ namespace Akanonda.GameLibrary
 
         private bool checkCollisionToPlayerOrPowerUp(List<int[]> allHeadCoordinates, int[] coordinatesToCheck)
         {
+
             foreach (int[] headCoordinates in allHeadCoordinates)
             {
                 if (headCoordinates[0] == coordinatesToCheck[0] && headCoordinates[1] == coordinatesToCheck[1])

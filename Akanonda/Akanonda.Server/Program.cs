@@ -214,7 +214,7 @@ namespace Akanonda
                                                 break;
                                         }
                                     }
-                                    if(om.LengthBits != 0)
+                                    if(om.LengthBits != null && om.LengthBits != 0)
                                     chatServer.SendMessage(om, im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
                                     else
                                     {
