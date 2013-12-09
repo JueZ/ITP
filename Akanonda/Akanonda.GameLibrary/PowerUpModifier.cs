@@ -25,6 +25,7 @@ namespace Akanonda.GameLibrary
             int getCount();
             void setCount(int counter);
             void reduceCounterBy1();
+            PowerUpModifierKind getType();
         }
 
     [Serializable()]
@@ -43,6 +44,10 @@ namespace Akanonda.GameLibrary
             {
                 if(_counter > 0)
                 _counter--;
+            }
+            public PowerUpModifierKind getType()
+            {
+                return PowerUpModifierKind.othersGoSlowModifier;
             }
         }
 
@@ -63,6 +68,10 @@ namespace Akanonda.GameLibrary
                 if (_counter > 0)
                 _counter--;
             }
+            public PowerUpModifierKind getType()
+            {
+                return PowerUpModifierKind.iGoSlowModifier;
+            }
         }
 
     [Serializable()]
@@ -81,6 +90,10 @@ namespace Akanonda.GameLibrary
             {
                 if (_counter > 0)
                 _counter--;
+            }
+            public PowerUpModifierKind getType()
+            {
+                return PowerUpModifierKind.othersGoFastModifier;
             }
         }
 
@@ -101,6 +114,10 @@ namespace Akanonda.GameLibrary
                 if (_counter > 0)
                 _counter--;
             }
+            public PowerUpModifierKind getType()
+            {
+                return PowerUpModifierKind.iGoFastModifier;
+            }
         }
 
     [Serializable()]
@@ -119,6 +136,10 @@ namespace Akanonda.GameLibrary
             {
                 if (_counter > 0)
                 _counter--;
+            }
+            public PowerUpModifierKind getType()
+            {
+                return PowerUpModifierKind.goldenAppleModifier;
             }
         }
 
@@ -139,6 +160,10 @@ namespace Akanonda.GameLibrary
                 if (_counter > 0)
                 _counter--;
             }
+            public PowerUpModifierKind getType()
+            {
+                return PowerUpModifierKind.redAppleModifier;
+            }
         }
 
     [Serializable()]
@@ -157,6 +182,10 @@ namespace Akanonda.GameLibrary
             {
                 if (_counter > 0)
                 _counter--;
+            }
+            public PowerUpModifierKind getType()
+            {
+                return PowerUpModifierKind.iGoThroughWallsModifier;
             }
         }
 
@@ -177,13 +206,16 @@ namespace Akanonda.GameLibrary
                 if (_counter > 0)
                 _counter--;
             }
+            public PowerUpModifierKind getType()
+            {
+                return PowerUpModifierKind.rabiesModifier;
+            }
         }
 
     [Serializable()]
     public class makePlayersBigModifier : PowerUpModifier
     {
         private int _counter = 100;
-        private int _howBig = 2;
 
         public int getCount()
         {
@@ -197,7 +229,11 @@ namespace Akanonda.GameLibrary
         {
             if (_counter > 0)
                 _counter--;
-        }        
+        }
+        public PowerUpModifierKind getType()
+        {
+            return PowerUpModifierKind.makePlayersBigModifier;
+        }
     }
 
     [Serializable()]
@@ -216,6 +252,10 @@ namespace Akanonda.GameLibrary
         {
             if (_counter > 0)
                 _counter--;
+        }
+        public PowerUpModifierKind getType()
+        {
+            return PowerUpModifierKind.changeColorModifier;
         }
     }
 

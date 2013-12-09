@@ -283,8 +283,14 @@ namespace Akanonda.GameLibrary
                             if (playerhasRabies > -1)
                             {
                                 if (deadPlayer.playerbody.Count > i)
+                                {
                                     deadPlayer.playerbody.RemoveRange(0, i);
+                                    deadPlayer.score -= i; 
+                                }
+                                removeModification(player.guid, PowerUpModifierKind.rabiesModifier);
+                                removeModification(player.guid, PowerUpModifierKind.iGoFastModifier);
                                 break;
+
                             }
                             else if (duplicateCount.Count > 1)
                             {
@@ -295,8 +301,11 @@ namespace Akanonda.GameLibrary
                                 System.Drawing.Color ColorBuffer = deadPlayer.color;
                                 deadPlayer.color = player.color;
                                 player.color = ColorBuffer;
-
+                                removeModification(player.guid, PowerUpModifierKind.changeColorModifier);
+                                removeModification(player.guid, PowerUpModifierKind.iGoFastModifier);
                             }
+
+                            
                         }
                     }
                 }
@@ -337,6 +346,8 @@ namespace Akanonda.GameLibrary
                                                         otherPlayer.playerbody.RemoveRange(0, x);
                                                         otherPlayer.score -= x;
                                                     }
+                                                    removeModification(player.guid, PowerUpModifierKind.rabiesModifier);
+                                                    removeModification(player.guid, PowerUpModifierKind.iGoFastModifier);
                                                     break;
                                                 }
                                                 else if (duplicateCount.Count > 1)
@@ -348,7 +359,8 @@ namespace Akanonda.GameLibrary
                                                     System.Drawing.Color ColorBuffer = otherPlayer.color;
                                                     otherPlayer.color = player.color;
                                                     player.color = ColorBuffer;
-
+                                                    removeModification(player.guid, PowerUpModifierKind.changeColorModifier);
+                                                    removeModification(player.guid, PowerUpModifierKind.iGoFastModifier);
                                                 }
                                             }
                                         }
@@ -370,6 +382,8 @@ namespace Akanonda.GameLibrary
                                                         otherPlayer.playerbody.RemoveRange(0, x);
                                                         otherPlayer.score -= x;
                                                     }
+                                                    removeModification(player.guid, PowerUpModifierKind.rabiesModifier);
+                                                    removeModification(player.guid, PowerUpModifierKind.iGoFastModifier);
                                                     break;
                                                 }
                                                 else if (duplicateCount.Count > 1)
@@ -381,6 +395,8 @@ namespace Akanonda.GameLibrary
                                                     System.Drawing.Color ColorBuffer = otherPlayer.color;
                                                     otherPlayer.color = player.color;
                                                     player.color = ColorBuffer;
+                                                    removeModification(player.guid, PowerUpModifierKind.changeColorModifier);
+                                                    removeModification(player.guid, PowerUpModifierKind.iGoFastModifier);
                                                 }
 
                                             }
@@ -406,6 +422,8 @@ namespace Akanonda.GameLibrary
                                         otherPlayer.playerbody.RemoveRange(0, x);
                                         otherPlayer.score -= x;
                                     }
+                                    removeModification(player.guid, PowerUpModifierKind.rabiesModifier);
+                                    removeModification(player.guid, PowerUpModifierKind.iGoFastModifier);
                                     break;
                                 }
                                 else if (duplicateCount.Count > 1)
@@ -417,6 +435,8 @@ namespace Akanonda.GameLibrary
                                     System.Drawing.Color ColorBuffer = otherPlayer.color;
                                     otherPlayer.color = player.color;
                                     player.color = ColorBuffer;
+                                    removeModification(player.guid, PowerUpModifierKind.changeColorModifier);
+                                    removeModification(player.guid, PowerUpModifierKind.iGoFastModifier);
                                 }
                             }
                             
@@ -447,6 +467,8 @@ namespace Akanonda.GameLibrary
                                  if (player.playerbody.Count > i)
                                      player.playerbody.RemoveRange(0, i);
                                  player.score -= i;
+                                 removeModification(player.guid, PowerUpModifierKind.rabiesModifier);
+                                 removeModification(player.guid, PowerUpModifierKind.iGoFastModifier);
                                  break;
                              }
                              else if (duplicateCount.Count > 1)
@@ -456,6 +478,8 @@ namespace Akanonda.GameLibrary
                              if (playerHasChangeColor > -1)
                              {
                                  player.color = System.Drawing.Color.Lavender;
+                                 removeModification(player.guid, PowerUpModifierKind.changeColorModifier);
+                                 removeModification(player.guid, PowerUpModifierKind.iGoFastModifier);
                              }
                             }
                         }
@@ -494,6 +518,24 @@ namespace Akanonda.GameLibrary
                 }
             }
             return false;
+        }
+
+        private void removeModification(Guid playerGuid, PowerUpModifierKind ModificationKind)
+        {
+            List<PowerUpModifier> pUMs = new List<PowerUpModifier>();
+            game.powerUpModificationList.TryGetValue(playerGuid, out pUMs);
+
+            List<PowerUpModifier> deleteModification = new List<PowerUpModifier>();
+            foreach (PowerUpModifier pUM in pUMs)
+            {
+                if (pUM.getType() == ModificationKind)
+                    deleteModification.Add(pUM);
+            }
+            foreach (PowerUpModifier pM in deleteModification)
+            {
+                game.powerUpModificationList[playerGuid].Remove(pM);
+            }
+            deleteModification.Clear();
         }
 
     }

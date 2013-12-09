@@ -334,7 +334,6 @@ namespace Akanonda.GameLibrary
                 }
 
                 addScoreEvery30Seconds(i);
-
             }
         }
 
@@ -431,60 +430,8 @@ namespace Akanonda.GameLibrary
             {
                 rect = new Rectangle(lowestX - 2, lowestY - 2, 15, 15);
             }
-            switch (power.kind)
-            {
-                case PowerUp.PowerUpKind.openWalls:
-                    powerupIcon = new Icon("images/openwallsico.ico");
-                    break;
-                case PowerUp.PowerUpKind.iGoThroughWalls:
-                    powerupIcon = new Icon("images/gothroughwallsico.ico");
-                    break;
-                case PowerUp.PowerUpKind.iGoFast:
-                    powerupIcon = new Icon("images/gofastico.ico");
-                    break;
-                case PowerUp.PowerUpKind.othersGoFast:
-                    powerupIcon = new Icon("images/othersgofastico.ico");
-                    break;
-                case PowerUp.PowerUpKind.redApple:
-                    powerupIcon = new Icon("images/shorterico.ico");
-                    break;
-                case PowerUp.PowerUpKind.goldenApple:
-                    powerupIcon = new Icon("images/goldenappleico.ico");
-                    break;
-                case PowerUp.PowerUpKind.rabies:
-                    powerupIcon = new Icon("images/blackappleico.ico");
-                    break;
-                case PowerUp.PowerUpKind.movePowerUps:
-                    powerupIcon = new Icon("images/movepowerupsico.ico");
-                    break;
-                case PowerUp.PowerUpKind.iGoSlow:
-                    powerupIcon = new Icon("images/goslowico.ico");
-                    break;
-                case PowerUp.PowerUpKind.othersGoSlow:
-                    powerupIcon = new Icon("images/othersgoslowico.ico");
-                    break;
-                case PowerUp.PowerUpKind.biggerWalls:
-                    powerupIcon = new Icon("images/biggerwallsico.ico");
-                    break;
-                case PowerUp.PowerUpKind.closingWalls:
-                    powerupIcon = new Icon("images/closingwallsico.ico");
-                    break;
-                case PowerUp.PowerUpKind.morePowerUps:
-                    powerupIcon = new Icon("images/morepowerupsico.ico");
-                    break;
-                case PowerUp.PowerUpKind.getMoreSnakes:
-                    powerupIcon = new Icon("images/getmoreico.ico");
-                    break;
-                case PowerUp.PowerUpKind.deleteAllSnakes:
-                    powerupIcon = new Icon("images/redappleico.ico");
-                    break;
-                case PowerUp.PowerUpKind.makePlayersBig:
-                    powerupIcon = new Icon("images/bigico.ico");
-                    break;
-                case PowerUp.PowerUpKind.changeColor:
-                    powerupIcon = new Icon("images/changeColerIco.ico");
-                    break;
-            }
+
+            powerupIcon = new Icon("images/" + power.kind + ".ico");
             g.DrawIcon(powerupIcon, rect);
         }
 
@@ -508,13 +455,10 @@ namespace Akanonda.GameLibrary
                             howBig = checkLocation.Key[0];
                             break;
                         }
-
                     }
-                    
                     if (player.playerbody[i][0] > -1 && player.playerbody[i][0] < getFieldX() && player.playerbody[i][1] > -1 && player.playerbody[i][1] < getFieldY())
                         if (snakepartIsBig)
                         {
-                        //makePlayersBigModifier howBig = (makePlayersBigModifier)_powerUpModificationList[player.guid][playerIsBig];
                         g.FillRectangle(new SolidBrush(player.color), (_field.offsetWest + player.playerbody[i][0] * _field.Scale),
                         (_field.offsetNorth + player.playerbody[i][1] * _field.Scale),
                         player.playerbody[x][0] == player.playerbody[i][0] ? _field.Scale * howBig : _field.Scale,
