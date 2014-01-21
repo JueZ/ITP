@@ -139,6 +139,11 @@ namespace Akanonda
                             //L_form.PlayersInLobbyList.View = View.Details;
 
                         }
+                        else if(chat == "kick:"+Program.game.LocalPlayerGuid.ToString())
+                        {
+                            System.Windows.Forms.MessageBox.Show("You were kicked by the Admin!");
+                            L_form.LobbyForm_FormClosing(null, null);
+                        }
                         else
                         {
                             Output(chat);
@@ -241,7 +246,8 @@ namespace Akanonda
 
             while (Program.netclient.Status != NetPeerStatus.NotRunning || Program.s_client.Status != NetPeerStatus.NotRunning)
                 System.Threading.Thread.Sleep(10);
-
+            MainForm.M_Form.Dispose();
+            this.Dispose();
             Environment.Exit(0);
         }
 

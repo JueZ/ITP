@@ -33,8 +33,8 @@ namespace Akanonda.GameLibrary
             makePlayersBig = 16,
             getMoreSnakes = 11,
             changeColor = 9,
-            goDiagonal = 12
-            
+            iGoDiagonal = 12,
+            othersGoDiagonal = 13
         }
 
         public PowerUp(PowerUpKind kind, Guid guid = new Guid())

@@ -74,7 +74,7 @@ namespace Akanonda.GameLibrary
                 }
 
 
-                if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoFastModifier, player.guid) > -1 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoFastModifier, player.guid) > -1)
+                if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoFastModifier, player.guid) > -1)
                 {
                     if(player.playerbody[player.playerbody.Count - 2][0] != -40)
                     coordinatesToCheckList.Add(player.playerbody[player.playerbody.Count - 2]);
@@ -100,8 +100,8 @@ namespace Akanonda.GameLibrary
                                         {
                                             if (!game.PLayerList[i].guid.Equals(player.guid))
                                             {
-                                                othersGoFastModifier oGFM = new othersGoFastModifier();
-                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(oGFM);
+                                                //othersGoFastModifier oGFM = new othersGoFastModifier();
+                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(new iGoFastModifier());
                                             }
                                         }
                                     }
@@ -110,7 +110,6 @@ namespace Akanonda.GameLibrary
                                 case PowerUp.PowerUpKind.iGoFast:
                                     iGoFastModifier iGFM = new iGoFastModifier();
                                     game.powerUpModificationList[player.guid].Add(iGFM);
-
                                     deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.iGoSlow:
@@ -153,8 +152,8 @@ namespace Akanonda.GameLibrary
                                         {
                                             if (!game.PLayerList[i].guid.Equals(player.guid))
                                             {
-                                                othersGoSlowModifier oGSM = new othersGoSlowModifier();
-                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(oGSM);
+                                                //othersGoSlowModifier oGSM = new othersGoSlowModifier();
+                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(new iGoSlowModifier());
                                             }
                                         }
                                     }
@@ -218,9 +217,17 @@ namespace Akanonda.GameLibrary
 
                                     deletePowerUpList.Add(power.guid);
                                     break;
-                                case PowerUp.PowerUpKind.goDiagonal:
-                                    goDiagonalModifier gDM = new goDiagonalModifier();
-                                    game.powerUpModificationList[player.guid].Add(gDM);
+                                case PowerUp.PowerUpKind.iGoDiagonal:
+                                    game.powerUpModificationList[player.guid].Add(new iGoDiagonalModifier());
+                                    deletePowerUpList.Add(power.guid);
+                                    break;
+                                case PowerUp.PowerUpKind.othersGoDiagonal:
+                                    foreach (Player otherPlayer in game.PLayerList)
+                                    {
+                                        if (otherPlayer.guid != player.guid)
+                                            game.powerUpModificationList[otherPlayer.guid].Add(new iGoDiagonalModifier());
+                                    }
+                                   
                                     deletePowerUpList.Add(power.guid);
                                     break;
                             }

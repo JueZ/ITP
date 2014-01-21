@@ -18,7 +18,8 @@ namespace Akanonda.GameLibrary
         rabiesModifier,
         makePlayersBigModifier,
         changeColorModifier,
-        goDiagonalModifier
+        iGoDiagonalModifier,
+        othersGoDiagonalModifier
     }
         
         public interface PowerUpModifier
@@ -27,29 +28,6 @@ namespace Akanonda.GameLibrary
             void setCount(int counter);
             void reduceCounterBy1();
             PowerUpModifierKind getType();
-        }
-
-    [Serializable()]
-        public class othersGoSlowModifier : PowerUpModifier
-        {
-            private int _counter = 100;
-            public int getCount()
-            {
-                return _counter;
-            }
-            public void setCount(int counter)
-            {
-                _counter = counter;
-            }
-            public void reduceCounterBy1()
-            {
-                if(_counter > 0)
-                _counter--;
-            }
-            public PowerUpModifierKind getType()
-            {
-                return PowerUpModifierKind.othersGoSlowModifier;
-            }
         }
 
     [Serializable()]
@@ -72,29 +50,6 @@ namespace Akanonda.GameLibrary
             public PowerUpModifierKind getType()
             {
                 return PowerUpModifierKind.iGoSlowModifier;
-            }
-        }
-
-    [Serializable()]
-        public class othersGoFastModifier : PowerUpModifier
-        {
-            private int _counter = 100;
-            public int getCount()
-            {
-                return _counter;
-            }
-            public void setCount(int counter)
-            {
-                _counter = counter;
-            }
-            public void reduceCounterBy1()
-            {
-                if (_counter > 0)
-                _counter--;
-            }
-            public PowerUpModifierKind getType()
-            {
-                return PowerUpModifierKind.othersGoFastModifier;
             }
         }
 
@@ -240,7 +195,7 @@ namespace Akanonda.GameLibrary
     [Serializable()]
     public class changeColorModifier : PowerUpModifier
     {
-        private int _counter = 100;
+        private int _counter = 50;
         public int getCount()
         {
             return _counter;
@@ -260,7 +215,7 @@ namespace Akanonda.GameLibrary
         }
     }
     [Serializable()]
-    public class goDiagonalModifier : PowerUpModifier
+    public class iGoDiagonalModifier : PowerUpModifier
     {
         private int _counter = 100;
         public int getCount()
@@ -278,10 +233,8 @@ namespace Akanonda.GameLibrary
         }
         public PowerUpModifierKind getType()
         {
-            return PowerUpModifierKind.goDiagonalModifier;
+            return PowerUpModifierKind.iGoDiagonalModifier;
         }
     }
-
-
     
 }

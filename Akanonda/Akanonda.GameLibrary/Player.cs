@@ -182,48 +182,48 @@ namespace Akanonda.GameLibrary
             {
                 case PlayerSteering.Up:
                     y--;
-                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
                         x--;
                     if (playerGoesFast(x, y))
                     {
                         y--;
-                        if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                        if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
                             x--;
                         this._playerbody.RemoveAt(0);
                     }
                     break;
                 case PlayerSteering.Down:
                     y++;
-                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
                         x++;
                     if (playerGoesFast(x, y))
                     {
                         y++;
-                        if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                        if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
                             x++;
                         this._playerbody.RemoveAt(0);
                     }
                     break;
                 case PlayerSteering.Left:
                     x--;
-                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
                         y++;
                     if (playerGoesFast(x, y))
                     {
                         x--;
-                        if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                        if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
                             y++;
                         this._playerbody.RemoveAt(0);
                     }
                     break;
                 case PlayerSteering.Right:
                     x++;
-                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
                         y--;
                     if (playerGoesFast(x, y))
                     {
                         x++;
-                        if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                        if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
                             y--;
                         this._playerbody.RemoveAt(0);
                     }
@@ -247,9 +247,9 @@ namespace Akanonda.GameLibrary
         private bool playerGoesFast(int x, int y)
         {
 
-            if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoFastModifier, this.guid) > -1 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoFastModifier, this.guid) > -1)
+            if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoFastModifier, this.guid) > -1)
             {
-                if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoSlowModifier, this.guid) > -1 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoSlowModifier, this.guid) > -1)
+                if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoSlowModifier, this.guid) > -1)
                 {
                     return false;
                 }

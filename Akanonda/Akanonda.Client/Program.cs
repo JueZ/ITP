@@ -20,7 +20,7 @@ namespace Akanonda
         public static System.Windows.Forms.Timer SurvivalTimer;
         public static int SurvivalSecond = 0;
         public static int SurvivalMinute = 0;
-        private static Settings settings = new Settings();
+        public static Settings settings = new Settings();
         private static int length = 0;
         [STAThread]
         private static void Main(string[] args)

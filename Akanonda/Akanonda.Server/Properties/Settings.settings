@@ -14,5 +14,8 @@
     <Setting Name="ChatPort" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">1338</Value>
     </Setting>
+    <Setting Name="Use4Buttons" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

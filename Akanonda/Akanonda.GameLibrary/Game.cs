@@ -114,29 +114,51 @@ namespace Akanonda.GameLibrary
             {
                 if (player.guid == playerguid)
                 {
-                    switch (playersteering)
-                    {
-                        case PlayerSteering.Up:
-                            if(player.playersteering != PlayerSteering.Down)
-                                player.playersteering = playersteering;
-                            break;
-                        case PlayerSteering.Right:
-                            if (player.playersteering != PlayerSteering.Left)
-                                player.playersteering = playersteering;
-                            break;
-                        case PlayerSteering.Down:
-                            if (player.playersteering != PlayerSteering.Up)
-                                player.playersteering = playersteering;
-                            break;
-                        case PlayerSteering.Left:
-                            if (player.playersteering != PlayerSteering.Right)
-                                player.playersteering = playersteering;
-                            break;
-                    }
+                    player.playersteering = playersteering;
+                    //int test = (int)player.playersteering;
+                    //if(playersteering == PlayerSteering.Right){
+                    //    if (player.playersteering == PlayerSteering.Left)
+                    //        test = 1;
+                    //    else
+                    //        test++;
+                    //    player.playersteering = (PlayerSteering)test;
+                    //}
+                    //if (playersteering == PlayerSteering.Left)
+                    //{
+                    //    if (player.playersteering == PlayerSteering.Up)
+                    //        test = 4;
+                    //    else
+                    //        test--;
+                    //    player.playersteering = (PlayerSteering)test;
+                    //}                    
+
+
+                    
+
+                    //switch (playersteering)
+                    //{
+                    //    case PlayerSteering.Up:
+                    //        if(player.playersteering != PlayerSteering.Down)
+                    //            player.playersteering = playersteering;
+                    //        break;
+                    //    case PlayerSteering.Right:
+                    //        if (player.playersteering != PlayerSteering.Left)
+                    //            player.playersteering = playersteering;
+                    //        break;
+                    //    case PlayerSteering.Down:
+                    //        if (player.playersteering != PlayerSteering.Up)
+                    //            player.playersteering = playersteering;
+                    //        break;
+                    //    case PlayerSteering.Left:
+                    //        if (player.playersteering != PlayerSteering.Right)
+                    //            player.playersteering = playersteering;
+                    //        break;
+                    //}
                     
                 }
             }
         }
+
 
         public void addPlayer(string name, Color color, Guid guid)
         {
@@ -316,9 +338,9 @@ namespace Akanonda.GameLibrary
 
             for (int i = 0; i < _playerList.Count; i++)
             {
-                if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoSlowModifier, _playerList[i].guid) > -1 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoSlowModifier, _playerList[i].guid) > -1)
+                if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoSlowModifier, _playerList[i].guid) > -1)
                 {
-                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.othersGoFastModifier, _playerList[i].guid) > -1 || PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoFastModifier, _playerList[i].guid) > -1)
+                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.iGoFastModifier, _playerList[i].guid) > -1)
                     {
                         _playerList[i].playerMove(grow);
                     }

@@ -20,6 +20,7 @@ namespace Akanonda
         private static Settings settings = new Settings();
         public static System.Timers.Timer SurvivalTimer;
         private static List<NetConnection> adminList = new List<NetConnection>();
+        private static Dictionary<Guid, NetConnection> playerClientConn = new Dictionary<Guid, NetConnection>();
         static void Main(string[] args)
         {
             Console.WriteLine("Akanonda Server");
@@ -146,8 +147,9 @@ namespace Akanonda
                                 string[] remotehailmessagearray = remotehailmessage.Split(';');
 
                                 game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-                                game.AddPowerUp(PowerUp.PowerUpKind.goDiagonal);
-                                game.AddPowerUp(PowerUp.PowerUpKind.getMoreSnakes);
+                                playerClientConn.Add(Guid.Parse(remotehailmessagearray[0]), im.SenderConnection);
+                                game.AddPowerUp(PowerUp.PowerUpKind.iGoDiagonal);
+                                game.AddPowerUp(PowerUp.PowerUpKind.changeColor);
                                 //Console.WriteLine("[Chat]Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                             }
 
@@ -155,6 +157,7 @@ namespace Akanonda
                             {
                                 game.removePlayer(Guid.Parse(reason));
                                 game.RemoveLobbyPlayer(Guid.Parse(reason));
+                                playerClientConn.Remove(Guid.Parse(reason));
                                 //Console.WriteLine("[Chat]Player disconnected! \t GUID: " + Guid.Parse(reason)); 
                             }
                             break;
@@ -173,17 +176,33 @@ namespace Akanonda
                                     {
                                         string[] playerToKick = chatMessage[1].Split(':');
                                         Player playerToFind = game.PLayerList.Find(item => item.name == playerToKick[1]);
+                                        if(playerToFind == null)
+                                            playerToFind = game.LobbyList.Find(item => item.name == playerToKick[1]);
                                         if (playerToFind != null)
                                         {
-                                            game.addDeadRemoveLivingPlayer(playerToFind.guid);
+                                            //game.addDeadRemoveLivingPlayer(playerToFind.guid);
+                                            //string test = Convert.ToString(playerToFind.guid);
                                             NetOutgoingMessage om2 = chatServer.CreateMessage();
-                                            om2.Write(playerToKick[1] + " was kicked because of bad behaviour");
-                                            chatServer.SendMessage(om2, all, NetDeliveryMethod.ReliableOrdered, 0);
+
+
+                                            if (playerClientConn.ContainsKey(playerToFind.guid))
+                                            {
+                                                om2.Write("kick:"+playerToFind.guid.ToString());
+                                                chatServer.SendMessage(om2, playerClientConn[playerToFind.guid], NetDeliveryMethod.ReliableOrdered, 0);
+                                            }
                                             om.Write(playerToKick[1] + " was kicked successfully");
                                         }
                                         else
                                         {
-                                            om.Write(playerToKick[1] + " was not kicked");
+                                            if (playerToKick[1] != null && playerToKick[1] != "")
+                                            {
+                                                if (playerToFind == null)
+                                                    om.Write("The Player could not be kicked, because he wasn't found");
+                                                else
+                                                    om.Write("The Player " + playerToKick[1] + " could not be kicked");
+                                            }
+                                            else
+                                                om.Write("wrong use of kick Command\nPlease use 'kick:playername'");
                                         }
                                     }
                                     else
@@ -210,8 +229,14 @@ namespace Akanonda
                                                 StartChat();
                                                 om.Write("Chat started");
                                                 break;
+                                            case "help":
+                                            case "Help":
+                                                string helptext = "Possible Commands:\n'start' - Start Game\n'status' - show Connected Players and Configuration\n";
+                                                helptext += "'exit' - Kill Server\n'stop Chat' & 'start Chat'\n 'kick:playername' - kick player";
+                                                om.Write(helptext);
+                                                break;
                                             default:
-                                                //om.Write("Command not found");
+                                                om.Write("Command not found!\nType help for more information");
                                                 break;
                                         }
                                     }
@@ -241,7 +266,6 @@ namespace Akanonda
                             }
                             break;
                         default:
-                            Console.WriteLine("[Chat]:Unhandled type: " + im.MessageType + " " + im.LengthBytes + " bytes " + im.DeliveryMethod + "|" + im.SequenceChannel);
                             break;
                     }
                 }
@@ -326,6 +350,7 @@ namespace Akanonda
                         {
                             if (reason != "Connection timed out" && Guid.Parse(reason) != null) //fix for server crashes
                             {
+                                im.SenderConnection.Disconnect("test");
                                 game.addDeadRemoveLivingPlayer(Guid.Parse(reason));
                             }
                         }
