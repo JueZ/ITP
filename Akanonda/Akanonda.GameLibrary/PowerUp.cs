@@ -26,10 +26,10 @@ namespace Akanonda.GameLibrary
             biggerWalls = 8,
             iGoThroughWalls = 10,
             redApple = 17, // shrink icon!! removes all other players 20 snake pieces
-            morePowerUps = 32,
-            goldenApple = 33, //gives the player 20 extra snake pieces
-            rabies = 37,
-            deleteAllSnakes = 89,//-> redAppleIcon
+            morePowerUps = 14,
+            goldenApple = 21, //gives the player 20 extra snake pieces
+            rabies = 22,
+            deleteAllSnakes = 60,//-> redAppleIcon
             makePlayersBig = 16,
             getMoreSnakes = 11,
             changeColor = 9,

@@ -8,9 +8,7 @@ namespace Akanonda.GameLibrary
 
     public enum PowerUpModifierKind
     {
-        othersGoSlowModifier,
         iGoSlowModifier,
-        othersGoFastModifier,
         iGoFastModifier,
         goldenAppleModifier,
         redAppleModifier,
@@ -19,7 +17,6 @@ namespace Akanonda.GameLibrary
         makePlayersBigModifier,
         changeColorModifier,
         iGoDiagonalModifier,
-        othersGoDiagonalModifier
     }
         
         public interface PowerUpModifier

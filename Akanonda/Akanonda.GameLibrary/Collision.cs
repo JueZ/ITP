@@ -198,7 +198,7 @@ namespace Akanonda.GameLibrary
                                     break;
                                 case PowerUp.PowerUpKind.morePowerUps:
                                     deletePowerUpList.Add(power.guid);
-                                    game.PowerUpPopUpRate -= 15;
+                                    game.PowerUpPopUpRate -= 25;
                                     break;
                                 case PowerUp.PowerUpKind.movePowerUps:
                                     game.powerUpCounters[Game.moveAllPowerUps] += 100;
