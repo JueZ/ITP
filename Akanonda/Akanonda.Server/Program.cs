@@ -146,7 +146,8 @@ namespace Akanonda
                                 string[] remotehailmessagearray = remotehailmessage.Split(';');
 
                                 game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-
+                                game.AddPowerUp(PowerUp.PowerUpKind.goDiagonal);
+                                game.AddPowerUp(PowerUp.PowerUpKind.getMoreSnakes);
                                 //Console.WriteLine("[Chat]Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                             }
 

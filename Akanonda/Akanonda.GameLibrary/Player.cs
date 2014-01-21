@@ -175,46 +175,62 @@ namespace Akanonda.GameLibrary
             // not used List<int[]> checkHead = new List<int[]>();
             int x = _playerbody[_playerbody.Count - 1][0];
             int y = _playerbody[_playerbody.Count - 1][1];
-
+            List<Player> duplicateCount = Game.Instance.PLayerList.FindAll(z => z.guid == this.guid);
 
 
             switch (this._playersteering)
             {
                 case PlayerSteering.Up:
                     y--;
+                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                        x--;
                     if (playerGoesFast(x, y))
                     {
                         y--;
+                        if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                            x--;
                         this._playerbody.RemoveAt(0);
                     }
                     break;
                 case PlayerSteering.Down:
                     y++;
+                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                        x++;
                     if (playerGoesFast(x, y))
                     {
                         y++;
+                        if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                            x++;
                         this._playerbody.RemoveAt(0);
                     }
                     break;
                 case PlayerSteering.Left:
                     x--;
+                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                        y++;
                     if (playerGoesFast(x, y))
                     {
                         x--;
+                        if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                            y++;
                         this._playerbody.RemoveAt(0);
                     }
                     break;
                 case PlayerSteering.Right:
                     x++;
+                    if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                        y--;
                     if (playerGoesFast(x, y))
                     {
                         x++;
+                        if (PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.goDiagonalModifier, this.guid) > -1 || (duplicateCount.Count > 1 && duplicateCount[0].name.Length != this.name.Length))
+                            y--;
                         this._playerbody.RemoveAt(0);
                     }
                     break;
             }
             makeSnakeHoles();
-            int index =PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, this.guid);
+            int index = PowerUp.checkIfPlayerHasModification(PowerUpModifierKind.makePlayersBigModifier, this.guid);
             if (index > -1)
             {
                 if (Game.Instance.powerUpModificationList[this.guid][index].getCount() > 0)

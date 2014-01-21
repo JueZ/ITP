@@ -218,6 +218,11 @@ namespace Akanonda.GameLibrary
 
                                     deletePowerUpList.Add(power.guid);
                                     break;
+                                case PowerUp.PowerUpKind.goDiagonal:
+                                    goDiagonalModifier gDM = new goDiagonalModifier();
+                                    game.powerUpModificationList[player.guid].Add(gDM);
+                                    deletePowerUpList.Add(power.guid);
+                                    break;
                             }
                         }
                     }

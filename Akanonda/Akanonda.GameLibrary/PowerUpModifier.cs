@@ -17,7 +17,8 @@ namespace Akanonda.GameLibrary
         iGoThroughWallsModifier,
         rabiesModifier,
         makePlayersBigModifier,
-        changeColorModifier
+        changeColorModifier,
+        goDiagonalModifier
     }
         
         public interface PowerUpModifier
@@ -256,6 +257,28 @@ namespace Akanonda.GameLibrary
         public PowerUpModifierKind getType()
         {
             return PowerUpModifierKind.changeColorModifier;
+        }
+    }
+    [Serializable()]
+    public class goDiagonalModifier : PowerUpModifier
+    {
+        private int _counter = 100;
+        public int getCount()
+        {
+            return _counter;
+        }
+        public void setCount(int counter)
+        {
+            _counter = counter;
+        }
+        public void reduceCounterBy1()
+        {
+            if (_counter > 0)
+                _counter--;
+        }
+        public PowerUpModifierKind getType()
+        {
+            return PowerUpModifierKind.goDiagonalModifier;
         }
     }
 
