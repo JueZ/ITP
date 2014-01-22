@@ -150,7 +150,10 @@ namespace Akanonda.GameLibrary
                             this._playerbody.Add(new int[2] { headCoordinates[0] + 1, headCoordinates[1] });
                             this._playerbody.Add(new int[2] { headCoordinates[0] + 2, headCoordinates[1] });
                         }
-                        this._playersteering = duplicateCount.Count == 2 ? PlayerSteering.Left : PlayerSteering.Right;
+                        if(this._playersteering == PlayerSteering.Up)
+                            this._playersteering = duplicateCount.Count == 2 ? PlayerSteering.Right : PlayerSteering.Up;
+                        else
+                            this._playersteering = duplicateCount.Count == 2 ? PlayerSteering.Left : PlayerSteering.Down;
                         break;
                     case PlayerSteering.Right:
                     case PlayerSteering.Left:
@@ -164,7 +167,10 @@ namespace Akanonda.GameLibrary
                             this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] + 1 });
                             this._playerbody.Add(new int[2] { headCoordinates[0], headCoordinates[1] + 2 });
                         }
-                        this._playersteering = duplicateCount.Count == 2 ? PlayerSteering.Down : PlayerSteering.Up;
+                        if (this._playersteering == PlayerSteering.Right)
+                            this._playersteering = duplicateCount.Count == 2 ? PlayerSteering.Down : PlayerSteering.Right;
+                        else
+                            this._playersteering = duplicateCount.Count == 2 ? PlayerSteering.Up : PlayerSteering.Left;
                         break;
                 }
             }
@@ -270,7 +276,7 @@ namespace Akanonda.GameLibrary
 
         private void makeSnakeHoles()
         {
-            if (Game.getRandomNumber(0, 20) % 20 == 0)
+            if (Game.getRandomNumber(0, 20) % 20 == 0 || (Game.Instance.powerUpCounters[Game.cheesySnakes] > 0 && Game.getRandomNumber(0, 3) == 0))
             {
                     _playerbody[_playerbody.Count - 1][0] = -40;
                     _playerbody[_playerbody.Count - 1][1] = -40;

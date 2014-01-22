@@ -22,11 +22,12 @@ namespace Akanonda.GameLibrary
         private int _tickCounter;
         private Dictionary<Guid, CollisionType> _collisionList;
         private Dictionary<Guid, List<PowerUpModifier>> _powerUpModificationList;
-        private int[] _powerUpCounters = new int[4];
+        private int[] _powerUpCounters = new int[5];
         public const int moveAllPowerUps = 0;
         public const int openWalls = 1;
         public const int closingWalls = 2;
         public const int biggerWalls = 3;
+        public const int cheesySnakes = 4;
         private int _powerUpPopUpRate = 65;
 
         public static Game Instance
@@ -57,6 +58,7 @@ namespace Akanonda.GameLibrary
             _powerUpCounters[openWalls] = 0;
             _powerUpCounters[closingWalls] = 0;
             _powerUpCounters[biggerWalls] = 0;
+            _powerUpCounters[cheesySnakes] = 0;
 
         }
 
@@ -108,13 +110,72 @@ namespace Akanonda.GameLibrary
             }
         }
 
-        public void setsteering(Guid playerguid, PlayerSteering playersteering)
+        public void setsteering(Guid playerguid, PlayerSteering playersteering, Boolean use4Buttons)
         {
-            foreach (Player player in _playerList)
+
+            List<Player> playerToFind = Game.Instance.PLayerList.FindAll(item => item.guid == playerguid);
+            foreach (Player player in playerToFind)
             {
-                if (player.guid == playerguid)
+                if (use4Buttons)
                 {
-                    player.playersteering = playersteering;
+                    switch (playersteering)
+                    {
+                        case PlayerSteering.Right:
+                            if (player.playersteering != PlayerSteering.Left)
+                            {
+                                player.playersteering = PlayerSteering.Right;
+                            }
+
+                            break;
+                        case PlayerSteering.Left:
+                            if (player.playersteering != PlayerSteering.Right)
+                            {
+                                player.playersteering = PlayerSteering.Left;
+                            }
+
+                            break;
+                        case PlayerSteering.Up:
+                            if (player.playersteering != PlayerSteering.Down)
+                            {
+                                player.playersteering = PlayerSteering.Up;
+                            }
+
+                            break;
+                        case PlayerSteering.Down:
+                            if (player.playersteering != PlayerSteering.Up)
+                            {
+                                player.playersteering = PlayerSteering.Down;
+                            }
+                            break;
+                    }
+                }
+                else
+                {
+                    int test = (int)player.playersteering;
+                    if (playersteering == PlayerSteering.Right)
+                    {
+                        if (player.playersteering == PlayerSteering.Left)
+                            test = 1;
+                        else
+                            test++;
+                        player.playersteering = (PlayerSteering)test;
+                    }
+                    if (playersteering == PlayerSteering.Left)
+                    {
+                        if (player.playersteering == PlayerSteering.Up)
+                            test = 4;
+                        else
+                            test--;
+                        player.playersteering = (PlayerSteering)test;
+                    }
+                }
+            }
+
+            //foreach (Player player in _playerList)
+            //{
+            //    if (player.guid == playerguid)
+            //    {
+            //        player.playersteering = playersteering;
                     //int test = (int)player.playersteering;
                     //if(playersteering == PlayerSteering.Right){
                     //    if (player.playersteering == PlayerSteering.Left)
@@ -155,8 +216,8 @@ namespace Akanonda.GameLibrary
                     //        break;
                     //}
                     
-                }
-            }
+            //    }
+            //}
         }
 
 
@@ -254,8 +315,10 @@ namespace Akanonda.GameLibrary
             checkOpenWallCounter();
             checkMovePowerUpsCounter();
             checkIfWallsShouldGetSmallerOrBigger();
+            checkCheesySnakeCounter();
             remove1ModificationCountEveryTick();
             setPopUpRateToNormal();
+
         }
 
         private void checkOpenWallCounter()
@@ -289,6 +352,12 @@ namespace Akanonda.GameLibrary
                 checkClosingWallsCounter();
                 checkBiggerWallsCounter();
             }
+        }
+
+        private void checkCheesySnakeCounter()
+        {
+            if (powerUpCounters[cheesySnakes] > 0)
+                powerUpCounters[cheesySnakes]--;
         }
 
         private void setPopUpRateToNormal()

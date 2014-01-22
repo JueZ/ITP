@@ -45,6 +45,7 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.settingsButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,7 +56,7 @@
             this.StartGame.Name = "StartGame";
             this.StartGame.Size = new System.Drawing.Size(112, 40);
             this.StartGame.TabIndex = 4;
-            this.StartGame.Text = "Start Playin\'";
+            this.StartGame.Text = "Start";
             this.StartGame.UseVisualStyleBackColor = true;
             this.StartGame.Click += new System.EventHandler(this.StartGame_Click);
             // 
@@ -191,6 +192,19 @@
             this.columnHeader3.Text = "Score";
             this.columnHeader3.Width = 75;
             // 
+            // settingsButton
+            // 
+            this.settingsButton.BackColor = System.Drawing.Color.Transparent;
+            this.settingsButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.settingsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.settingsButton.Image = ((System.Drawing.Image)(resources.GetObject("settingsButton.Image")));
+            this.settingsButton.Location = new System.Drawing.Point(15, 588);
+            this.settingsButton.Name = "settingsButton";
+            this.settingsButton.Size = new System.Drawing.Size(42, 40);
+            this.settingsButton.TabIndex = 13;
+            this.settingsButton.UseVisualStyleBackColor = false;
+            this.settingsButton.Click += new System.EventHandler(this.settingButton_Click);
+            // 
             // LobbyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -198,6 +212,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(284, 640);
+            this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.PlayersInGameList);
             this.Controls.Add(this.PlayersInLobbyList);
             this.Controls.Add(this.label3);
@@ -237,5 +252,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.Button settingsButton;
     }
 }

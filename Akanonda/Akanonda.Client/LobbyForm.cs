@@ -27,6 +27,10 @@ namespace Akanonda
         public LobbyForm(string n, Color c):base()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+
             lobbyConnector = new FormConnector(this);
             MainForm.mainConnector.ConnectForm(this);
             name = n;
@@ -60,6 +64,12 @@ namespace Akanonda
                 Send(MessageBox.Text);
             MessageBox.Text = "";
 
+        }
+
+        private void settingButton_Click(object sender, EventArgs e)
+        {
+            settingsForm settingForm = new settingsForm();
+            settingForm.ShowDialog();
         }
 
         public static void Send(string text)
@@ -142,6 +152,11 @@ namespace Akanonda
                         else if(chat == "kick:"+Program.game.LocalPlayerGuid.ToString())
                         {
                             System.Windows.Forms.MessageBox.Show("You were kicked by the Admin!");
+                            L_form.LobbyForm_FormClosing(null, null);
+                        }
+                        else if (chat == "ban:" + Program.game.LocalPlayerGuid.ToString())
+                        {
+                            System.Windows.Forms.MessageBox.Show("You were banned by the Admin!");
                             L_form.LobbyForm_FormClosing(null, null);
                         }
                         else

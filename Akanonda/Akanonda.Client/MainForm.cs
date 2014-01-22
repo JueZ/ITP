@@ -56,84 +56,82 @@ namespace Akanonda
             if (duplicateCount.Count > 0){
                 
             NetOutgoingMessage sendMsg;
-            if (Program.settings.Use4Buttons)
+            //if (Program.settings.Use4Buttons)
+            //{
+            //    if (duplicateCount.Count <= 1)
+            //    {
+            switch (e.KeyCode)
             {
-                if (duplicateCount.Count <= 1)
-                {
-                    switch (e.KeyCode)
-                    {
                         case Keys.Right:
-                            if (Program.game.LocalSteering != GameLibrary.PlayerSteering.Left)
-                            {
+                            
                                 Program.game.LocalSteering = GameLibrary.PlayerSteering.Right;
-                            }
+                            
 
                             break;
                         case Keys.Left:
-                            if (Program.game.LocalSteering != GameLibrary.PlayerSteering.Right)
-                            {
+                           
                                 Program.game.LocalSteering = GameLibrary.PlayerSteering.Left;
-                            }
+                            
 
                             break;
                         case Keys.Up:
-                            if (Program.game.LocalSteering != GameLibrary.PlayerSteering.Down)
-                            {
+                           
                                 Program.game.LocalSteering = GameLibrary.PlayerSteering.Up;
-                            }
+                            
 
                             break;
                         case Keys.Down:
-                            if (Program.game.LocalSteering != GameLibrary.PlayerSteering.Up)
-                            {
+                            
                                 Program.game.LocalSteering = GameLibrary.PlayerSteering.Down;
-                            }
+                            
                             break;
                     }
-                }
-                else
-                {
-                    switch (e.KeyCode)
-                    {
-                        case Keys.Right:
-                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Right;
-                            break;
-                        case Keys.Left:
-                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Left;
-                            break;
-                        case Keys.Down:
-                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Down;
-                            break;
-                        case Keys.Up:
-                            Program.game.LocalSteering = GameLibrary.PlayerSteering.Up;
-                            break;
-                    }
-                }
-            }
-            else
-            {
-                int test = (int)Program.game.LocalSteering;
-                if (e.KeyCode == Keys.Right)
-                {
-                    if (Program.game.LocalSteering == PlayerSteering.Left)
-                        test = 1;
-                    else
-                        test++;
-                    Program.game.LocalSteering = (PlayerSteering)test;
-                }
-                if (e.KeyCode == Keys.Left)
-                {
-                    if (Program.game.LocalSteering == PlayerSteering.Up)
-                        test = 4;
-                    else
-                        test--;
-                    Program.game.LocalSteering = (PlayerSteering)test;
-                }
-            }
+            //    }
+            //    else
+            //    {
+            //        switch (e.KeyCode)
+            //        {
+            //            case Keys.Right:
+            //                Program.game.LocalSteering = GameLibrary.PlayerSteering.Right;
+            //                break;
+            //            case Keys.Left:
+            //                Program.game.LocalSteering = GameLibrary.PlayerSteering.Left;
+            //                break;
+            //            case Keys.Down:
+            //                Program.game.LocalSteering = GameLibrary.PlayerSteering.Down;
+            //                break;
+            //            case Keys.Up:
+            //                Program.game.LocalSteering = GameLibrary.PlayerSteering.Up;
+            //                break;
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    int test = (int)Program.game.LocalSteering;
+            //    if (e.KeyCode == Keys.Right)
+            //    {
+            //        if (Program.game.LocalSteering == PlayerSteering.Left)
+            //            test = 1;
+            //        else
+            //            test++;
+            //        Program.game.LocalSteering = (PlayerSteering)test;
+            //    }
+            //    if (e.KeyCode == Keys.Left)
+            //    {
+            //        if (Program.game.LocalSteering == PlayerSteering.Up)
+            //            test = 4;
+            //        else
+            //            test--;
+            //        Program.game.LocalSteering = (PlayerSteering)test;
+            //    }
+            //}
+
                 sendMsg = Program.netclient.CreateMessage();
 
                 sendMsg.Write(Program.guid.ToString());
                 sendMsg.Write((Int32)Program.game.LocalSteering);
+                sendMsg.Write(Program.settings.Use4Buttons);
 
                 Program.netclient.SendMessage(sendMsg, NetDeliveryMethod.ReliableSequenced);
             

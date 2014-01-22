@@ -21,6 +21,7 @@ namespace Akanonda
         public static System.Timers.Timer SurvivalTimer;
         private static List<NetConnection> adminList = new List<NetConnection>();
         private static Dictionary<Guid, NetConnection> playerClientConn = new Dictionary<Guid, NetConnection>();
+        private static List<System.Net.IPAddress> banList = new List<System.Net.IPAddress>();
         static void Main(string[] args)
         {
             Console.WriteLine("Akanonda Server");
@@ -145,11 +146,17 @@ namespace Akanonda
                             {
                                 string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
                                 string[] remotehailmessagearray = remotehailmessage.Split(';');
-
-                                game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                                 playerClientConn.Add(Guid.Parse(remotehailmessagearray[0]), im.SenderConnection);
+                                if (banList.Contains(im.SenderConnection.RemoteEndPoint.Address))
+                                {
+                                    NetOutgoingMessage om2 = chatServer.CreateMessage();
+                                    om2.Write("ban:" + Guid.Parse(remotehailmessagearray[0]));
+                                    chatServer.SendMessage(om2, playerClientConn[Guid.Parse(remotehailmessagearray[0])], NetDeliveryMethod.ReliableOrdered, 0);
+                                }
+                                    game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
+                                
+                                game.AddPowerUp(PowerUp.PowerUpKind.getMoreSnakes);
                                 game.AddPowerUp(PowerUp.PowerUpKind.iGoDiagonal);
-                                game.AddPowerUp(PowerUp.PowerUpKind.changeColor);
                                 //Console.WriteLine("[Chat]Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                             }
 
@@ -172,7 +179,7 @@ namespace Akanonda
                                 string[] chatMessage = chat.Split(';');
                                 if (adminList.Contains(im.SenderConnection))
                                 {
-                                    if (chatMessage[1].StartsWith("kick"))
+                                    if (chatMessage[1].StartsWith("kick") || chatMessage[1].StartsWith("ban"))
                                     {
                                         string[] playerToKick = chatMessage[1].Split(':');
                                         Player playerToFind = game.PLayerList.Find(item => item.name == playerToKick[1]);
@@ -180,29 +187,37 @@ namespace Akanonda
                                             playerToFind = game.LobbyList.Find(item => item.name == playerToKick[1]);
                                         if (playerToFind != null)
                                         {
-                                            //game.addDeadRemoveLivingPlayer(playerToFind.guid);
-                                            //string test = Convert.ToString(playerToFind.guid);
                                             NetOutgoingMessage om2 = chatServer.CreateMessage();
 
-
-                                            if (playerClientConn.ContainsKey(playerToFind.guid))
-                                            {
-                                                om2.Write("kick:"+playerToFind.guid.ToString());
-                                                chatServer.SendMessage(om2, playerClientConn[playerToFind.guid], NetDeliveryMethod.ReliableOrdered, 0);
+                                            if (chatMessage[1].StartsWith("kick")){
+                                                if (playerClientConn.ContainsKey(playerToFind.guid))
+                                                {
+                                                    om2.Write("kick:"+playerToFind.guid.ToString());
+                                                    om.Write(playerToKick[1] + " was kicked successfully");
+                                                }
                                             }
-                                            om.Write(playerToKick[1] + " was kicked successfully");
+                                            if (chatMessage[1].StartsWith("ban"))
+                                            {
+                                                if (playerClientConn.ContainsKey(playerToFind.guid))
+                                                {
+                                                    om2.Write("ban:" + playerToFind.guid.ToString());
+                                                    banList.Add(playerClientConn[playerToFind.guid].RemoteEndPoint.Address);
+                                                    om.Write(playerToKick[1] + " was banned successfully");
+                                                }   
+                                            }
+                                            chatServer.SendMessage(om2, playerClientConn[playerToFind.guid], NetDeliveryMethod.ReliableOrdered, 0);
                                         }
                                         else
                                         {
                                             if (playerToKick[1] != null && playerToKick[1] != "")
                                             {
                                                 if (playerToFind == null)
-                                                    om.Write("The Player could not be kicked, because he wasn't found");
+                                                    om.Write("The Player wasn't found");
                                                 else
-                                                    om.Write("The Player " + playerToKick[1] + " could not be kicked");
+                                                    om.Write("The Player " + playerToKick[1] + " could not be kicked/banned");
                                             }
                                             else
-                                                om.Write("wrong use of kick Command\nPlease use 'kick:playername'");
+                                                om.Write("wrong use of kick/ban Command\nPlease use 'kick:playername' or 'ban:playername'");
                                         }
                                     }
                                     else
@@ -255,6 +270,14 @@ namespace Akanonda
                                         adminList.Add(im.SenderConnection);
                                         om.Write("You are now logged in as Admin");
                                         chatServer.SendMessage(om, im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
+                                    }
+                                    else if (chatMessage[1] == "Logout" || chatMessage[1] == "logout")
+                                    {
+                                        adminList.Remove(im.SenderConnection);
+                                        om.Write("You are now logged out");
+                                        chatServer.SendMessage(om, im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
+                                    
+
                                     }
                                     else
                                     {
@@ -365,7 +388,8 @@ namespace Akanonda
                         {
                             Guid remoteplayer = new Guid(firstIM);
                             PlayerSteering remoteplayersteering = (PlayerSteering)im.ReadInt32();
-                            game.setsteering(remoteplayer, remoteplayersteering);
+                            bool use4Buttons = (bool)im.ReadBoolean();
+                            game.setsteering(remoteplayer, remoteplayersteering, use4Buttons);
                         }
 						break;
 					default:

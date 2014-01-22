@@ -230,6 +230,10 @@ namespace Akanonda.GameLibrary
                                    
                                     deletePowerUpList.Add(power.guid);
                                     break;
+                                case PowerUp.PowerUpKind.cheesySnakes:
+                                    game.powerUpCounters[Game.cheesySnakes] += 100;
+                                    deletePowerUpList.Add(power.guid);
+                                    break;
                             }
                         }
                     }

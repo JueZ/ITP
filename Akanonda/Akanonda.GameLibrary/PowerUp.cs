@@ -24,17 +24,18 @@ namespace Akanonda.GameLibrary
             iGoFast = 6,
             closingWalls = 7,
             biggerWalls = 8,
+            changeColor = 9,
             iGoThroughWalls = 10,
-            redApple = 17, // shrink icon!! removes all other players 20 snake pieces
+            getMoreSnakes = 11,
+            iGoDiagonal = 12,
+            othersGoDiagonal = 13,
             morePowerUps = 14,
+            cheesySnakes = 15,
+            makePlayersBig = 16,
+            redApple = 17, // shrink icon!! removes all other players 20 snake pieces
             goldenApple = 21, //gives the player 20 extra snake pieces
             rabies = 22,
-            deleteAllSnakes = 60,//-> redAppleIcon
-            makePlayersBig = 16,
-            getMoreSnakes = 11,
-            changeColor = 9,
-            iGoDiagonal = 12,
-            othersGoDiagonal = 13
+            deleteAllSnakes = 60//-> redAppleIcon
         }
 
         public PowerUp(PowerUpKind kind, Guid guid = new Guid())

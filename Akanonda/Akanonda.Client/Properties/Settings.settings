@@ -2,16 +2,16 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Akanonda.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ServerAdresse" Type="System.String" Scope="Application">
+    <Setting Name="ServerAdresse" Type="System.String" Scope="User">
       <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
-    <Setting Name="GamePort" Type="System.Int32" Scope="Application">
+    <Setting Name="GamePort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1337</Value>
     </Setting>
-    <Setting Name="ChatPort" Type="System.Int32" Scope="Application">
+    <Setting Name="ChatPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1338</Value>
     </Setting>
-    <Setting Name="Use4Buttons" Type="System.Boolean" Scope="Application">
+    <Setting Name="Use4Buttons" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
