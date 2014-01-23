@@ -36,7 +36,6 @@ namespace Akanonda
             Application.Run(new StartMenu());
         }
 
-
         public static void ConnectToServer()
         {
             NetPeerConfiguration netconfig = new NetPeerConfiguration("game");

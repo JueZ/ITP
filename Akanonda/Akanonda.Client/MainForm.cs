@@ -56,10 +56,7 @@ namespace Akanonda
             if (duplicateCount.Count > 0){
                 
             NetOutgoingMessage sendMsg;
-            //if (Program.settings.Use4Buttons)
-            //{
-            //    if (duplicateCount.Count <= 1)
-            //    {
+           
             switch (e.KeyCode)
             {
                         case Keys.Right:
@@ -86,46 +83,7 @@ namespace Akanonda
                             
                             break;
                     }
-            //    }
-            //    else
-            //    {
-            //        switch (e.KeyCode)
-            //        {
-            //            case Keys.Right:
-            //                Program.game.LocalSteering = GameLibrary.PlayerSteering.Right;
-            //                break;
-            //            case Keys.Left:
-            //                Program.game.LocalSteering = GameLibrary.PlayerSteering.Left;
-            //                break;
-            //            case Keys.Down:
-            //                Program.game.LocalSteering = GameLibrary.PlayerSteering.Down;
-            //                break;
-            //            case Keys.Up:
-            //                Program.game.LocalSteering = GameLibrary.PlayerSteering.Up;
-            //                break;
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    int test = (int)Program.game.LocalSteering;
-            //    if (e.KeyCode == Keys.Right)
-            //    {
-            //        if (Program.game.LocalSteering == PlayerSteering.Left)
-            //            test = 1;
-            //        else
-            //            test++;
-            //        Program.game.LocalSteering = (PlayerSteering)test;
-            //    }
-            //    if (e.KeyCode == Keys.Left)
-            //    {
-            //        if (Program.game.LocalSteering == PlayerSteering.Up)
-            //            test = 4;
-            //        else
-            //            test--;
-            //        Program.game.LocalSteering = (PlayerSteering)test;
-            //    }
-            //}
+          
 
                 sendMsg = Program.netclient.CreateMessage();
 
@@ -137,7 +95,6 @@ namespace Akanonda
             
             }
         }
-
 
         public void showOverlay(int minutes, int seconds, string deadMessage, int length)
         {

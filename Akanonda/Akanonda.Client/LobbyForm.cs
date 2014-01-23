@@ -20,7 +20,7 @@ namespace Akanonda
         //private static NetClient s_client = Program.s_client;
         public static LobbyForm L_form;
         public string name;
-        private Color color;
+        public Color color;
         private static GameLibrary.Game game = GameLibrary.Game.Instance;
         public static FormConnector lobbyConnector;
 

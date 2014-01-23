@@ -170,54 +170,6 @@ namespace Akanonda.GameLibrary
                     }
                 }
             }
-
-            //foreach (Player player in _playerList)
-            //{
-            //    if (player.guid == playerguid)
-            //    {
-            //        player.playersteering = playersteering;
-                    //int test = (int)player.playersteering;
-                    //if(playersteering == PlayerSteering.Right){
-                    //    if (player.playersteering == PlayerSteering.Left)
-                    //        test = 1;
-                    //    else
-                    //        test++;
-                    //    player.playersteering = (PlayerSteering)test;
-                    //}
-                    //if (playersteering == PlayerSteering.Left)
-                    //{
-                    //    if (player.playersteering == PlayerSteering.Up)
-                    //        test = 4;
-                    //    else
-                    //        test--;
-                    //    player.playersteering = (PlayerSteering)test;
-                    //}                    
-
-
-                    
-
-                    //switch (playersteering)
-                    //{
-                    //    case PlayerSteering.Up:
-                    //        if(player.playersteering != PlayerSteering.Down)
-                    //            player.playersteering = playersteering;
-                    //        break;
-                    //    case PlayerSteering.Right:
-                    //        if (player.playersteering != PlayerSteering.Left)
-                    //            player.playersteering = playersteering;
-                    //        break;
-                    //    case PlayerSteering.Down:
-                    //        if (player.playersteering != PlayerSteering.Up)
-                    //            player.playersteering = playersteering;
-                    //        break;
-                    //    case PlayerSteering.Left:
-                    //        if (player.playersteering != PlayerSteering.Right)
-                    //            player.playersteering = playersteering;
-                    //        break;
-                    //}
-                    
-            //    }
-            //}
         }
 
 
@@ -376,7 +328,7 @@ namespace Akanonda.GameLibrary
                     if (Game.Instance.getFieldX() > 60 && Game.Instance.getFieldY() > 60)
                     {
                         setFieldSize(Game.Instance.getFieldX() - 1, Game.Instance.getFieldY() - 1);
-                        _collision.setCollisionFieldSize(Game.Instance.getFieldX() - 1, Game.Instance.getFieldY() - 1);
+                        _collision.setCollisionFieldSize(Game.Instance.getFieldX(), Game.Instance.getFieldY());
                         PowerUp.removeAllPowerUpsOutsideField();
                     }
                 }

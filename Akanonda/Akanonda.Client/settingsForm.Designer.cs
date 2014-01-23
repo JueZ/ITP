@@ -51,7 +51,7 @@
             this.groupBox1.Location = new System.Drawing.Point(23, 29);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(259, 102);
-            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabIndex = 96;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Control Mode";
             // 
@@ -84,39 +84,39 @@
             this.closeSettingsButton.Location = new System.Drawing.Point(189, 421);
             this.closeSettingsButton.Name = "closeSettingsButton";
             this.closeSettingsButton.Size = new System.Drawing.Size(93, 40);
-            this.closeSettingsButton.TabIndex = 1;
+            this.closeSettingsButton.TabIndex = 6;
             this.closeSettingsButton.Text = "Close";
             this.closeSettingsButton.UseVisualStyleBackColor = true;
             this.closeSettingsButton.Click += new System.EventHandler(this.closeSettingsButton_Click);
             // 
             // GamePort
             // 
-            this.GamePort.Location = new System.Drawing.Point(29, 141);
+            this.GamePort.Location = new System.Drawing.Point(29, 96);
             this.GamePort.Name = "GamePort";
             this.GamePort.Size = new System.Drawing.Size(197, 20);
-            this.GamePort.TabIndex = 2;
+            this.GamePort.TabIndex = 3;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 125);
+            this.label1.Location = new System.Drawing.Point(26, 80);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(57, 13);
-            this.label1.TabIndex = 3;
+            this.label1.TabIndex = 98;
             this.label1.Text = "Game Port";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(26, 82);
+            this.label2.Location = new System.Drawing.Point(26, 119);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(51, 13);
-            this.label2.TabIndex = 5;
+            this.label2.TabIndex = 99;
             this.label2.Text = "Chat Port";
             // 
             // ChatPort
             // 
-            this.ChatPort.Location = new System.Drawing.Point(29, 98);
+            this.ChatPort.Location = new System.Drawing.Point(29, 135);
             this.ChatPort.Name = "ChatPort";
             this.ChatPort.Size = new System.Drawing.Size(197, 20);
             this.ChatPort.TabIndex = 4;
@@ -127,7 +127,7 @@
             this.label3.Location = new System.Drawing.Point(26, 43);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 13);
-            this.label3.TabIndex = 7;
+            this.label3.TabIndex = 97;
             this.label3.Text = "Server Adress";
             // 
             // ServerAdress
@@ -135,14 +135,14 @@
             this.ServerAdress.Location = new System.Drawing.Point(29, 59);
             this.ServerAdress.Name = "ServerAdress";
             this.ServerAdress.Size = new System.Drawing.Size(197, 20);
-            this.ServerAdress.TabIndex = 6;
+            this.ServerAdress.TabIndex = 2;
             // 
             // saveSettingsButton
             // 
             this.saveSettingsButton.Location = new System.Drawing.Point(29, 179);
             this.saveSettingsButton.Name = "saveSettingsButton";
             this.saveSettingsButton.Size = new System.Drawing.Size(93, 40);
-            this.saveSettingsButton.TabIndex = 8;
+            this.saveSettingsButton.TabIndex = 5;
             this.saveSettingsButton.Text = "Save";
             this.saveSettingsButton.UseVisualStyleBackColor = true;
             this.saveSettingsButton.Click += new System.EventHandler(this.saveSettingsButton_Click);
@@ -159,7 +159,7 @@
             this.groupBox2.Location = new System.Drawing.Point(23, 151);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(259, 250);
-            this.groupBox2.TabIndex = 9;
+            this.groupBox2.TabIndex = 95;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Server Settings";
             // 

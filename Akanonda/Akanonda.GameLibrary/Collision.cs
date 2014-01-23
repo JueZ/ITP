@@ -81,7 +81,7 @@ namespace Akanonda.GameLibrary
                 }
 
                 //check for PowerUp Collision
-                foreach (PowerUp power in Game.Instance.PowerUpList)
+                foreach (PowerUp power in game.PowerUpList)
                 {
                     foreach (int[] powerUpLocation in power.PowerUpLocation)
                     {
@@ -91,90 +91,70 @@ namespace Akanonda.GameLibrary
                             if (!game.powerUpModificationList.ContainsKey(player.guid))
                                 game.powerUpModificationList.Add(player.guid, new List<PowerUpModifier>());
 
+                            PowerUpModifier newModification;
                             switch(power.kind){
-                                
                                 case PowerUp.PowerUpKind.othersGoFast:
-                                    if (game.PLayerList.Count > 1)
+                                    foreach (Player otherPlayer in game.PLayerList)
                                     {
-                                        for (int i = 0; i < game.PLayerList.Count; i++)
+                                        if (checkIfOtherPlayer(otherPlayer.guid, player.guid))
                                         {
-                                            if (!game.PLayerList[i].guid.Equals(player.guid))
-                                            {
-                                                //othersGoFastModifier oGFM = new othersGoFastModifier();
-                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(new iGoFastModifier());
-                                            }
+                                            newModification = new iGoFastModifier();
+                                            game.powerUpModificationList[otherPlayer.guid].Add(newModification);
                                         }
                                     }
-                                    deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.iGoFast:
-                                    iGoFastModifier iGFM = new iGoFastModifier();
-                                    game.powerUpModificationList[player.guid].Add(iGFM);
-                                    deletePowerUpList.Add(power.guid);
+                                    newModification = new iGoFastModifier();
+                                    game.powerUpModificationList[player.guid].Add(newModification);
                                     break;
                                 case PowerUp.PowerUpKind.iGoSlow:
-                                    iGoSlowModifier iGSM = new iGoSlowModifier();
-                                    game.powerUpModificationList[player.guid].Add(iGSM);
-                                    deletePowerUpList.Add(power.guid);
+                                    newModification= new iGoSlowModifier();
+                                    game.powerUpModificationList[player.guid].Add(newModification);
                                     break;
                                 case PowerUp.PowerUpKind.goldenApple:
-                                    goldenAppleModifier gAM = new goldenAppleModifier();
-                                    game.powerUpModificationList[player.guid].Add(gAM);
-                                    deletePowerUpList.Add(power.guid);
+                                    newModification = new goldenAppleModifier();
+                                    game.powerUpModificationList[player.guid].Add(newModification);
                                     break;
                                 case PowerUp.PowerUpKind.redApple:
-                                    if (game.PLayerList.Count > 1)
+                                    foreach(Player otherPlayer in game.PLayerList)
                                     {
-                                        for (int i = 0; i < game.PLayerList.Count; i++)
+                                        if (checkIfOtherPlayer(otherPlayer.guid, player.guid))
                                         {
-                                            if (!game.PLayerList[i].guid.Equals(player.guid))
-                                            {
-                                                redAppleModifier rAM = new redAppleModifier();
-                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(rAM);
-                                            }
+                                            newModification = new redAppleModifier();
+                                            game.powerUpModificationList[otherPlayer.guid].Add(newModification);
                                         }
                                     }
-
-                                    deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.rabies:
-                                    rabiesModifier rM = new rabiesModifier();
-                                    iGoFastModifier iGFM2 = new iGoFastModifier();
-                                    iGFM2.setCount(50);
-                                    game.powerUpModificationList[player.guid].Add(rM);
-                                    game.powerUpModificationList[player.guid].Add(iGFM2);
-                                    deletePowerUpList.Add(power.guid);
+                                    newModification = new rabiesModifier();                                    
+                                    game.powerUpModificationList[player.guid].Add(newModification);
+                                    newModification = new iGoFastModifier();
+                                    newModification.setCount(50);
+                                    game.powerUpModificationList[player.guid].Add(newModification);
                                     break;
                                 case PowerUp.PowerUpKind.othersGoSlow:
-                                    if (game.PLayerList.Count > 1)
+                                    foreach(Player otherPlayer in game.PLayerList)
                                     {
-                                        for (int i = 0; i < game.PLayerList.Count; i++)
+                                        if (checkIfOtherPlayer(otherPlayer.guid, player.guid))
                                         {
-                                            if (!game.PLayerList[i].guid.Equals(player.guid))
-                                            {
-                                                //othersGoSlowModifier oGSM = new othersGoSlowModifier();
-                                                game.powerUpModificationList[game.PLayerList[i].guid].Add(new iGoSlowModifier());
-                                            }
+                                            newModification = new iGoSlowModifier();
+                                            game.powerUpModificationList[otherPlayer.guid].Add(newModification);
                                         }
                                     }
-                                    deletePowerUpList.Add(power.guid);
                                     break;
-
                                 case PowerUp.PowerUpKind.makePlayersBig:
-                                    for (int i = 0; i < game.PLayerList.Count; i++)
+                                    foreach(Player otherPlayer in game.PLayerList)
+                                    {
+                                        if (checkIfOtherPlayer(otherPlayer.guid, player.guid))
                                         {
-                                            if (!game.PLayerList[i].guid.Equals(player.guid))
-                                            {
-                                                    makePlayersBigModifier mPBM = new makePlayersBigModifier();
-                                                    game.powerUpModificationList[game.PLayerList[i].guid].Add(mPBM);
-                                            }                                                
+                                            newModification = new makePlayersBigModifier();
+                                            game.powerUpModificationList[otherPlayer.guid].Add(newModification);
                                         }
-                                        deletePowerUpList.Add(power.guid);
+                                    }
                                     break;
                                 case PowerUp.PowerUpKind.iGoThroughWalls:
-                                    iGoThroughWallsModifier iGTW = new iGoThroughWallsModifier();
-                                    game.powerUpModificationList[player.guid].Add(iGTW);
-                                    deletePowerUpList.Add(power.guid);
+                                    newModification = new iGoThroughWallsModifier();
+                                    game.powerUpModificationList[player.guid].Add(newModification);
                                     break;
                                 case PowerUp.PowerUpKind.deleteAllSnakes:
                                     foreach (Player playerToDelete in game.PLayerList)
@@ -182,59 +162,52 @@ namespace Akanonda.GameLibrary
                                         if (playerToDelete.guid != player.guid)
                                             playerToDelete.playerbody.RemoveRange(0, playerToDelete.playerbody.Count - 2);
                                     }
-                                    deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.openWalls:
                                     game.powerUpCounters[Game.openWalls] += 100;
-                                    deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.closingWalls:
                                     game.powerUpCounters[Game.closingWalls] += 40;
-                                    deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.biggerWalls:
                                     game.powerUpCounters[Game.biggerWalls] += 40;
-                                    deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.morePowerUps:
                                     deletePowerUpList.Add(power.guid);
-                                    game.PowerUpPopUpRate -= 25;
+                                    game.PowerUpPopUpRate -= 55;
                                     break;
                                 case PowerUp.PowerUpKind.movePowerUps:
                                     game.powerUpCounters[Game.moveAllPowerUps] += 100;
-                                    deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.getMoreSnakes:
                                     addDuplicateList.Add(player);
-                                    deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.changeColor:
-                                    changeColorModifier cCM = new changeColorModifier();
-                                    iGoFastModifier iGFM3 = new iGoFastModifier();
-                                    iGFM3.setCount(50);
-                                    game.powerUpModificationList[player.guid].Add(cCM);
-                                    game.powerUpModificationList[player.guid].Add(iGFM3);
-
-                                    deletePowerUpList.Add(power.guid);
+                                    newModification = new changeColorModifier();
+                                    game.powerUpModificationList[player.guid].Add(newModification);
+                                    newModification = new iGoFastModifier();
+                                    newModification.setCount(50);
+                                    game.powerUpModificationList[player.guid].Add(newModification);
                                     break;
                                 case PowerUp.PowerUpKind.iGoDiagonal:
-                                    game.powerUpModificationList[player.guid].Add(new iGoDiagonalModifier());
-                                    deletePowerUpList.Add(power.guid);
+                                    newModification = new iGoDiagonalModifier();
+                                    game.powerUpModificationList[player.guid].Add(newModification);
                                     break;
                                 case PowerUp.PowerUpKind.othersGoDiagonal:
                                     foreach (Player otherPlayer in game.PLayerList)
                                     {
-                                        if (otherPlayer.guid != player.guid)
-                                            game.powerUpModificationList[otherPlayer.guid].Add(new iGoDiagonalModifier());
+                                        if (checkIfOtherPlayer(otherPlayer.guid, player.guid))
+                                        {
+                                            newModification = new iGoDiagonalModifier();
+                                            game.powerUpModificationList[otherPlayer.guid].Add(newModification);
+                                        }
                                     }
-                                   
-                                    deletePowerUpList.Add(power.guid);
                                     break;
                                 case PowerUp.PowerUpKind.cheesySnakes:
                                     game.powerUpCounters[Game.cheesySnakes] += 100;
-                                    deletePowerUpList.Add(power.guid);
                                     break;
                             }
+                            deletePowerUpList.Add(power.guid);
                         }
                     }
                 }
@@ -554,5 +527,16 @@ namespace Akanonda.GameLibrary
             deleteModification.Clear();
         }
 
+        private bool checkIfOtherPlayer(Guid otherPlayerGuid, Guid playerGuid)
+        {
+            if (otherPlayerGuid != playerGuid)
+            {
+                if (!game.powerUpModificationList.ContainsKey(otherPlayerGuid))
+                    game.powerUpModificationList.Add(otherPlayerGuid, new List<PowerUpModifier>());
+
+                return true;
+            }
+            return false;
+        }
     }
 }

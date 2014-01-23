@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lidgren.Network;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -48,10 +49,20 @@ namespace Akanonda
         {
             try
             {
+                Program.netclient.Disconnect(Program.guid.ToString());
+                NetOutgoingMessage message = Program.netclient.CreateMessage("Connect");
+                Program.netclient.Connect(this.ServerAdress.Text, Convert.ToInt32(this.GamePort.Text), message);
+
+
+                string hailmessage = Program.guid.ToString() + ";" + LobbyForm.L_form.name + ";" + Convert.ToString(LobbyForm.L_form.color.ToArgb());
+                Program.s_client.Disconnect(Program.guid.ToString());
+                message = Program.netclient.CreateMessage(hailmessage);
+                Program.s_client.Connect(this.ServerAdress.Text, Convert.ToInt32(this.ChatPort.Text), message);
                 Program.settings.ServerAdresse = this.ServerAdress.Text;
                 Program.settings.ChatPort = Convert.ToInt32(this.ChatPort.Text);
                 Program.settings.GamePort = Convert.ToInt32(this.GamePort.Text);
                 Program.settings.Save();
+                LobbyForm.L_form.StartGame_Enable();
             }
             catch
             {

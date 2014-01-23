@@ -19,6 +19,7 @@ namespace Akanonda
         private static volatile bool _chatStopped = false;
         private static Settings settings = new Settings();
         public static System.Timers.Timer SurvivalTimer;
+        public static System.Timers.Timer gameSpeedTimer;
         private static List<NetConnection> adminList = new List<NetConnection>();
         private static Dictionary<Guid, NetConnection> playerClientConn = new Dictionary<Guid, NetConnection>();
         private static List<System.Net.IPAddress> banList = new List<System.Net.IPAddress>();
@@ -53,9 +54,10 @@ namespace Akanonda
 
             game = Game.Instance;
   
-            System.Timers.Timer gameSpeedTimer = new System.Timers.Timer(settings.GameSpeed);
+            gameSpeedTimer = new System.Timers.Timer(settings.GameSpeed);
             gameSpeedTimer.Elapsed += new ElapsedEventHandler(gameSpeedTimer_Elapsed);
             gameSpeedTimer.Enabled = true;
+            
                         
             Console.Write("Command: ");
 			while (true)
@@ -155,8 +157,8 @@ namespace Akanonda
                                 }
                                     game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
                                 
-                                game.AddPowerUp(PowerUp.PowerUpKind.getMoreSnakes);
-                                game.AddPowerUp(PowerUp.PowerUpKind.iGoDiagonal);
+                                //game.AddPowerUp(PowerUp.PowerUpKind.makePlayersBig);
+                                //game.AddPowerUp(PowerUp.PowerUpKind.iGoDiagonal);
                                 //Console.WriteLine("[Chat]Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                             }
 
@@ -248,7 +250,27 @@ namespace Akanonda
                                             case "Help":
                                                 string helptext = "Possible Commands:\n'start' - Start Game\n'status' - show Connected Players and Configuration\n";
                                                 helptext += "'exit' - Kill Server\n'stop Chat' & 'start Chat'\n 'kick:playername' - kick player";
+                                                helptext += "'gamespeed up/down'\n 'add/remove all powerups'\nLogout";
                                                 om.Write(helptext);
+                                                break;
+                                            case "add all powerups":
+                                                foreach (PowerUp.PowerUpKind kind in (PowerUp.PowerUpKind[])Enum.GetValues(typeof(PowerUp.PowerUpKind)))
+                                                {
+                                                    game.AddPowerUp(kind);
+                                                }
+                                                om.Write("All Powerup kinds added");
+                                                break;
+                                            case "remove all powerups":
+                                                game.PowerUpList.Clear();
+                                                om.Write("All Powerups removed");
+                                                break;
+                                            case "gamespeed up":
+                                                gameSpeedTimer.Interval -= 10;
+                                                om.Write("Game speeded up");
+                                                break;
+                                            case "gamespeed down":
+                                                gameSpeedTimer.Interval += 10;
+                                                om.Write("Game slowed down");
                                                 break;
                                             default:
                                                 om.Write("Command not found!\nType help for more information");

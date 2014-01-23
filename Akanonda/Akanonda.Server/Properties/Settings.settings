@@ -8,7 +8,7 @@
     <Setting Name="MaxConnections" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">100</Value>
     </Setting>
-    <Setting Name="GameSpeed" Type="System.Int32" Scope="Application">
+    <Setting Name="GameSpeed" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">50</Value>
     </Setting>
     <Setting Name="ChatPort" Type="System.Int32" Scope="Application">
