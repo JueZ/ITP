@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(settingsForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.use2ButtonsRadio = new System.Windows.Forms.RadioButton();
             this.use4ButtonsRadio = new System.Windows.Forms.RadioButton();
@@ -171,6 +172,8 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.closeSettingsButton);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "settingsForm";
             this.Text = "Settings";
             this.groupBox1.ResumeLayout(false);

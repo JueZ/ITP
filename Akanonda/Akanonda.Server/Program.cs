@@ -156,18 +156,13 @@ namespace Akanonda
                                     chatServer.SendMessage(om2, playerClientConn[Guid.Parse(remotehailmessagearray[0])], NetDeliveryMethod.ReliableOrdered, 0);
                                 }
                                     game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
-                                
-                                //game.AddPowerUp(PowerUp.PowerUpKind.makePlayersBig);
-                                //game.AddPowerUp(PowerUp.PowerUpKind.iGoDiagonal);
-                                //Console.WriteLine("[Chat]Player connected! \t GUID: " + Guid.Parse(remotehailmessagearray[0]) + " name: " + remotehailmessagearray[1].ToString() + " color: " + Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])));
                             }
 
                             if (status == NetConnectionStatus.Disconnected)
                             {
                                 game.removePlayer(Guid.Parse(reason));
                                 game.RemoveLobbyPlayer(Guid.Parse(reason));
-                                playerClientConn.Remove(Guid.Parse(reason));
-                                //Console.WriteLine("[Chat]Player disconnected! \t GUID: " + Guid.Parse(reason)); 
+                                playerClientConn.Remove(Guid.Parse(reason)); 
                             }
                             break;
 
@@ -272,6 +267,11 @@ namespace Akanonda
                                                 gameSpeedTimer.Interval += 10;
                                                 om.Write("Game slowed down");
                                                 break;
+                                            case "Logout":
+                                            case "logout":
+                                                adminList.Remove(im.SenderConnection);
+                                                om.Write("You are now logged out");
+                                                break;
                                             default:
                                                 om.Write("Command not found!\nType help for more information");
                                                 break;
@@ -292,14 +292,6 @@ namespace Akanonda
                                         adminList.Add(im.SenderConnection);
                                         om.Write("You are now logged in as Admin");
                                         chatServer.SendMessage(om, im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
-                                    }
-                                    else if (chatMessage[1] == "Logout" || chatMessage[1] == "logout")
-                                    {
-                                        adminList.Remove(im.SenderConnection);
-                                        om.Write("You are now logged out");
-                                        chatServer.SendMessage(om, im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
-                                    
-
                                     }
                                     else
                                     {
