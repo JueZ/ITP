@@ -146,23 +146,37 @@ namespace Akanonda
 
                             if (im.SenderConnection.RemoteHailMessage != null && status == NetConnectionStatus.Connected)
                             {
-                                string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
-                                string[] remotehailmessagearray = remotehailmessage.Split(';');
-                                playerClientConn.Add(Guid.Parse(remotehailmessagearray[0]), im.SenderConnection);
-                                if (banList.Contains(im.SenderConnection.RemoteEndPoint.Address))
+                                try
                                 {
-                                    NetOutgoingMessage om2 = chatServer.CreateMessage();
-                                    om2.Write("ban:" + Guid.Parse(remotehailmessagearray[0]));
-                                    chatServer.SendMessage(om2, playerClientConn[Guid.Parse(remotehailmessagearray[0])], NetDeliveryMethod.ReliableOrdered, 0);
-                                }
+                                    string remotehailmessage = im.SenderConnection.RemoteHailMessage.ReadString();
+                                    string[] remotehailmessagearray = remotehailmessage.Split(';');
+                                    playerClientConn.Add(Guid.Parse(remotehailmessagearray[0]), im.SenderConnection);
+                                    if (banList.Contains(im.SenderConnection.RemoteEndPoint.Address))
+                                    {
+                                        NetOutgoingMessage om2 = chatServer.CreateMessage();
+                                        om2.Write("ban:" + Guid.Parse(remotehailmessagearray[0]));
+                                        chatServer.SendMessage(om2, playerClientConn[Guid.Parse(remotehailmessagearray[0])], NetDeliveryMethod.ReliableOrdered, 0);
+                                    }
                                     game.AddLobbyPlayer(remotehailmessagearray[1], Color.FromArgb(Convert.ToInt32(remotehailmessagearray[2])), Guid.Parse(remotehailmessagearray[0]));
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("a wron Guid format was sent!!");
+                                }
                             }
 
                             if (status == NetConnectionStatus.Disconnected)
                             {
-                                game.removePlayer(Guid.Parse(reason));
-                                game.RemoveLobbyPlayer(Guid.Parse(reason));
-                                playerClientConn.Remove(Guid.Parse(reason)); 
+                                try
+                                {
+                                    game.removePlayer(Guid.Parse(reason));
+                                    game.RemoveLobbyPlayer(Guid.Parse(reason));
+                                    playerClientConn.Remove(Guid.Parse(reason));
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("a wron Guid format was sent!!");
+                                }
                             }
                             break;
 
@@ -244,7 +258,7 @@ namespace Akanonda
                                             case "help":
                                             case "Help":
                                                 string helptext = "Possible Commands:\n'start' - Start Game\n'status' - show Connected Players and Configuration\n";
-                                                helptext += "'exit' - Kill Server\n'stop Chat' & 'start Chat'\n 'kick:playername' - kick player";
+                                                helptext += "'exit' - Kill Server\n'stop Chat' & 'start Chat'\n 'kick:playername' - kick player\n";
                                                 helptext += "'gamespeed up/down'\n 'add/remove all powerups'\nLogout";
                                                 om.Write(helptext);
                                                 break;
@@ -281,8 +295,15 @@ namespace Akanonda
                                     chatServer.SendMessage(om, im.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
                                     else
                                     {
-                                        om.Write(game.getLobbyPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
-                                        chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
+                                        try
+                                        {
+                                            om.Write(game.getLobbyPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
+                                            chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
+                                        }
+                                        catch
+                                        {
+                                            Console.WriteLine("a wron Guid format was sent!!");
+                                        }
                                     }
                                 }
                                 else
@@ -295,9 +316,15 @@ namespace Akanonda
                                     }
                                     else
                                     {
-                                        
-                                        om.Write(game.getLobbyPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
-                                        chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
+                                        try
+                                        {
+                                            om.Write(game.getLobbyPlayerName(Guid.Parse(chatMessage[0])) + ": " + chatMessage[1]);
+                                            chatServer.SendMessage(om, all, NetDeliveryMethod.ReliableOrdered, 0);
+                                        }
+                                        catch
+                                        {
+                                            Console.WriteLine("a wron Guid format was sent!!");
+                                        }
                                     }
                                 }
                             }
@@ -385,10 +412,17 @@ namespace Akanonda
 
                         if (status == NetConnectionStatus.Disconnected)
                         {
+                            try
+                                {
                             if (reason != "Connection timed out" && Guid.Parse(reason) != null) //fix for server crashes
                             {
-                                im.SenderConnection.Disconnect("test");
-                                game.addDeadRemoveLivingPlayer(Guid.Parse(reason));
+                                    im.SenderConnection.Disconnect("ByeBye");
+                                    game.addDeadRemoveLivingPlayer(Guid.Parse(reason));
+                                }
+                            }
+                            catch
+                            {
+                                Console.WriteLine("a wron Guid format was sent!!");
                             }
                         }
 						break;
@@ -396,7 +430,14 @@ namespace Akanonda
                         string firstIM = im.ReadString();
                         if (firstIM == "ConnectToGame")
                         {
-                            game.addPlayer(im.ReadString(), Color.FromArgb(Convert.ToInt32(im.ReadString())), Guid.Parse(im.ReadString()));
+                            try
+                            {
+                                game.addPlayer(im.ReadString(), Color.FromArgb(Convert.ToInt32(im.ReadString())), Guid.Parse(im.ReadString()));
+                            }
+                            catch
+                            {
+                                Console.WriteLine("a wron Guid format was sent!!");
+                            }
                         }
                         else
                         {
